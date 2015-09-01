@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<object>
+	<name>SampleObjectCategory</name>
+	<info>
+		<sql>
+			<primary>idSampleObjectCategory</primary>
+			<created>false</created>
+			<modified>false</modified>
+			<order>false</order>
+			<engine>MyISAM</engine>
+			<onDelete></onDelete>
+			<onCreate></onCreate>
+		</sql>
+		<form>
+			<title>Sample Object Category</title>
+			<label>#name#</label>
+			<layout>simple</layout>
+			<pager></pager>
+			<group></group>
+			<orderBy>name</orderBy>
+			<permissions>
+				<all>
+					<canRewrite>true</canRewrite>
+					<canViewList>true</canViewList>
+					<canInsert>true</canInsert>
+					<canModify>true</canModify>
+					<canDelete>true</canDelete>
+					<canOrder>true</canOrder>
+					<canView>true</canView>
+				</all>
+			</permissions>
+			<labelAdmin>
+				<label type="link">#text#</label>
+			</labelAdmin>
+		</form>
+	</info>
+	<attributes>
+		<attribute>
+			<name>idSampleObjectCategory</name>
+			<type>id-autoincrement</type>
+		</attribute>
+		<attribute>
+			<name>name</name>
+			<type>text</type>
+		</attribute>
+		<attribute>
+			<name>nameUrl</name>
+			<type>hidden-url</type>
+			<refAttribute>name</refAttribute>
+		</attribute>
+	</attributes>
+	<indexes>
+		<index>
+			<name>nameUrl</name>
+			<type></type>
+			<fields>nameUrl</fields>
+		</index>
+	</indexes>
+</object>

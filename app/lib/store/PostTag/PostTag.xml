@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<object>
+	<name>PostTag</name>
+	<info>
+		<sql>
+			<primary></primary>
+			<created>false</created>
+			<modified>false</modified>
+			<order>false</order>
+			<engine>MyISAM</engine>
+			<onDelete></onDelete>
+			<onCreate></onCreate>
+		</sql>
+	</info>
+	<attributes>
+		<attribute>
+			<name>idPost</name>
+			<type>linkid-autoincrement</type>
+		</attribute>
+		<attribute>
+			<name>idTag</name>
+			<type>linkid-autoincrement</type>
+		</attribute>
+	</attributes>
+	<indexes>
+		<index>
+			<name>idUnique</name>
+			<type>UNIQUE</type>
+			<fields>idPost,idTag</fields>
+		</index>
+	</indexes>
+</object>

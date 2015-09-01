@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="utf-8"?>
+<object>
+	<name>SampleObject</name>
+	<info>
+		<sql>
+			<primary>idSampleObject</primary>
+			<created>true</created>
+			<modified>true</modified>
+			<order>true</order>
+			<engine>MyISAM</engine>
+			<onDelete>SampleObjectTagRef,SampleObjectPicture</onDelete>
+			<onCreate>SampleObjectTag,SampleObjectCategory,SampleObjectTagRef,SampleObjectPicture</onCreate>
+		</sql>
+		<form>
+			<title>Sample Object</title>
+			<label>_?labelTrans_ labelNormal _#labelObject</label>
+			<layout>simple</layout>
+			<pager></pager>
+			<group></group>
+			<orderBy>text</orderBy>
+			<permissions>
+				<superadmin>
+					<canRewrite>true</canRewrite>
+					<canViewList>true</canViewList>
+					<canInsert>true</canInsert>
+					<canModify>true</canModify>
+					<canDelete>true</canDelete>
+					<canOrder>true</canOrder>
+					<canView>true</canView>
+				</superadmin>
+			</permissions>
+			<multipleActions>
+				<action>delete</action>
+				<action>activate</action>
+				<action>deactivate</action>
+			</multipleActions>
+			<labelAdmin>
+				<label style="active" type="active">#active#</label>
+				<label style="regular">
+					<label type="link">$code$: #title#</label>
+					<label style="small">titleUrl</label>
+					<label>shortDescription</label>
+				</label>
+			</labelAdmin>
+		</form>
+	</info>
+	<attributes>
+		<attribute>
+			<name>idSampleObject</name>
+			<type>id-autoincrement</type>
+		</attribute>
+		<!--
+		<attribute>
+			<name>idSampleObjectChar32</name>
+			<type>id-char32</type>
+		</attribute>
+		<attribute>
+			<name>idSampleObjectVarchar</name>
+			<type>id-varchar</type>
+		</attribute>
+		-->
+
+
+		<attribute>
+			<name>text</name>
+			<type>text</type>
+		</attribute>
+		<attribute>
+			<name>textLangs</name>
+			<type>text</type>
+			<lang>true</lang>
+		</attribute>
+		<attribute>
+			<name>textSmall</name>
+			<type>text-small</type>
+		</attribute>
+		<attribute>
+			<name>textLarge</name>
+			<type>text-large</type>
+		</attribute>
+		<attribute>
+			<name>textInteger</name>
+			<type>text-integer</type>
+		</attribute>
+		<attribute>
+			<name>textDouble</name>
+			<type>text-double</type>
+		</attribute>
+		<attribute>
+			<name>textPostalCode</name>
+			<type>text-postalcode</type>
+		</attribute>
+		<attribute>
+			<name>textTelephone</name>
+			<type>text-telephone</type>
+		</attribute>
+		<attribute>
+			<name>textEmail</name>
+			<type>text-email</type>
+		</attribute>
+		<attribute>
+			<name>textUnchangeable</name>
+			<type>text-unchangeable</type>
+		</attribute>
+
+
+
+		<attribute>
+			<name>textUrl</name>
+			<type>hidden-url</type>
+			<refAttribute>text</refAttribute>
+		</attribute>
+		<attribute>
+			<name>textUrlLangs</name>
+			<lang>true</lang>
+			<type>hidden-url</type>
+			<refAttribute>textLangs</refAttribute>
+		</attribute>
+		<attribute>
+			<name>hiddenLogin</name>
+			<type>hidden-login</type>
+		</attribute>
+		<attribute>
+			<name>hiddenInteger</name>
+			<type>hidden-integer</type>
+		</attribute>
+
+
+
+		<attribute>
+			<name>password</name>
+			<type>password</type>
+		</attribute>
+
+
+
+		<attribute>
+			<name>textarea</name>
+			<type>textarea</type>
+		</attribute>
+		<attribute>
+			<name>textareaLangs</name>
+			<type>textarea</type>
+			<lang>true</lang>
+		</attribute>
+		<attribute>
+			<name>textareaSmall</name>
+			<type>textarea-small</type>
+		</attribute>
+		<attribute>
+			<name>textareaLarge</name>
+			<type>textarea-large</type>
+		</attribute>
+		<attribute>
+			<name>textareaCK</name>
+			<type>textarea-ck</type>
+		</attribute>
+
+
+
+		<attribute>
+			<name>select</name>
+			<type>select</type>
+			<values>
+				<value>Value 1</value>
+				<value>Value 2</value>
+				<value>Value 3</value>
+			</values>
+		</attribute>
+		<attribute>
+			<name>selectCheckbox</name>
+			<type>select-checkbox</type>
+			<values>
+				<value>Value 1</value>
+				<value>Value 2</value>
+				<value>Value 3</value>
+			</values>
+		</attribute>
+		<attribute>
+			<name>selectObject</name>
+			<type>select</type>
+			<refObject>SampleObjectCategory</refObject>
+		</attribute>
+		<attribute>
+			<name>selectObjectCheckbox</name>
+			<type>select-checkbox</type>
+			<refObject>SampleObjectCategory</refObject>
+		</attribute>
+
+
+
+		<attribute>
+			<name>date</name>
+			<type>date</type>
+		</attribute>
+		<attribute>
+			<name>dateCheckbox</name>
+			<type>date</type>
+			<checkboxDate>true</checkboxDate>
+		</attribute>
+		<attribute>
+			<name>dateComplete</name>
+			<type>date-complete</type>
+		</attribute>
+		<attribute>
+			<name>dateHour</name>
+			<type>date-hour</type>
+		</attribute>
+		<attribute>
+			<name>dateYear</name>
+			<type>date-year</type>
+		</attribute>
+		<attribute>
+			<name>dateText</name>
+			<type>date-text</type>
+		</attribute>
+
+
+
+		<attribute>
+			<name>checkbox</name>
+			<type>checkbox</type>
+		</attribute>
+		
+
+
+		<attribute>
+			<name>radioButtons</name>
+			<type>radio</type>
+			<values>
+				<value>Value 1</value>
+				<value>Value 2</value>
+				<value>Value 3</value>
+			</values>
+		</attribute>
+		<attribute>
+			<name>radioButtonsObject</name>
+			<type>radio</type>
+			<refObject>SampleObjectCategory</refObject>
+		</attribute>
+
+
+		<attribute>
+			<name>point</name>
+			<type>point</type>
+		</attribute>
+
+
+		<attribute>
+			<name>file</name>
+			<type>file</type>
+		</attribute>
+		<attribute>
+			<name>fileImage</name>
+			<type>file</type>
+			<mode>image</mode>
+		</attribute>
+
+
+
+		<attribute>
+			<name>pictures</name>
+			<type>multiple-object</type>
+			<refObject>SampleObjectPicture</refObject>
+			<lnkAttribute>idSampleObject</lnkAttribute>
+		</attribute>
+		<attribute>
+			<name>tags</name>
+			<type>multiple-checkbox</type>
+			<refObject>SampleObjectTag</refObject>
+			<lnkObject>SampleObjectTagRef</lnkObject>
+		</attribute>
+
+	</attributes>
+	<indexes>
+		<index>
+			<name>textUrl</name>
+			<type></type>
+			<fields>textUrl</fields>
+		</index>
+	</indexes>
+</object>

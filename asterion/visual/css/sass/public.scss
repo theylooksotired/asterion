@@ -1,0 +1,63 @@
+@import "compass/reset";
+
+$white: #FFF;
+$black: #000;
+$gray: #666;
+$grayDark: #333;
+$grayMedium: #999;
+$grayWhite: #EFEFEF;
+$grayWhiteLight: #F7F7F7;
+$blue: #069;
+$red: #FF2F2F;
+$green: #17C12E;
+$fontFamily: sans-serif;
+
+@mixin borderRadius($radius) {
+	-webkit-border-radius: $radius;
+	-moz-border-radius: $radius;
+	-ms-border-radius: $radius;
+	border-radius: $radius;
+}
+@mixin simpleShadow() {
+	moz-box-shadow: 0px 0px 10px #DDD;
+	-webkit-box-shadow: 0px 0px 10px #DDD;
+	box-shadow: 0px 0px 10px #DDD;
+}
+input,
+textarea {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+	font-size: 0.95em;
+	font-family: $fontFamily;
+	background: $grayWhite;
+	color: $gray;
+	height:100%;
+	font-family: $fontFamily;
+	font-weight: 300;
+}
+.clearer {
+	clear: both;
+}
+p {
+	padding: 0px;
+	margin: 0px;
+}
+a {
+	font-weight: bold;
+	color: $blue;
+	text-decoration: none;
+}
+a:hover,
+a:active,
+a:focus {
+}
+strong {
+	font-weight: bold;
+}

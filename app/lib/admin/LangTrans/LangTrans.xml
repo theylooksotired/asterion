@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<object>
+	<name>LangTrans</name>
+	<info>
+		<sql>
+			<primary>idLangTrans</primary>
+		</sql>
+		<form>
+			<title>translations</title>
+			<layout>ajax</layout>
+			<orderBy>code</orderBy>
+			<label>#translation</label>
+			<permissions>
+				<superadmin>
+					<canViewList>true</canViewList>
+					<canInsert>true</canInsert>
+					<canModify>true</canModify>
+					<canDelete>true</canDelete>
+				</superadmin>
+			</permissions>
+			<labelAdmin>
+				<label type="link">#code</label>
+				<label style="small">#translation</label>
+			</labelAdmin>
+		</form>
+	</info>
+	<attributes>
+		<attribute>
+			<name>idLangTrans</name>
+			<type>id-autoincrement</type>
+		</attribute>
+		<attribute>
+			<label>code</label>
+			<name>code</name>
+			<type>text</type>
+			<required>notEmpty</required>
+		</attribute>
+		<attribute>
+			<label>translation</label>
+			<name>translation</name>
+			<lang>true</lang>
+			<type>text-large</type>
+			<required>notEmpty</required>
+		</attribute>
+	</attributes>
+</object>

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<object>
+	<name>Contact</name>
+	<info>
+		<sql>
+			<primary>idContact</primary>
+			<created>true</created>
+			<modified>true</modified>
+			<order>false</order>
+			<engine>MyISAM</engine>
+			<onDelete></onDelete>
+			<onCreate></onCreate>
+		</sql>
+		<form>
+			<title>contact</title>
+			<label>#title</label>
+			<pager></pager>
+			<group></group>
+			<orderBy>created DESC</orderBy>
+			<permissions>
+				<superadmin>
+					<canRewrite>true</canRewrite>
+					<canViewList>true</canViewList>
+					<canInsert>true</canInsert>
+					<canModify>true</canModify>
+					<canDelete>true</canDelete>
+					<canOrder>false</canOrder>
+					<canView>false</canView>
+				</superadmin>
+			</permissions>
+			<labelAdmin>
+				<label type="link">_#name</label>
+				<label style="small">#created_ - _#email</label>
+			</labelAdmin>
+		</form>
+	</info>
+	<attributes>
+		<attribute>
+			<name>idContact</name>
+			<type>id-autoincrement</type>
+		</attribute>
+		<attribute>
+			<name>name</name>
+			<label>name</label>
+			<type>text-long</type>
+			<required>notEmpty</required>
+		</attribute>
+		<attribute>
+			<name>email</name>
+			<label>email</label>
+			<type>text-long</type>
+			<required>email</required>
+		</attribute>
+		<attribute>
+			<name>telephone</name>
+			<label>telephone</label>
+			<type>text-long</type>
+		</attribute>
+		<attribute>
+			<name>description</name>
+			<label>description</label>
+			<type>textarea-large</type>
+			<required>notEmpty</required>
+		</attribute>
+	</attributes>
+</object>
