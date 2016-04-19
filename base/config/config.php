@@ -44,7 +44,7 @@ $_ENV['locations'][] = FRAMEWORK_FILE.'admin/';
 
 // Database
 define('DB_SERVER', 'localhost');
-define('DB_USER', 'root');
+define('DB_USER', 'rodot');
 define('DB_PASSWORD', 'lucyinthesky');
 define('DB_PORT', '3306');
 define('DB_NAME', 'asterion');

@@ -10,6 +10,7 @@ class Db_Connection extends Singleton {
 			$this->connexion_pdo = new PDO(PDO_DSN, DB_USER, DB_PASSWORD, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
 		} catch(PDOException $error){
 			if (DEBUG) {
+				echo '<pre>';
 				throw new Exception($error->getMessage());
 			}
 		}
@@ -26,6 +27,7 @@ class Db_Connection extends Singleton {
 			$this->connexion_pdo->commit();
 		} catch(PDOException $error){
 			if (DEBUG) {
+				echo '<pre>';
 				throw new Exception($error->getMessage());
 			}
 		}
@@ -37,6 +39,7 @@ class Db_Connection extends Singleton {
 			return $this->connexion_pdo->prepare($query,array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
 		} catch(PDOException $error){
 			if (DEBUG) {
+				echo '<pre>';
 				throw new Exception($error->getMessage());
 			}
 		}
