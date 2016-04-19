@@ -39,13 +39,7 @@ class Navigation_Ui extends Ui {
 	public function footer() {
 		return '<div class="footer">
 					<div class="footerIns">
-						<div class="footerLeft">
-							'.$this->shareIcons().'
-						</div>
-						<div class="footerRight">
-							<p>Here goes the footer</p>
-						</div>
-						<div class="clearer"></div>
+						<p>Here goes the footer</p>
 					</div>
 				</div>';
 	}

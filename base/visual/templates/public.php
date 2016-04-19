@@ -17,7 +17,7 @@
 
     <title><?php echo $title;?></title>
     
-    <link href="<?php echo BASE_URL;?>visual/css/public.css" rel="stylesheet" type="text/css" />
+    <link href="<?php echo BASE_URL;?>visual/css/stylesheets/public.css" rel="stylesheet" type="text/css" />
 
     <script async type="text/javascript" src="<?php echo BASE_URL; ?>libjs/publicmin.js"></script>
 
