@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 //Configure site
 define('APP_FOLDER', 'base');
 require_once(APP_FOLDER.'/config/config.php');
