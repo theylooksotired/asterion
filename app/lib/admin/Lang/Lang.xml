@@ -1,43 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <object>
-  <name>Lang</name>
-  <info>
-    <sql>
-      <primary>idLang</primary>
-      <label>name</label>
-      <order>true</order>
-    </sql>
-    <form>
-      <title>langs</title>
-      <layout>ajax</layout>
-      <label>#name</label>
-      <permissions>
-        <superadmin>
-          <canViewList>true</canViewList>
-          <canInsert>true</canInsert>
-          <canModify>true</canModify>
-          <canDelete>true</canDelete>
-          <canOrder>true</canOrder>
-        </superadmin>
-      </permissions>
-    </form>
-    <nav>
-      <labelSections>
-        <label type="link" style="tiny">idLang</label>
-        <label type="link" style="medium">name</label>
-      </labelSections>
-    </nav>
-  </info>
-  <attributes>
-    <attribute>
-      <name>idLang</name>
-      <type>id-varchar</type>
-    </attribute>
-    <attribute>
-      <name>name</name>
-      <label>name</label>
-      <type>text</type>
-      <required>notEmpty</required>
-    </attribute>
-  </attributes>
+    <name>Lang</name>
+    <info>
+        <sql>
+            <primary>idLang</primary>
+            <label>name</label>
+            <order>true</order>
+        </sql>
+        <form>
+            <title>langs</title>
+            <layout>ajax</layout>
+            <label>#name</label>
+            <permissions>
+                <superadmin>
+                    <canViewList>true</canViewList>
+                    <canInsert>true</canInsert>
+                    <canModify>true</canModify>
+                    <canDelete>true</canDelete>
+                    <canOrder>true</canOrder>
+                </superadmin>
+            </permissions>
+        </form>
+        <nav>
+            <labelSections>
+                <label type="link" style="tiny">idLang</label>
+                <label type="link" style="medium">name</label>
+            </labelSections>
+        </nav>
+    </info>
+    <attributes>
+        <attribute>
+            <name>idLang</name>
+            <type>id-varchar</type>
+        </attribute>
+        <attribute>
+            <name>name</name>
+            <label>name</label>
+            <type>text</type>
+            <required>notEmpty</required>
+        </attribute>
+    </attributes>
 </object>
