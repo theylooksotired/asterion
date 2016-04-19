@@ -3,6 +3,7 @@ var loadingDiv = false;
 $(document).ready(function() {
 	ajaxAdmin();
 	activateCK();
+	activateStock();
 	activateMaps();
 });
 
@@ -166,6 +167,33 @@ function ajaxAdmin() {
 		});
 	});
 
+	//ANNOTATIONS
+	var activateAnnotations = function() {
+		$('.annotationAdminOption').click(function(evt){
+			evt.stopImmediatePropagation();
+			var container = $(this).parents('.annotationAdmin');
+			$.get($(this).attr('rel'), function(response){
+				container.replaceWith(response);
+				activateAnnotations();
+			});
+		});
+		$('.responsesAdminOption').click(function(evt){
+			evt.stopImmediatePropagation();
+			var container = $(this).parents('.responsesAdmin');
+			$.get($(this).attr('rel'), function(response){
+				container.replaceWith(response);
+				activateAnnotations();
+			});
+		});	
+	}
+	activateAnnotations();
+	
+	$('.orderModifyTrigger').click(function(evt){
+		evt.stopImmediatePropagation();
+		evt.preventDefault();
+		$('.orderModifyContent').toogle();
+	});
+
 }
 
 function activateCK() {
@@ -176,6 +204,7 @@ function activateCK() {
 				$(ele).attr('id', randomString());
 			}
 			CKEDITOR.replace($(ele).attr('id'), {
+				height: '450px',
 				toolbar: [
 					{ name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ], items: [ 'Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'RemoveFormat' ] },
 					{ name: 'paragraph', groups: [ 'list', 'indent', 'blocks', 'align', 'bidi' ], items: [ 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote', 'CreateDiv', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-', 'BidiLtr', 'BidiRtl' ] },
@@ -190,6 +219,22 @@ function activateCK() {
 					{ name: 'tools', items: [ 'Maximize', 'ShowBlocks' ] },
 					{ name: 'others', items: [ '-' ] },
 					{ name: 'about', items: [ 'About' ] }
+				]
+			});
+		}
+	});
+	$('.ckeditorAreaSimple textarea').each(function(index, ele){
+		if ($(ele).attr('rel') != 'ckeditor') {
+			$(ele).attr('rel', 'ckeditor');
+			if ($(ele).attr('id')=='' || $(ele).attr('id')==undefined) {
+				$(ele).attr('id', randomString());
+			}
+			CKEDITOR.replace($(ele).attr('id'), {
+				height: '250px',
+				toolbar: [
+					{ name: 'basicstyles', groups: [ 'basicstyles', 'cleanup', 'list', 'indent', 'blocks', 'align', 'bidi' ], items: [ 'Bold', 'Italic', 'Underline', '-', 'NumberedList', 'BulletedList', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-', 'Link', 'Unlink', 'Image'] },
+					'/',
+					{ name: 'styles', items: [ 'Format', 'Font', 'FontSize', '-', 'TextColor', 'BGColor'] }
 				]
 			});
 		}
@@ -249,4 +294,42 @@ function equalHeights(elements) {
 
 function randomString() {
 	return Math.random().toString(36).substring(7);
+}
+
+
+function activateStock() {
+
+	$('.adminTableStockAdd').unbind('click');
+	$('.adminTableStockAdd').click(function(evt){
+		evt.preventDefault();
+		evt.stopImmediatePropagation();
+		var newLine = $('.stockFormEmpty').clone().removeClass('stockFormEmpty');
+		newLine.insertAfter($('.stockFormEmpty'));
+		activateStock();
+	});
+
+	$('.stockFormSave').unbind('click');
+	$('.stockFormSave').click(function(evt){
+		evt.preventDefault();
+		evt.stopImmediatePropagation();
+		var formLine = $(this).parents('.stockForm').first();
+		var formLineData = formLine.find(':input').serialize();
+		$.post(formLine.attr('rel'), formLineData)
+			.done(function(data) {
+				console.log(formLine);
+				console.log(data);
+				formLine.replaceWith(data);
+				activateStock();
+			});
+	});
+
+	$('.stockFormEdit').unbind('click');
+	$('.stockFormEdit').click(function(evt){
+		evt.preventDefault();
+		evt.stopImmediatePropagation();
+		var formLine = $(this).parents('.stockForm').first();
+		formLine.find('.adminTableRowInfoEdit').show();
+		formLine.find('.adminTableRowInfo').hide();
+	});
+
 }

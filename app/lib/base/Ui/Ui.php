@@ -119,6 +119,16 @@ class Ui {
 		return Text::minimize($xml);
 	}
 
+	public function renderRss($options=array()) {
+		//Render the object as a sitemap url
+		$xml = ' <item>
+				    <title>'.$this->object->getBasicInfo().'</title>
+				    <link>'.$this->object->url().'</link>
+				    <description><![CDATA['.$this->object->get('description').']]></description>
+				  </item>';
+		return Text::minimize($xml);
+	}
+
 	public function renderForm($options=array()) {
 		//Render a form for the object
 		$nested = (isset($options['nested']) && $options['nested']==true) ? true : false;
@@ -174,6 +184,21 @@ class Ui {
 		return '<div class="labelInside '.$styleInside.'">
 					'.$labelHtml.'
 				</div>';
+	}
+
+	public function labelMultiple($objectName, $objectNameConnector, $separator=', ') {
+		$objectNameIns = new $objectName();
+		$query = 'SELECT DISTINCT o.*
+					FROM '.Db::prefixTable($objectName).' o
+					JOIN '.Db::prefixTable($objectNameConnector).' bo
+					ON (bo.'.$this->object->primary.'="'.$this->object->id().'" AND bo.'.$objectNameIns->primary.'=o.'.$objectNameIns->primary.')';
+		$objects = $objectNameIns->readListQuery($query);
+		$html = '';
+		foreach ($objects as $object) {
+			$html .= $object->getBasicInfo().$separator;
+		}
+		$html = substr($html, 0, -1 * strlen($separator));
+		return $html;
 	}
 
 	public function linkModify($nested=false) {

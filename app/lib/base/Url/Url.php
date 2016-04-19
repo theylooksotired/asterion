@@ -31,7 +31,7 @@ class Url {
 		//Initialize the url when using multiple language
 		$url = (isset($_GET['url'])) ? $_GET['url'] : '';
 		$info = explode('/', $url);
-		$pagerString = (Params::param('pagerString')!='') ? Params::param('pager-string') : PAGER_URL_STRING;
+		$pagerString = PAGER_URL_STRING;
 		if (isset($info[0]) && $info[0]==ADMIN_URL_STRING) {
 			//If the url points to the admin area
 			$_GET['mode'] = 'admin';
@@ -51,6 +51,8 @@ class Url {
 						$_GET['extraId'] = (isset($info[5])) ? $info[5] : '';
 						if (isset($info[6]) && $info[6]==$pagerString) {
 							$_GET['page'] = (isset($info[7])) ? $info[7] : '';
+						} else {
+							$_GET['addId'] = (isset($info[6])) ? $info[6] : '';
 						}
 					}
 				}
@@ -70,6 +72,8 @@ class Url {
 					$_GET['extraId'] = (isset($info[3])) ? $info[3] : '';
 					if (isset($info[4]) && $info[4]==$pagerString) {
 						$_GET['page'] = (isset($info[5])) ? $info[5] : '';
+					} else {
+						$_GET['addId'] = (isset($info[4])) ? $info[4] : '';
 					}
 				}
 			}
@@ -103,6 +107,8 @@ class Url {
 						$_GET['extraId'] = (isset($info[4])) ? $info[4] : '';
 						if (isset($info[5]) && $info[5]==$pagerString) {
 							$_GET['page'] = (isset($info[6])) ? $info[6] : '';
+						} else {
+							$_GET['addId'] = (isset($info[5])) ? $info[5] : '';
 						}
 					}
 				}
@@ -121,6 +127,8 @@ class Url {
 					$_GET['extraId'] = (isset($info[2])) ? $info[2] : '';
 					if (isset($info[3]) && $info[3]==$pagerString) {
 						$_GET['page'] = (isset($info[4])) ? $info[4] : '';
+					} else {
+						$_GET['addId'] = (isset($info[3])) ? $info[3] : '';
 					}
 				}
 			}

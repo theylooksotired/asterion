@@ -17,6 +17,10 @@ class ListObjects {
 		return (isset($this->$value)) ? $this->$value : '';
 	}
 
+	public function first() {
+		return (count($this->list)>0) ? $this->list[0] : '';
+	}
+
 	public function countTotal() {
 		//Count the total number of elements in the list
 		if (!isset($this->countTotal)) {
@@ -86,7 +90,7 @@ class ListObjects {
 		if (!isset($this->pagerHtml)) {
 			$this->pagerHtml = '';
 			$page = (isset($_GET[PAGER_URL_STRING])) ? intval($_GET[PAGER_URL_STRING]) : 0;
-			$delta = (isset($options['delta'])) ? intval($options['delta']) : 10;
+			$delta = (isset($options['delta'])) ? intval($options['delta']) : 5;
 			$midDelta = ceil($delta/2);
 			if ($this->results > 0 && $this->countTotal() > $this->results) {
 				$totalPages = ceil($this->countTotal()/$this->results);

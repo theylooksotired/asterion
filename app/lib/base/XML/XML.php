@@ -57,9 +57,9 @@ class XML {
 
 	static public function formatRss($content, $options=array()) {
 		//Format a XML RSS file
-		$title = (isset($options['title'])) ? $options['title'] : utf8_decode(Params::param('titlePage'));
+		$title = (isset($options['title'])) ? $options['title'] : Params::param('titlePage');
 		$link = (isset($options['link'])) ? $options['link'] : LOCAL_URL;
-		$description = (isset($options['description'])) ? $options['description'] : utf8_decode(Params::param('metaDescription'));
+		$description = (isset($options['description'])) ? $options['description'] : Params::param('metaDescription');
 		return '<?xml version="1.0" encoding="ISO-8859-1"?>
 					<rss version="2.0">
 					<channel>
@@ -67,7 +67,6 @@ class XML {
 						<link>'.$link.'</link>
 						<description>'.$description.'</description>
 						<language>'.Lang::active().'</language> 
-						<copyright>COPYRIGHT © '.Params::param('titlePage').'</copyright>
 						<lastBuildDate>'.date('l jS \of F Y h:i:s A').'</lastBuildDate> 
 						<administrator>'.Params::param('titlePage').'</administrator>
 						<image>

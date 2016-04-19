@@ -32,7 +32,7 @@
 		<attribute>
 			<label>code</label>
 			<name>code</name>
-			<type>text</type>
+			<type>text-unchangeable</type>
 			<required>notEmpty</required>
 		</attribute>
 		<attribute>

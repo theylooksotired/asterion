@@ -1,0 +1,96 @@
+<!doctype html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>Metadataplayer docs: integration.fr</title>
+</head>
+<body>
+<h1>Intégration du Metadataplayer</h1>
+<p>ATTENTION !
+Cette documentation se réfère à la dernière version du Metadataplayer, disponible dans la branche <strong>default</strong> du repository
+http://www.iri.centrepompidou.fr/dev/hg/metadataplayer</p>
+<h2>Chargement du script</h2>
+<p>Le fichier <em>LdtPlayer-core.js</em> doit être référencé dans l'entête du fichier HTML</p>
+<pre><code>&lt;head&gt;
+    &lt;meta http-equiv="Content-type" content="text/html; charset=utf-8" /&gt;
+    &lt;title&gt;Test d’intégration du Metadataplayer&lt;/title&gt;
+    &lt;script type="text/javascript" src="metadataplayer/LdtPlayer-core.js" type="text/javascript"&gt;&lt;/script&gt;
+&lt;/head&gt;
+</code></pre>
+<h2>Création d'un élément conteneur pour le Metadataplayer</h2>
+<pre><code>&lt;body&gt;
+    &lt;div id="Metadataplayer"&gt;&lt;/div&gt;
+</code></pre>
+<p>Le script doit se faire après le chargement de l’élément, soit en rajoutant un élément &lt;<em>script</em>&gt; en bas de page, soit en utilisant un événement de type <em>body.onload</em> ou, avec jQuery, <em>$(document).ready()</em></p>
+<pre><code>&lt;script type="text/javascript"&gt;
+</code></pre>
+<h2>Configuration de la langue de l’interface</h2>
+<p>La langue est définie par un code ISO 639-1 (par exemple, "es" pour l’Espagnol, "ja" pour le Japonais, "eu" pour le Basque, "ee" pour l’Ewe). Pour l’instant, seuls l’Anglais ("en") et le Français ("fr") sont disponibles.</p>
+<pre><code>IriSP.language = "fr";
+</code></pre>
+<h2>Configuration des emplacements des bibliothèques</h2>
+<p>Par défaut (fichier <em>defaults.js</em>), les bibliothèques sont chargées soit depuis un CDN (Content Distribution Network), soit depuis le répertoire <em>js/libs</em></p>
+<p>La configuration se fait par les propriétés de l’objet <em>IriSP.libFiles</em></p>
+<p>Pour utiliser le CDN:</p>
+<pre><code>IriSP.libFiles.useCdn = true;
+</code></pre>
+<p>Pour changer la localisation du répertoire des bibliothèques:</p>
+<pre><code>IriSP.libFiles.defaultDir = "/chemin/libs";
+</code></pre>
+<p>Pour changer la localisation d’une bibliothèque individuellement:</p>
+<pre><code>IriSP.libFiles.locations.jQueryUI = "libs/jquery-ui-1.8.16.custom.min.js";
+IriSP.libFiles.locations.jwPlayerSWF = "libs/jwplayer/player.swf";
+</code></pre>
+<h2>Configuration de sources de métadonnées</h2>
+<p>Une source de métadonnées est définie par son URL et le type de sérialiseur à utiliser.</p>
+<p>Par exemple:</p>
+<pre><code>var metadataSource = {
+    url: "data/mydata.json",
+    type: "ldt"
+};
+</code></pre>
+<p>Les sources de métadonnées sont utilisées ensuite dans la configuration de la fenêtre vidéo et de ses widgets.</p>
+<h2>Configuration de la fenêtre vidéo</h2>
+<p>Dans cette version, la fenêtre vidéo est désormais un widget. Cette section est donc obsolète.</p>
+<h2>Configuration de l’interface utilisateur</h2>
+<p>L’interface se configure par un objet contenant les propriétés suivantes:</p>
+<ul>
+<li><strong>container</strong>: l’ID de l’élément HTML dans lequel le player sera instancié.</li>
+<li><strong>width</strong> et <strong>height</strong>: largeur et hauteur de l’interface (<em>height</em> est optionnel).</li>
+<li><strong>default_options</strong>: des options de configuration communes à tous les widgets, par exemple, comme ci-dessous, une source de métadonnées communes.</li>
+<li><strong>css</strong>: l’URL du fichier CSS de base (LdtPlayer-core.css)</li>
+<li><strong>widgets</strong>: la liste des widgets, sous la forme [ { type: <em>Type du widget</em>, option_1: <em>Valeur de l’option 1</em> } ]. Pour les options des widgets, se référer au document <em>Architecture générale</em></li>
+</ul>
+<p>Exemple:</p>
+<pre><code>var config = {
+    container : "Metadataplayer",
+    default_options: {
+        metadata: metadataSource
+    },
+    css : "metadataplayer/css/LdtPlayer-core.css",
+    widgets: [
+        {
+            type: "AutoPlayer"
+        },
+        {
+            type: "Slider"
+        },{
+            type: "Controller",
+            disable\_annotate\_btn: true
+        },{
+            type: "Segments",
+            annotation\_type: "Chapters"
+        },{
+            type: "AnnotationsList",
+            container: "AnnotationsListContainer"
+        }
+    ]
+};
+</code></pre>
+<h2>Instanciation du player</h2>
+<p>Le player s’instancie en créant un objet de classe <strong>IriSP.Metadataplayer</strong>.</p>
+<p>Exemple:</p>
+<pre><code>var monPlayer = new IriSP.Metadataplayer(config);
+</code></pre>
+</body>
+</html>

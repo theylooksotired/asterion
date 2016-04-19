@@ -6,6 +6,7 @@ abstract class Controller{
 		$this->action = isset($GET['action']) ? $GET['action'] : 'list';
 		$this->id = isset($GET['id']) ? $GET['id'] : '';
 		$this->extraId = isset($GET['extraId']) ? $GET['extraId'] : '';
+		$this->addId = isset($GET['addId']) ? $GET['addId'] : '';
 		$this->params = isset($GET) ? $GET : array();
 		$this->values = isset($POST) ? $POST : array();
 		$this->files = isset($FILES) ? $FILES : array();
@@ -188,8 +189,8 @@ abstract class Controller{
 						foreach ($resultsAll as $result) {
 							$resultsIns = array();
 							$resultsIns['id'] = $result['idItem'];
-							$resultsIns['value'] = utf8_encode(html_entity_decode($result['infoItem'], ENT_QUOTES));
-							$resultsIns['label'] = utf8_encode(html_entity_decode($result['infoItem'], ENT_QUOTES));
+							$resultsIns['value'] = $result['infoItem'];
+							$resultsIns['label'] = $result['infoItem'];
 							array_push($results, $resultsIns);
 						}
 						return json_encode($results);						
@@ -259,7 +260,7 @@ abstract class Controller{
 		$listItems = '';
 		$group = (string)$this->object->info->info->form->group;
 		if ($group!='') {
-			$items = $this->object->getValues($group);
+			$items = $this->object->getValues($group, true);
 			$listItems = '';
 			foreach ($items as $key=>$item) {
 				$list = new ListObjects($this->type, array('where'=>$group.'="'.$key.'"', 'function'=>'Admin', 'order'=>$order));
@@ -278,7 +279,8 @@ abstract class Controller{
 		} else {
 			$pager = (int)$this->object->info->info->form->pager;
 			if (($search!='' || $searchQuery!='') && $searchValue!='') {
-				$searchTitle = '<h2>'.__('resultsFor').': "'.$searchValue.'"'.'</h2>';
+				$searchTitle = '<div class="backButton"><a href="'.url($this->object->className.'/listAdmin', true).'">&#8592; '.__('viewAllItems').'</a></div>
+								<h2>'.__('resultsFor').': "'.$searchValue.'"'.'</h2>';
 				if ($search!='') {
 					$list = new ListObjects($this->type, array('where'=>str_replace('#SEARCH', $searchValue, $search), 'function'=>'Admin', 'order'=>$order, 'limit'=>'20'));
 				} else {
@@ -395,10 +397,11 @@ abstract class Controller{
 		}
 	}
 
-	public function menuInside() {
+	public function menuInside($action='') {
 		//Return the menu
 		$items = '';
-		switch ($this->action) {
+		$action = ($action!='') ? $action : $this->action;
+		switch ($action) {
 			case 'listAdmin':
 				if ($this->permissions('canInsert')) {
 					$items = '<div class="menuSimpleItem menuSimpleItemInsert">
@@ -422,6 +425,11 @@ abstract class Controller{
 				}
 				$items = $insertMenu.'
 						<div class="menuSimpleItem menuSimpleItemList">
+							<a href="'.url($this->type.'/listAdmin', true).'"><span></span>'.__('viewList').'</a>
+						</div>';
+			break;
+			case 'listBack':
+				$items = '<div class="menuSimpleItem menuSimpleItemList">
 							<a href="'.url($this->type.'/listAdmin', true).'"><span></span>'.__('viewList').'</a>
 						</div>';
 			break;
@@ -489,7 +497,7 @@ abstract class Controller{
 	}
 
 	function permissions($option) {
-		return (is_object($this->permissions) && (string)$this->permissions->$option == "true");
+		return (isset($this->permissions) && is_object($this->permissions) && (string)$this->permissions->$option == "true");
 	}
 }
 ?>

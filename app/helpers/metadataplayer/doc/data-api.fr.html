@@ -1,0 +1,206 @@
+<!doctype html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>Metadataplayer docs: data-api.fr</title>
+</head>
+<body>
+<h1>API d’accès aux métadonnées</h1>
+<p>ATTENTION !
+Cette documentation se réfère à la dernière version du Metadataplayer, disponible dans la branche <strong>default</strong> du repository
+http://www.iri.centrepompidou.fr/dev/hg/metadataplayer</p>
+<h2>Élément de base</h2>
+<pre><code>IriSP.Model.Element
+</code></pre>
+<h3>Rôle</h3>
+<p>Classe de base dont héritent les différents types d’objets utilisés dans le Metadataplayer: annotations, types d’annotations, médias, etc.</p>
+<h3>Instanciation</h3>
+<p><strong>Element</strong> fonctionne comme une classe abstraite est n’est jamais instancié directement.</p>
+<p>Néanmoins, tous les objets en héritant seront instanciés de la manière suivante :</p>
+<pre><code>var myElement = new IriSP.Model.Element(id, source);
+</code></pre>
+<ul>
+<li><strong>id</strong> est l’identifiant unique de l’élément. S’il est à <em>false</em>, un identifiant unique sera généré.</li>
+<li><strong>source</strong> identifie la source de données dont provient l’élément (cf. Source de Données, <em>IriSP.Model.Source</em>, plus bas).</li>
+</ul>
+<h3>Propriétés</h3>
+<h4>type</h4>
+<p>Type d’élément, surchargé par les classes qui héritent de l’élément de base:</p>
+<ul>
+<li><strong>element</strong> pour IriSP.Model.Element</li>
+<li><strong>media</strong> pour IriSP.Model.Media</li>
+<li><strong>annotationType</strong> pour IriSP.Model.AnnotationType</li>
+<li><strong>tag</strong> pour IriSP.Model.Tag</li>
+<li><strong>annotation</strong> pour IriSP.Model.Annotation</li>
+<li><strong>mashup</strong> pour IriSP.Model.Mashup</li>
+<li><strong>mashedAnnotation</strong> pour IriSP.Model.MashedAnnotation</li>
+</ul>
+<h4>id</h4>
+<p>Identifiant unique de l’élément</p>
+<h4>title</h4>
+<p>Titre de l’élément, par défaut une chaîne vide ("")</p>
+<h4>description</h4>
+<p>Description de l’élément, par défaut une chaîne vide ("")</p>
+<h2>Media</h2>
+<pre><code>IriSP.Model.Media
+</code></pre>
+<h3>Rôle</h3>
+<p>Représente un média (vidéo ou audio).</p>
+<p>Hérite de l’Élément de base</p>
+<h3>Propriétés</h3>
+<h4>video</h4>
+<p>Il s’agit de l’URL de la vidéo à charger</p>
+<h4>duration</h4>
+<p>Il s’agit de la durée du média (telle que renseignée dans les métadonnées -- peut ne pas être égale à la durée telle que lue dans la fenêtre vidéo).</p>
+<p>Il s’agit d’un objet durée (cf. <em>IriSP.Model.Time</em> plus bas)</p>
+<h3>Méthodes</h3>
+<h4>getDuration</h4>
+<p>Permet de spécifier la durée du média, en millisecondes</p>
+<h4>getAnnotations</h4>
+<p>Retourne la liste des annotations associées au média</p>
+<h4>getAnnotationsByTypeTitle</h4>
+<p>Retourne la liste des annotations associées au média et dont le type d’annotation (ou découpage, ou ligne, c.f. Type d’Annotation plus bas) correspond à l’argument de la fonction</p>
+<h2>Type d’Annotation</h2>
+<pre><code>IriSP.Model.AnnotationType
+</code></pre>
+<h3>Rôle</h3>
+<p>Représente un type d’annotation, correspondant également à ce qui peut être nommé découpage ou ligne dans <em>Lignes de Temps</em></p>
+<p>Hérite de l’Élément de base.</p>
+<h3>Méthodes</h3>
+<h4>getAnnotations</h4>
+<p>Retourne la liste des annotations associées au type d’annotation</p>
+<h2>Annotation</h2>
+<pre><code>IriSP.Model.Annotation
+</code></pre>
+<h3>Rôle</h3>
+<p>Représente une annotation, correspondant à un segment temporel (dont la durée peut être nulle) d’un média</p>
+<p>Hérite de l’Élément de base.</p>
+<h3>Propriétés</h3>
+<h4>begin</h4>
+<p>Timecode de fin de l’annotation. Est un objet de type durée (cf. plus bas)</p>
+<h4>begin</h4>
+<p>Timecode de début de l’annotation. Est un objet de type durée (cf. plus bas)</p>
+<h3>Méthodes</h3>
+<h4>getMedia</h4>
+<p>Retourne l’objet <strong>Média</strong> (<em>IriSP.Model.Media</em>) auquel se réfère l’annotation</p>
+<h4>getAnnotationType</h4>
+<p>Retourne l’objet <strong>Type d’Annotation</strong> (<em>IriSP.Model.AnnotationType</em>) auquel se réfère l’annotation</p>
+<h4>getTags</h4>
+<p>Retourne la liste (cf. Liste d’éléments <em>IriSP.Model.List</em>) des tags associés à l’annotation.</p>
+<h4>getTagTexts</h4>
+<h2>Mashup</h2>
+<pre><code>IriSP.Model.Mashup
+</code></pre>
+<h3>Rôle</h3>
+<p>Il s’agit d’un bout à bout, composé d’une liste de segments (définis par des annotations de durée non nulle) accolés les uns après les autres.</p>
+<h3>Méthodes</h3>
+<p><strong>À compléter</strong></p>
+<h2>Liste d’éléments</h2>
+<pre><code>IriSP.Model.List
+</code></pre>
+<h3>Rôle</h3>
+<p>Etend les fonctionnalités des tableaux javascript (<em>Array</em>) pour lister des éléments (cf. types d’éléments ci-dessus).</p>
+<h3>Instanciation</h3>
+<pre><code>var myList = new IriSP.Model.List(directory);
+</code></pre>
+<ul>
+<li><strong>directory</strong> est le répertoire de données auxquelles la liste permet d’accéder (cf. plus bas)</li>
+</ul>
+<h3>Méthodes</h3>
+<h4>Méthodes de parcours de liste</h4>
+<p>Ces méthodes sont fournies grâce à la bibliothèque extérieure <em>underscore.js</em> et sont documentées sur http://documentcloud.github.com/underscore/</p>
+<p>Il s’agit de:</p>
+<ul>
+<li><strong>map</strong>: Renvoie un tableau (<em>Array</em>) dont les éléments correspondent aux éléments de la liste, via une fonction passée en argument de map</li>
+<li><strong>forEach</strong>: Itère une fonction sur la liste.</li>
+<li><strong>filter</strong>: Ne renvoie que les éléments de la liste dont la valeur correspond au résultat d’une fonction.</li>
+<li><strong>sortBy</strong>: Fonction de tri, par ordre croissant de la valeur retournée par la fonction passée en argument.</li>
+</ul>
+<h4>searchByTitle, searchByDescription, searchByTextFields</h4>
+<p>Méthodes retournant une nouvelle liste d’éléments, contenant les éléments de la liste dont respectivement le titre, la description ou les deux correspondent à l’argument de la méthode.</p>
+<pre><code>myList.searchByTitle("texte"); // =&gt; un *IriSP.Model.List* contenant les éléments de myList dont le titre contient "texte"
+</code></pre>
+<h2>Durée</h2>
+<pre><code>IriSP.Model.Time
+</code></pre>
+<h3>Rôle</h3>
+<p>Facilite la gestion des durées en millisecondes utilisées dans le Metadataplayer</p>
+<h3>Instanciation</h3>
+<pre><code>var myTime = new IriSP.Model.Time(ms);
+</code></pre>
+<ul>
+<li><strong>ms</strong> est une durée en millisecondes</li>
+</ul>
+<h3>Méthodes</h3>
+<h4>getSeconds</h4>
+<p>Renvoie la durée convertie en secondes</p>
+<h4>toString</h4>
+<p>Renvoie la durée au format (hh:)mm:ss</p>
+<h4>setSeconds</h4>
+<p>Permet d’affecter une durée en secondes</p>
+<pre><code>myTime.setSeconds(12); // 12000 millisecondes
+</code></pre>
+<h2>Source de données</h2>
+<pre><code>IriSP.Model.Source
+</code></pre>
+<p>et
+    IriSP.Model.RemoteSource</p>
+<h3>Rôle</h3>
+<p>Gère une source de données : fichier externe JSON, XML, etc. pour <em>IriSP.Model.RemoteSource</em>, projet créé à la volée pour <em>IriSP.Model.Source</em>.</p>
+<p><em>IriSP.Model.RemoteSource</em> hérite de <em>IriSP.Model.Source</em> et ne diffère que par son implémentation de la méthode <em>get</em>.</p>
+<p>Sur la plateforme <em>Lignes de Temps</em>, il existe plusieurs API qui sont utilisées comme sources :</p>
+<ul>
+<li>L’API projet, qui renvoie un fichier JSON contenant un projet LDT complet.</li>
+<li>L’API segment, qui renvoie toutes les annotations d’un média situées entre deux timecodes fournis en argument.</li>
+<li>L’API de publication d’annotation, qui demande l’envoi (par la méthode HTTP PUT) d’une liste d’annotation et renvoie celle-ci en retour, avec les identifiants des annotations en base de données.</li>
+</ul>
+<h3>Instanciation</h3>
+<pre><code>var config = { directory: myDirectory };
+var mySource = new IriSP.Model.Source(config);
+</code></pre>
+<ul>
+<li><strong>config</strong> est un objet contenant les options de configuration:<ul>
+<li>Il doit nécessairement contenir une propriété <strong>directory</strong>, désignant le répertoire de données (cf. plus bas).</li>
+<li>La propriété <strong>serializer</strong> doit désigner le <em>Sérialiseur</em> utilisé pour désérialiser les données importées ou sérialiser l’export.</li>
+<li>un <em>IriSP.Model.RemoteSource</em> doit également être appelé avec une propriété <strong>url</strong>, désignant l’URL de la source.</li>
+</ul>
+</li>
+</ul>
+<p>Une Source ne doit pas être instanciée directement, ce rôle est donné aux répertoires de données, ce qui permet notamment d’éviter des accès multiples à une même URL.</p>
+<h3>Propriétés</h3>
+<h4>currentMedia</h4>
+<p><em>TODO: transférer dans un objet "Project"</em></p>
+<p>Donne accès au média en cours du projet. Peut désigner un vrai média ou un mashup.</p>
+<h3>Méthodes</h3>
+<h4>get</h4>
+<p>Permet de récupérer ou de rafraîchir, via Ajax, les données de la source. Pour un <em>IriSP.Model.Source</em> de base, n’a aucun effet.</p>
+<h4>onLoad</h4>
+<p>Permet d’exécuter une fonction, passée en argument, au chargement de la source.</p>
+<h4>serialize, deSerialize</h4>
+<p>Transforme les données de la source en données sérialisées, au format du sérialiseur associées à la source, et inversement.</p>
+<h4>getAnnotations, getAnnotationTypes, getMedias, getTags, getMashups</h4>
+<p>Retourne les listes respectives d’annotations, types d’annotations, médias, tags et mashups de la source.</p>
+<h4>getAnnotationsByTypeTitle</h4>
+<p>Retourne la liste des annotations dont le type d’annotation correspond à l’argument de la fonction.</p>
+<h2>Répertoire de données</h2>
+<pre><code>IriSP.Model.Directory
+</code></pre>
+<h3>Rôle</h3>
+<p>Gère l’instanciation des sources de données et la mise en cache de ces sources lorsque plusieurs appels à la même URLs sont faits.</p>
+<p>Permet également aux objets de plusieurs sources d’interagir entre eux.</p>
+<h3>Instanciation</h3>
+<pre><code>var myDirectory = new IriSP.Model.Directory
+</code></pre>
+<h3>Méthodes</h3>
+<h4>newLocalSource</h4>
+<p>Crée une nouvelle source non attachée à une URL. S’il faut exporter des données, un sérialiseur doit être passé en paramètres.</p>
+<pre><code>var myConfig = { serializer: IriSP.serializers.ldt };
+var myLocalSource = myDirectory.newLocalSource(myConfig);
+</code></pre>
+<h4>remoteSource</h4>
+<p>Crée ou récupère (si celle-ci existe déjà) une source attachée à une URL. Le sérialiseur est obligatoire.</p>
+<pre><code>var myConfig = { url: "source-data.json", serializer: IriSP.serializers.ldt };
+var myLocalSource = myDirectory.remoteSource(myConfig);
+</code></pre>
+</body>
+</html>

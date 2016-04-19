@@ -116,7 +116,7 @@ class Db_Sql {
 		return Db_Sql::readList($options);
 	}
 
-	public static function readListQuery($query) {
+	public function readListQuery($query) {
 		//Returns a list using a query
 		$objectType = $this->className;
 		$result = Db::returnAll($query);
@@ -142,7 +142,7 @@ class Db_Sql {
 				return $this->modify($values);
 			} else {
 				$queryOrd = '';
-				if ($this->hasOrd() && $values['ord']=='') {
+				if ($this->hasOrd() && (!isset($values['ord']) || $values['ord']=='')) {
 					$query = 'SELECT MAX(ord) as maxOrd FROM '.$this->tableName;
 					$maxOrdResult = Db::returnSingle($query);
 					$maxOrd = (isset($maxOrdResult['maxOrd'])) ? intval($maxOrdResult['maxOrd'])+1 : 1;
@@ -285,46 +285,61 @@ class Db_Sql {
 				break;
 				case 'multiple-checkbox':
 				case 'multiple-select':
-					$refObject = (string)$item->refObject;
-					$lnkObject = (string)$item->lnkObject;
-					$refObjectIns = new $refObject();
-					$lnkObjectIns = new $lnkObject();
 					$complete = (isset($options['complete'])) ? $options['complete'] : true;
-					if ($complete) {
-						Db::execute('DELETE FROM '.Db::prefixTable($lnkObjectIns->className).' WHERE '.$this->primary.'="'.$this->id().'"');
-					}
-					if (isset($values[$name]) && is_array($values[$name])) {
-						foreach ($values[$name] as $key=>$itemMultiple) {
-							//If it's an object
-							if (is_object($itemMultiple)) {
-								$objectExists = $lnkObjectIns->readFirstObject(array('where'=>$this->primary.'="'.$this->id().'" AND '.$refObjectIns->primary.'="'.$itemMultiple->id().'"'));
-								if ($objectExists->get($this->primary)=='') {
+					$refObject = (string)$item->refObject;
+					$refObjectIns = new $refObject();
+					if ((string)$item->lnkObject != '') {
+						$lnkObject = (string)$item->lnkObject;
+						$lnkObjectIns = new $lnkObject();
+						if ($complete) {
+							Db::execute('DELETE FROM '.Db::prefixTable($lnkObjectIns->className).' WHERE '.$this->primary.'="'.$this->id().'"');
+						}
+						if (isset($values[$name]) && is_array($values[$name])) {
+							foreach ($values[$name] as $key=>$itemMultiple) {
+								//If it's an object
+								if (is_object($itemMultiple)) {
+									$objectExists = $lnkObjectIns->readFirstObject(array('where'=>$this->primary.'="'.$this->id().'" AND '.$refObjectIns->primary.'="'.$itemMultiple->id().'"'));
+									if ($objectExists->get($this->primary)=='') {
+										$lnkObjectIns->insert(array($this->primary=>$this->id(),
+																$refObjectIns->primary=>$itemMultiple->id()),
+																array('simpleQuery'=>true));										
+									}
+								} else if (is_array($itemMultiple)) {
+									//If it's an array
+									$refObjectNew = new $refObject();
+									$refObjectNew->insert($itemMultiple);
 									$lnkObjectIns->insert(array($this->primary=>$this->id(),
-															$refObjectIns->primary=>$itemMultiple->id()),
-															array('simpleQuery'=>true));										
+															$refObjectIns->primary=>$refObjectNew->id()),
+															array('simpleQuery'=>true));
+								} else if ($itemMultiple=='on') {
+									//If it's just a "on" checkbox
+									$lnkObjectExists = new $lnkObject();
+									$lnkObjectExists = $lnkObjectIns->readFirstObject(array('where'=>$this->primary.'="'.$this->id().'" AND '.$refObjectIns->primary.'="'.$key.'"'));
+									if ($lnkObjectExists->get($this->primary)=='') {
+										$lnkObjectNew = new $lnkObject();
+										$lnkObjectNew->insert(array($this->primary=>$this->id(), $refObjectIns->primary=>$key), array('simpleQuery'=>true));
+									}
+								} else {
+									// If it's just an id from a multiple select
+									$lnkObjectExists = new $lnkObject();
+									$lnkObjectExists = $lnkObjectIns->readFirstObject(array('where'=>$this->primary.'="'.$this->id().'" AND '.$refObjectIns->primary.'="'.$itemMultiple.'"'));
+									if ($lnkObjectExists->get($this->primary)=='') {
+										$lnkObjectNew = new $lnkObject();
+										$lnkObjectNew->insert(array($this->primary=>$this->id(), $refObjectIns->primary=>$itemMultiple), array('simpleQuery'=>true));
+									}
 								}
-							} else if (is_array($itemMultiple)) {
-								//If it's an array
-								$refObjectNew = new $refObject();
-								$refObjectNew->insert($itemMultiple);
-								$lnkObjectIns->insert(array($this->primary=>$this->id(),
-														$refObjectIns->primary=>$refObjectNew->id()),
-														array('simpleQuery'=>true));
-							} else if ($itemMultiple=='on') {
-								//If it's just a "on" checkbox
-								$lnkObjectExists = new $lnkObject();
-								$lnkObjectExists = $lnkObjectIns->readFirstObject(array('where'=>$this->primary.'="'.$this->id().'" AND '.$refObjectIns->primary.'="'.$key.'"'));
-								if ($lnkObjectExists->get($this->primary)=='') {
-									$lnkObjectNew = new $lnkObject();
-									$lnkObjectNew->insert(array($this->primary=>$this->id(), $refObjectIns->primary=>$key), array('simpleQuery'=>true));
-								}
-							} else {
-								// If it's just an id from a multiple select
-								$lnkObjectExists = new $lnkObject();
-								$lnkObjectExists = $lnkObjectIns->readFirstObject(array('where'=>$this->primary.'="'.$this->id().'" AND '.$refObjectIns->primary.'="'.$itemMultiple.'"'));
-								if ($lnkObjectExists->get($this->primary)=='') {
-									$lnkObjectNew = new $lnkObject();
-									$lnkObjectNew->insert(array($this->primary=>$this->id(), $refObjectIns->primary=>$itemMultiple), array('simpleQuery'=>true));
+							}
+						}
+					} else {
+						if (isset($values[$name]) && is_array($values[$name])) {
+							if ($complete) {
+								Db::execute('UPDATE '.Db::prefixTable($refObject).' SET '.$this->primary.'=NULL WHERE '.$this->primary.'="'.$this->id().'"');
+							}
+							foreach ($values[$name] as $key=>$itemMultiple) {
+								if ($itemMultiple=='on') {
+									$refObjectUpdate = new $refObject();
+									$refObjectUpdate = $refObjectUpdate->readObject($key);
+									$refObjectUpdate->modifySimple($this->primary, $this->id());
 								}
 							}
 						}
@@ -636,7 +651,30 @@ class Db_Sql {
 			}
 			//Case single
 			if (isset($_FILES[$fieldName]) && isset($_FILES[$fieldName]['tmp_name']) && $_FILES[$fieldName]['tmp_name']!='') {
-				if ((string)$field->mode == 'image') {
+				if ((string)$field->mode == 'adaptable') {
+					//Image and file
+					$fileTmp = $_FILES[$fieldName]['tmp_name'];
+					$fileName = $_FILES[$fieldName]['name'];
+					switch (File::fileExtension($fileName)) {
+						default:
+							$fileSave = $this->id().'_'.Text::simpleUrlFile($_FILES[$fieldName]['name']);
+							if (File::uploadUrl($fileTmp, $this->className, $fileSave)) {
+								$this->modifySimple($fieldName, $fileSave);
+							}
+						break;
+						case 'jpg':
+						case 'jpeg':
+						case 'png':
+						case 'gif':
+							$fileSave = Text::simpleUrlFileBase($this->id().'_'.$fieldName);
+							if (Image_File::saveImageUrl($fileTmp, $this->className, $fileSave)) {
+								$this->modifySimple($fieldName, $fileSave);
+							}
+						break;
+					}
+					unset($_FILES[$fieldName]);
+				} elseif ((string)$field->mode == 'image') {
+					//Image only
 					$fileTmp = $_FILES[$fieldName]['tmp_name'];
 					$fileSave = Text::simpleUrlFileBase($this->id().'_'.$fieldName);
 					if (Image_File::saveImageUrl($fileTmp, $this->className, $fileSave)) {
@@ -644,6 +682,7 @@ class Db_Sql {
 					}
 					unset($_FILES[$fieldName]);
 				} else {
+					//File only
 					$fileTmp = $_FILES[$fieldName]['tmp_name'];
 					$fileSave = $this->id().'_'.Text::simpleUrlFile($_FILES[$fieldName]['name']);
 					if (File::uploadUrl($fileTmp, $this->className, $fileSave)) {

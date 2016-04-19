@@ -66,7 +66,7 @@ class Db_Object extends Db_Sql {
 				$refObject = (string)$item->refObject;
 				$lnkAttribute = (string)$item->lnkAttribute;
 				$refObjectIns = new $refObject();
-				$order = ($refObjectIns->hasOrd()) ? 'ord' : $this->orderBy();
+				$order = ($refObjectIns->hasOrd()) ? 'ord' : $refObjectIns->orderBy();
 				$list = $refObjectIns->readListObject(array('where'=>Db::prefixTable($refObject).'.'.$lnkAttribute.'="'.$this->id().'"',
 															'completeList'=>false, 
 															'order'=>$order));
@@ -76,17 +76,22 @@ class Db_Object extends Db_Sql {
 			case 'multiple-select':
 			case 'multiple-autocomplete':
 				$refObject = (string)$item->refObject;
-				$lnkObject = (string)$item->lnkObject;
-				$repeat = (string)$item->repeat;
 				$refObjectIns = new $refObject();
-				$lnkObjectIns = new $lnkObject();
-				$lnkAttribute = $refObjectIns->primary;
-				$list = $lnkObjectIns->readListObject(array('object'=>$refObject,
-															'table'=>$lnkObject.','.$refObject,
-															'fields'=>Db::prefixTable($refObject).'.*',
-															'where'=>Db::prefixTable($refObject).'.'.$lnkAttribute.'='.Db::prefixTable($lnkObject).'.'.$lnkAttribute.'
-																	AND '.Db::prefixTable($lnkObject).'.'.$this->primary.'="'.$this->id().'"',
-															'completeList'=>false));
+				if ((string)$item->lnkObject!='') {				
+					$lnkObject = (string)$item->lnkObject;
+					$repeat = (string)$item->repeat;
+					$lnkObjectIns = new $lnkObject();
+					$lnkAttribute = $refObjectIns->primary;
+					$list = $lnkObjectIns->readListObject(array('object'=>$refObject,
+																'table'=>$lnkObject.','.$refObject,
+																'fields'=>Db::prefixTable($refObject).'.*',
+																'where'=>Db::prefixTable($refObject).'.'.$lnkAttribute.'='.Db::prefixTable($lnkObject).'.'.$lnkAttribute.'
+																		AND '.Db::prefixTable($lnkObject).'.'.$this->primary.'="'.$this->id().'"',
+																'completeList'=>false));
+				} else {
+					$list = $refObjectIns->readListObject(array('where'=>$this->primary.'="'.$this->get($this->primary).'"',
+																'completeList'=>false));
+				}
 				$this->set($name, $list);
 			break;
 		}
@@ -250,14 +255,14 @@ class Db_Object extends Db_Sql {
 	public function label($attribute, $admin=false) {
 		//Gets the label of an attribute, it works for attributes as selects of multiple objects
 		$info = $this->attributeInfo($attribute);
-		if ((string)$info->form->type == 'autocomplete') {
+		if ((string)$info->type == 'autocomplete') {
 			$refObject = (string)$info->form->refObject;
 			$object = new $refObject;
 			$object = $object->readObject($this->get($attribute));
 			return ($admin) ? $object->getBasicInfoAdmin() : $object->getBasicInfo();
  		} else {
-			if ((string)$info->form->refObject != '') {
-				$refObjectName = (string)$info->form->refObject;
+			if ((string)$info->refObject != '') {
+				$refObjectName = (string)$info->refObject;
 				$refObject = new $refObjectName;
 				$refObject = $refObject->readObject($this->get($attribute));
 				return $refObject->getBasicInfo();

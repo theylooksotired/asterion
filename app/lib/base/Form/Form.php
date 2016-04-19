@@ -181,7 +181,7 @@ class Form {
 						$refObjectIns = new $refObject();
 						$label = ((string)$item->label!='') ? '<label>'.__((string)$item->label).'</label>' : '';
 						$multipleCheckbox = '';
-						foreach($refObjectIns->basicInfoArray() as $key=>$item) {
+						foreach($refObjectIns->basicInfoAdminArray() as $key=>$item) {
 							$value = 0;
 							foreach($this->object->get($name) as $itemsIns) {
 								if ($key == $itemsIns[$refObjectIns->primary]) {
@@ -208,9 +208,10 @@ class Form {
 						$multipleOptions = array('multiple'=>true, 'nameMultiple'=>$name, 'idMultipleJs'=>'#ID_MULTIPLE#');
 						$refObjectFormIns = new $refObjectForm();
 						$label = ((string)$item->label!='') ? '<label>'.__((string)$item->label).'</label>' : '';
+						$orderNested = ($refObjectFormIns->object->hasOrd()) ? '<div class="nestedFormFieldsOrder"></div>' : '';
 						$nestedFormFieldsEmpty = '<div class="nestedFormFieldsEmpty">
 														<div class="nestedFormFieldsDelete"></div>
-														<div class="nestedFormFieldsOrder"></div>
+														'.$orderNested.'
 														<div class="nestedFormFieldsContent">
 															'.$refObjectFormIns->createFormFields($multipleOptions).'
 														</div>
@@ -220,9 +221,10 @@ class Form {
 							$refObjectIns = new $refObject($itemValues);
 							$refObjectFormIns = new $refObjectForm($itemValues, array(), $refObjectIns);
 							$multipleOptionsIns = array('multiple'=>true, 'nameMultiple'=>$name);
+							$orderNested = ($refObjectFormIns->object->hasOrd()) ? '<div class="nestedFormFieldsOrder"></div>' : '';
 							$nestedFormFields .= '<div class="nestedFormFieldsObject">
 														<div class="nestedFormFieldsDelete" rel="'.url($refObject.'/delete/'.$refObjectIns->id(), true).'"></div>
-														<div class="nestedFormFieldsOrder"></div>
+														'.$orderNested.'
 														<div class="nestedFormFieldsContent">
 															'.$refObjectFormIns->createFormFields($multipleOptionsIns).'
 														</div>
@@ -249,12 +251,13 @@ class Form {
 		//Return a form field
 		return $this->createFormField($this->object->attributeInfo($attribute));
 	}
-	
+
 	public static function createForm($fields, $options=array()) {
 		//Create a form
 		$action = (isset($options['action'])) ? $options['action'] : '';
 		$method = (isset($options['method'])) ? $options['method'] : 'post';
 		$submit = (isset($options['submit'])) ? $options['submit'] : __('send');
+		$submitName = (isset($options['submitName'])) ? $options['submitName'] : 'submit';
 		$class = (isset($options['class'])) ? $options['class'] : 'formAdmin';
 		$id = (isset($options['id'])) ? 'id="'.$options['id'].'"' : '';
 		if ($submit=='ajax') {
@@ -270,7 +273,7 @@ class Form {
 									<div class="clearer"></div>
 								</div>';
 			} else {
-				$submitButton = FormFields::show('submit', array('name'=>'submit',
+				$submitButton = FormFields::show('submit', array('name'=>$submitName,
 																'class'=>'formSubmit',
 																'value'=>$submit));
 			}
@@ -346,5 +349,12 @@ class Form {
 		}
 		return $error;
 	}
+
+	public function isValidEmpty($field, &$errors) {
+		if (!isset($this->values[$field]) || strlen(trim($this->values[$field])) == 0) { 
+			$errors[$field] = __('notEmpty');
+		}
+	}
+
 }
 ?>

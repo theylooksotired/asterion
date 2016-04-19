@@ -85,6 +85,25 @@ class FormFields_File {
 									</div>';
 				}
 			break;
+			case 'adaptable':
+				$file = STOCK_FILE.$options['className'].'/'.$valueFile.'/'.$valueFile.'_thumb.jpg';
+				if (is_file($file)) {
+					$htmlShowImage = '<div class="formFieldsImage">
+										<div class="formFieldsImageIns">
+											<img src="'.str_replace(STOCK_FILE, STOCK_URL, $file).'?v='.substr(md5(rand()*rand()), 0, 5).'" alt=""/>
+										</div>
+									</div>';
+				} else {
+					$file = STOCK_FILE.$options['className'].'Files/'.$valueFile;
+					if (is_file($file)) {
+						$htmlShowFile = '<div class="formFieldsFile">
+											<div class="formFieldsFileIns">
+												<a href="'.str_replace(STOCK_FILE, STOCK_URL, $file).'" target="_blank">'.__('downloadFile').'</a>
+											</div>
+										</div>';
+					}
+				}
+			break;
 		}
 		switch ($layout) {
 			default:

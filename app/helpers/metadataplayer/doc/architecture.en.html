@@ -1,0 +1,366 @@
+<!doctype html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>Metadataplayer docs: architecture.en</title>
+</head>
+<body>
+<h1>Architecture of Metadataplayer</h1>
+<p>WARNING !
+This documentation refers to the latest version of Metadataplayer, available in the <strong>default</strong> branch in our repository
+http://www.iri.centrepompidou.fr/dev/hg/metadataplayer</p>
+<h2>External Libraries</h2>
+<p>External libraries are bundled in the <em>src/libs</em> directory</p>
+<h3>LAB.js</h3>
+<ul>
+<li><strong>File</strong>: LAB.min.js</li>
+<li><strong>License</strong>: MIT.</li>
+<li><strong>Role</strong>: Loads other librairies and widgets.</li>
+<li><strong>Used in</strong>: Metadataplayer core.</li>
+<li>As LAB.js is used to load other libraries, it’s the only library called before loading the Metadataplayer core.</li>
+<li><strong>Library homepage</strong>: http://labjs.com/</li>
+</ul>
+<h3>jQuery</h3>
+<ul>
+<li><strong>File</strong>: jquery.min.js</li>
+<li><strong>License</strong>: Double, MIT and GPL.</li>
+<li><strong>Role</strong>: Manages HTML document (DOM) access and Ajax calls.</li>
+<li><strong>Used in</strong>: Metadataplayer core and all widgets.</li>
+<li><strong>Library homepage</strong>: http://jquery.org/</li>
+</ul>
+<h3>jQuery UI</h3>
+<ul>
+<li><strong>Fichiers</strong>: jquery-ui.min.js and jquery-ui.css</li>
+<li><strong>License</strong>: Double, MIT and GPL.</li>
+<li><strong>Role</strong>: Manages User Interface elements, such as <em>Sliders</em></li>
+<li><strong>Used in</strong>: Widgets : Controller (for volume control) et Slider (Time <em>progress slider</em>)</li>
+<li><strong>Library homepage</strong>: http://jqueryui.com/</li>
+</ul>
+<h3>Underscore</h3>
+<ul>
+<li><strong>File</strong>: underscore-min.js</li>
+<li><strong>License</strong>: MIT.</li>
+<li><strong>Role</strong>: Adds functional-programming facilities to handle objects, arrays and functions.</li>
+<li><strong>Used in</strong>: Metadataplayer core and most widgets.</li>
+<li><strong>Library homepage</strong>: http://underscorejs.org/</li>
+</ul>
+<h3>Popcorn</h3>
+<ul>
+<li><strong>File</strong>: popcorn-complete.min.js</li>
+<li><strong>License</strong>: MIT.</li>
+<li><strong>Role</strong>: Handles HTML5 Video Playback.</li>
+<li><strong>Used in</strong>: HTML5 and Youtube video players. Also handles Metadataplayer events when one of these players is used.</li>
+<li><strong>Library homepage</strong>: http://popcornjs.org/</li>
+</ul>
+<h3>Mustache</h3>
+<ul>
+<li><strong>File</strong>: mustache.js</li>
+<li><strong>License</strong>: MIT.</li>
+<li><strong>Role</strong>: A templating library to generate HTML code.</li>
+<li><strong>Used in</strong>: widgets.</li>
+<li><strong>Library homepage</strong>: http://mustache.github.com/</li>
+</ul>
+<h3>Raphael</h3>
+<ul>
+<li><strong>File</strong>: raphael-min.js</li>
+<li><strong>License</strong>: MIT.</li>
+<li><strong>Role</strong>: A vectorial drawing interface (using SVG or VML depending on browsers)</li>
+<li><strong>Used in</strong>: Arrow and Sparkline widgets</li>
+<li><strong>Library homepage</strong>: http://raphaeljs.com/</li>
+</ul>
+<h3>ZeroClipboard</h3>
+<ul>
+<li><strong>Files</strong>: ZeroClipboard.js and ZeroClipboard.swf</li>
+<li><strong>License</strong>: MIT.</li>
+<li><strong>Role</strong>: Manages access to the Clipboard (using Flash)</li>
+<li><strong>Used in</strong>: Social widget</li>
+<li><strong>Library homepage</strong>: http://code.google.com/p/zeroclipboard/</li>
+</ul>
+<h3>ktbs4js Tracemanager</h3>
+<ul>
+<li><strong>File</strong>: tracemanager.js</li>
+<li><strong>License</strong>: LGPL.</li>
+<li><strong>Role</strong>: Interface with the KTBS trace management system, created by Olivier Aubert (Liris)</li>
+<li><strong>Used in</strong>: Trace widget</li>
+<li><strong>Library homepage</strong>: http://github.com/oaubert/ktbs4js</li>
+</ul>
+<h2>Metadataplayer core</h2>
+<p>In Metadataplayer, Javascript and CSS files are divided in <em>core</em> and <em>widgets</em>.</p>
+<p>In the release (compiled) version, the JS part of the core is a single file, <em>LdtPlayer-core.js</em> compiled by concatenating JS files located dans <em>src/js</em>:</p>
+<h3>header.js</h3>
+<p>Contains credits and licence information (The license is CEA, CNRS and Inria’s <em>CeCILL-C</em>)</p>
+<h3>LAB.js</h3>
+<p>see <em>external libraries</em>.</p>
+<h3>init.js</h3>
+<p>Defines the <em>IriSP</em> object, used as a namespace for the whole Metadataplayer.
+Contains the declaration and methods of the <em>IriSP.Metadataplayer</em> class, whose instantiation is the main entry point for the code.</p>
+<h3>pop.js</h3>
+<p>Defines the <em>IriSP.PopcornReplacement</em> class, i.e. a simplified version of the Popcorn API used to interface with video players (jwplayer, dailymotion) not supported by Popcorn.
+When this part of the Metadataplayer was written, Popcorn and jwplayer didn’t interface well, but it should be replaced by a real Popcorn.js plugin.</p>
+<h3>utils.js</h3>
+<p>Contains some utility functions such as <em>IriSP.loadCss</em>, an equivalent to LAB.js for CSS files.</p>
+<h3>model.js</h3>
+<p>Contains classes managing the Cinelab data model, grouped in the <em>IriSP.Model</em> namespace.</p>
+<h3>widgets.js</h3>
+<p>Contains the (abstract) class <em>IriSP.Widgets.Widget</em>, containing base functionalities for all widgets.</p>
+<h3>players</h3>
+<p>Files in this directory interface <em>Popcorn Replacement</em> (see <em>pop.js</em>) with third-party video players.</p>
+<p>Five players are available:</p>
+<ol>
+<li><strong>player.jwplayer</strong>, for JwPlayer, used to play RTMP streams on the <em>Ligne de temps</em> platform.</li>
+<li><strong>player.dailymotion</strong>, to play videos on Dailymotion.</li>
+<li><strong>player.allocine</strong>, to play videos on allocine.net</li>
+<li><strong>player.mashup</strong>, for the flash based mashup player written by Thibaut Cavalié.</li>
+<li><strong>player.htmlMashup</strong>, for the Popcorn-based HTML5 mashup player.</li>
+</ol>
+<h3>serializers</h3>
+<p>Serializers are converters between the internal data representation in the metadata player and formats used for communication with servers.</p>
+<p>Two serializers are available:</p>
+<ol>
+<li><strong>ldt</strong>, to read JSON projects provided by the <em>Lignes de Temps</em> platform.</li>
+<li><strong>ldt_annotate</strong>, for communications with the Add Widget API, whose format is slightly different.</li>
+</ol>
+<h2>Widgets</h2>
+<p>Widgets are modules, visible or not, adding functionalities to the Metadataplayer.</p>
+<p>Located in the <em>src/widgets</em> directory, they’re composed of a mandatory JavaScript file, <em>WidgetName.js</em> and an optional stylesheet, <em>WidgetName.css</em></p>
+<h4>Common Widget Options</h4>
+<ul>
+<li><strong>metadata</strong>, metadata source, as an object with the following properties: { url: <em>URL of the data source</em>, type: <em>Serializer type</em> }</li>
+<li><strong>container</strong>, used to position the widget in a given HTML element, given its ID. If omitted, the widget will be automatically aligned vertically below the player.</li>
+<li><strong>annotation_type</strong>, in widgets displaying annotations. This option can have the following values:<ul>
+<li><em>String</em>: will display widgets whose annotation type title includes the string. Example: "segments" will show annotations whose annotation type have a title with "Segments" in it.</li>
+<li><em>Array of string</em>: to display several annotation types. Example: "Segments"</li>
+<li><em>false</em>: to display all annotations related to the media.</li>
+</ul>
+</li>
+</ul>
+<p>Here’s a list of available widgets:</p>
+<h3>Annotation</h3>
+<ul>
+<li><strong>Role</strong>: Displays information relative to a single segment/annotation while it is being played</li>
+<li><strong>Options</strong>:<ul>
+<li><strong>annotation_type</strong>: (default: "chapitrage"), see <em>Common widget options</em>.</li>
+<li><strong>show_top_border</strong>: (default: false), show top widget border (useful depending on whether it is used in combination with the <em>Arrow</em> widget)</li>
+<li><strong>site_name</strong>: "Lignes de Temps", site name to display when users click on "Share on social networks".</li>
+</ul>
+</li>
+<li>Uses a CSS stylesheet: yes</li>
+</ul>
+<h3>AnnotationsList</h3>
+<ul>
+<li><strong>Role</strong>: Show a list of annotations.</li>
+<li><strong>Options</strong>:<ul>
+<li><strong>ajax_url</strong>: (default: false), specifies an API template when annotations have to be loaded from an external source. In the URL, {{media}} will be replaced by the media ID, {{begin}} by the start <em>timecode</em> in milliseconds, {{end}} by the end <em>timecode</em> in milliseconds. If set to <em>false</em>, displayed annotations will be the ones loaded from the default metadata source. On the <em>Lignes de Temps</em>, the URL of the segments API is http://ldt.iri.centrepompidou.fr/ldtplatform/api/ldt/segments/{{media}}/{{begin}}/{{end}}?callback=?</li>
+<li><strong>ajax_granularity</strong>: (default: 300000 ms = 5 minutes), specifies the timespan to be loaded from the segment API, around the current timecode. </li>
+<li><strong>default_thumbnail</strong>: thumbnail to display when an annotation doesn’t have one.</li>
+<li><strong>foreign_url</strong>: Specifies an URL template for when an annotation doesn’t have an URL and is not in the current project. In that template, {{media}} will be replaced by the media ID, {{project}} by the project ID, {{annotationType}} by the annotation type ID and {{annotation}} by the annotation ID. For the <em>Lignes de temps</em> platform, this URL is http://ldt.iri.centrepompidou.fr/ldtplatform/ldt/front/player/{{media}}/{{project}}/{{annotationType}}#id={{annotation}}</li>
+<li><strong>annotation_type</strong>: (default: false), see <em>Common widget options</em>, above</li>
+<li><strong>refresh_interval</strong>: (default: 0), Ajax refresh interval, to get annotations added while watching (works with either the default source or the external segment API)</li>
+<li><strong>limit_count</strong>: (default: 10), Maximum number of annotations to display at once.</li>
+<li><strong>newest_first</strong>: (default: false), When <em>true</em>, annotations are sorted by decreasing creation date. When <em>false</em>, annotations are sorted by increasing timecode.</li>
+</ul>
+</li>
+<li>Uses a CSS stylesheet: yes</li>
+</ul>
+<h3>Arrow</h3>
+<ul>
+<li><strong>Role</strong>: Draws the position arrow showing where the annotation is.</li>
+<li><strong>Options</strong>:<ul>
+<li><strong>arrow_height</strong>: (default: 16), arrow height in pixels</li>
+<li><strong>arrow_width</strong>: (default: 24), arrow width in pixels</li>
+<li><strong>base_height</strong>: (default: 0), distance between arrow bottom and widget button. Mandatory for a rounded widget.</li>
+<li><strong>base_curve</strong>: (default: 0), curvature radius in pixels for a rounded widget.</li>
+<li><strong>fill_url</strong>: fill image URL.</li>
+<li><strong>fill_color</strong>: (default: "#ffffff" = white), fill color. Can be replaced by a gradient described by : gradient angle-start color-end color, e.g.: "90-#000-#fff"</li>
+<li><strong>stroke_color</strong>: (default: "#b7b7b7" = grey), border color.</li>
+<li><strong>stroke_width</strong>: (default: 1.5), border width.</li>
+<li><strong>animation_speed</strong>: (default: 20), arrow animation speed.</li>
+<li><strong>pilot_widget</strong>: (default: "Annotation"), widget driving the arrow position.</li>
+</ul>
+</li>
+<li>Uses external library: Raphael</li>
+<li>Uses a CSS stylesheet: no</li>
+</ul>
+<h3>Controller</h3>
+<ul>
+<li><strong>Role</strong>: Play, Pause, Search, Annotate buttons and volume control</li>
+<li><strong>Options</strong>:<ul>
+<li><strong>disable_annotate_btn</strong>: (default: false), disables Annotate button if set to <em>true</em></li>
+<li><strong>disable_search_btn</strong>: (default: true), disables Search button</li>
+</ul>
+</li>
+<li>Uses external library: jQuery UI</li>
+<li>Uses a CSS stylesheet: yes</li>
+</ul>
+<h3>CreateAnnotation</h3>
+<ul>
+<li><strong>Role</strong>: Displays a form to create a new annotation</li>
+<li><strong>Options</strong>:<ul>
+<li><strong>show_title_field</strong>: (default: true), shows or hides the annotation title field.</li>
+<li><strong>creator_name</strong>: Default annotation creator name.</li>
+<li><strong>creator_avatar</strong>: Creator profile thumbnail URL.</li>
+<li><strong>tag_titles</strong>: (default: false), list of tags to display, as an array of strings: [ "#firstTag", "#secondTag" ]</li>
+<li><strong>tags</strong>: (default: false), list of tags to display, as an array of objects: [ { id: "tag-001", title: "#firstTag" } ]. Overrides <em>tag_titles</em>. If both options are set to <em>false</em>, the most frequent tags in the project will be displayed.</li>
+<li><strong>max_tags</strong>: (default: 8), maximum number of tags to display.</li>
+<li><strong>polemics</strong>: polemic buttons to display, as an array of objects, e.g.: [ { keyword: "++", background_color: "#00a000", text_color: "#ffffff" } ]</li>
+<li><strong>annotation_type</strong>: (default: "Contributions"), see <em>Common widget options</em>.</li>
+<li><strong>api_serializer</strong>: (default: "ldt_annotate"), serializer to use when sending annotations.</li>
+<li><strong>api_endpoint_template</strong>: API Endpoint URL, with {{id}} as a placeholder for project ID, e.g.: "http://ldt.iri.centrepompidou.fr/ldtplatform/api/ldt/annotations/{{id}}.json".</li>
+<li><strong>api_method</strong>: (default: "PUT"), HTTP method used to send annotations. <em>Lignes de temps</em> platform uses PUT.</li>
+<li><strong>close_widget_timeout</strong>: (default: 0), duration in milliseconds before widget is closed after send. If value is set to 0, the widget stays open.</li>
+</ul>
+</li>
+<li>Uses a CSS stylesheet: yes</li>
+</ul>
+<h3>HelloWorld</h3>
+<ul>
+<li><strong>Role</strong>: Example widget demonstration the API capabilities</li>
+<li><strong>Options</strong>:<ul>
+<li><strong>text</strong>: (default: "world"), text to display after "Hello, "</li>
+</ul>
+</li>
+<li>Uses a CSS stylesheet: yes</li>
+</ul>
+<h3>Media</h3>
+<ul>
+<li><strong>Role</strong>: Shows current media, as well as other medias in the project. Mostly used for mashups</li>
+<li><strong>Options</strong>:<ul>
+<li><strong>default_thumbnail</strong>: thumbnail to display when a media doesn’t have one</li>
+<li><strong>media_url_template</strong>: Specifies an URL template for when a media doesn’t include URL information, e.g.: "http://ldt.iri.centrepompidou.fr/ldtplatform/ldt/front/player/{{media}}/"</li>
+</ul>
+</li>
+<li>Uses a CSS stylesheet: yes</li>
+</ul>
+<h3>Mediafragment</h3>
+<ul>
+<li><strong>Role</strong>: Handles <em>Media fragments</em>-compliant URIs (W3C Recommandation): Changing the playing position changes the URL and vice-versa.</li>
+<li>An URL ending with #id=<em>annotation ID</em> points to an annotation, one with #t=<em>time in seconds</em> to a precise position.</li>
+<li>No options</li>
+<li>Uses a CSS stylesheet: no</li>
+</ul>
+<h3>Polemic</h3>
+<ul>
+<li><strong>Role</strong>: Shows the <em>polemical timeline</em>, i.e. tweets colored according to the polemical syntax. Depending on the number of tweets, two visualization modes exist:<ul>
+<li>Below the threshold (low volume mode), tweets are represented as individual squares.</li>
+<li>Above the threshold, columns show aggregated numbers of tweets by color.</li>
+</ul>
+</li>
+<li><strong>Options</strong>:<ul>
+<li><strong>element_width</strong>: (default: 5), width in pixels of a tweet column.</li>
+<li><strong>element_height</strong>: (default: 5), height in pixels of a tweet, in low volume mode.</li>
+<li><strong>max_elements</strong>: (default: 15), threshold between low and high volume mode, in tweets per column.</li>
+<li><strong>annotation_type</strong>: (default: "tweet"), see <em>Common widget options</em>.</li>
+<li><strong>defaultcolor</strong>: (default: "#585858" = grey), default color for tweets with no polemical coloring.</li>
+<li><strong>foundcolor</strong>: (default: "#fc00ff" = magenta), color for tweets in a search result.</li>
+<li><strong>polemics</strong>: polemical colors to display, as an array of objects, e.g. [ { name: "OK", keywords: [ "++" ], color: "#1D973D" } ]</li>
+</ul>
+</li>
+<li>Uses a CSS stylesheet: yes</li>
+</ul>
+<h3>Renkan</h3>
+<ul>
+<li><strong>Role</strong>: Interface with the <em>Renkan</em> project.</li>
+<li>Uses external libraries: jQuery Mousewheel, Backbone, Backbone Relational, Renkan-Publish</li>
+<li>Uses a CSS stylesheet: oui</li>
+</ul>
+<h3>Segments</h3>
+<ul>
+<li><strong>Role</strong>: Displays segments of a media as rectangles on an horizontal line.</li>
+<li><strong>Options</strong>:<ul>
+<li><strong>colors</strong>: colors to use when annotations don’t have colour metadata.</li>
+<li><strong>height</strong>: height of the widget, in pixels</li>
+</ul>
+</li>
+<li>Uses a CSS stylesheet: yes</li>
+</ul>
+<h3>Slider</h3>
+<ul>
+<li><strong>Role</strong>: A combination of a Progress bar and a Slider displaying and allowing repositioning of the current video playback position.</li>
+<li><strong>Options</strong>:</li>
+<li><strong>minimized_height</strong>: (default: 4), height in pixels of the <em>Slider</em> in minimized mode</li>
+<li><strong>maximized_height</strong>: (default: 10), height in pixels du <em>Slider</em> in maximized mode (on mouseover)</li>
+<li><strong>minimize_timeout</strong>: (default: 1500), duration in milliseconds before the <em>Slider</em> is automatically minimized. If set to 0, <em>Slider</em> stays maximized.</li>
+<li>Uses external library: jQuery UI</li>
+<li>Uses a CSS stylesheet: yes</li>
+</ul>
+<h3>Social</h3>
+<ul>
+<li><strong>Role</strong>: Adds buttons to share an URL on social networks</li>
+<li><strong>Options</strong>:<ul>
+<li><strong>text</strong>: displays a text</li>
+<li><strong>url</strong>: the URL to share</li>
+<li><strong>show_url</strong>: Shows a button to copy/paste an URL</li>
+<li><strong>show_twitter</strong>: Shows a button to share on Twitter</li>
+<li><strong>show_fb</strong>: Shows a button to share on Facebook</li>
+<li><strong>show_gplus</strong>: Shows a button to share on Google+</li>
+<li><strong>show_mail</strong>: Shows a button to share by e-mail</li>
+</ul>
+</li>
+<li>Uses a CSS stylesheet: yes</li>
+<li>Uses external library: ZeroClipboard</li>
+</ul>
+<h3>Sparkline</h3>
+<ul>
+<li><strong>Role</strong>: Displays a curve showing the volume of tweets across time.</li>
+<li><strong>Options</strong>:<ul>
+<li><strong>annotation_type</strong>: see <em>Common widget options</em>, above</li>
+<li><strong>lineColor</strong>: (default: "#7492b4" = blue-grey), line color</li>
+<li><strong>fillColor</strong>: (default: "#aeaeb8" = grey), color of the surface below the curve</li>
+<li><strong>lineWidth</strong>: (default: 2), line width in pixels</li>
+<li><strong>slice_count</strong>: (default: 20), number of slices used to sample volumes</li>
+<li><strong>height</strong>: (default: 50), curve height</li>
+<li><strong>margin</strong>: (default: 5), margin above the curve</li>
+</ul>
+</li>
+<li>Uses external library: Raphael</li>
+<li>Uses a CSS stylesheet: no</li>
+</ul>
+<h3>Tagcloud</h3>
+<ul>
+<li><strong>Role</strong>: Shows a tag cloud - WARNING: Doesn’t work well with Japanese language because of word splitting issues</li>
+<li><strong>Options</strong>:<ul>
+<li><strong>include_titles</strong>: (default: true), includes annotation titles when computing tag cloud.</li>
+<li><strong>include_descriptions</strong>: (default: true), includes annotation descriptions when computing tag cloud.</li>
+<li><strong>include_tag_texts</strong>: (default: true), includes tags in annotations when computing tag cloud.</li>
+<li><strong>tag_count</strong>: (default: 30), maximum number of tags to display.</li>
+<li><strong>stopword_language</strong>: (default: "fr"), language code for the stopword list.</li>
+<li><strong>custom_stopwords</strong>: (default: []), custom stopwords to filter out.</li>
+<li><strong>exclude_pattern</strong>: (default: false), regexp to filter out.</li>
+<li><strong>annotation_type</strong>: (default: false), see <em>Common widget options</em>, above. The annotation type of the annotations whose text is extracted to compute the cloud.</li>
+<li><strong>segment_annotation_type</strong>: (default: false), defines a segmentation of the tag-cloud, so as to display a distinct tag cloud for each segment of this annotation type. When set to <em>false</em>, a single tag cloud is created for the whole media.</li>
+<li><strong>min_font_size</strong>: (default: 10), font size for the most frequent word.</li>
+<li><strong>max_font_size</strong>: (default: 26), font size for the least frequent word.</li>
+</ul>
+</li>
+<li>Uses a CSS stylesheet: yes</li>
+</ul>
+<h3>Tooltip</h3>
+<ul>
+<li><strong>Role</strong>: Displays a tooltip. Is mainly used as a subwidget, embedded and called from another widget.</li>
+<li>No options</li>
+<li>Uses a CSS stylesheet: yes</li>
+</ul>
+<h3>Trace</h3>
+<ul>
+<li><strong>Role</strong>: Sends traces to the KTBS server.</li>
+<li><strong>Options</strong>:<ul>
+<li><strong>js_console</strong>: (default: false), shows logs in the browser console.</li>
+<li><strong>url</strong>: (default: "http://traces.advene.org:5000/"), URL of the trace server</li>
+<li><strong>requestmode</strong>: (default: "GET"), HTTP method used to send traces (only <em>"GET"</em> allows <em>cross-domain</em> sending).</li>
+<li><strong>syncmode</strong>: (default: "sync"), allows traces to be sent grouped (<em>"delayed"</em> mode) or as single events (<em>"sync"</em>).</li>
+</ul>
+</li>
+<li>Uses external library: ktbs4js tracemanager</li>
+<li>Uses a CSS stylesheet: no</li>
+</ul>
+<h3>Tweet</h3>
+<ul>
+<li><strong>Role</strong>: Show the contents on a tweet when clicked (in Polemic Widget)</li>
+<li><strong>Options</strong>:<ul>
+<li><strong>hide_timeout</strong>: (default: 5000), time (in milliseconds) before hiding the Tweet.</li>
+<li><strong>polemics</strong>: See <em>Polemic</em> widget</li>
+</ul>
+</li>
+</ul>
+</body>
+</html>

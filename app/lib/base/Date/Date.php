@@ -51,27 +51,27 @@ class Date {
 		return $result['day'].'-'.$result['month'].'-'.$result['year'].'-'.$result['hour'].'-'.$result['minutes'];
 	}
 
-	public function sqlDate($date) {
+	public static function sqlDate($date) {
 		return substr($date, 0, 10);
 	}
 
-	public function sqlDay($date) {
+	public static function sqlDay($date) {
 		return substr($date, 8, 2);
 	}
 
-	public function sqlMonth($date) {
+	public static function sqlMonth($date) {
 		return substr($date, 5, 2);
 	}
 
-	public function sqlYear($date) {
+	public static function sqlYear($date) {
 		return substr($date, 0, 4);
 	}
 
-	public function sqlTime($date) {
+	public static function sqlTime($date) {
 		return substr($date, 11, 5);
 	}
 
-	public function sqlDayMonth($date) {
+	public static function sqlDayMonth($date) {
 		return Date::sqlDay($date).'-'.Date::sqlMonth($date);
 	}
 

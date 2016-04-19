@@ -1,6 +1,12 @@
 <?php
 class Db {
 	
+	static public function executeSimple($query, $values=array()) {
+		//Execute a query
+		$db = Db_Connection::getInstance();
+		$db->execute($query, $values);
+	}
+
 	static public function execute($query, $values=array()) {
 		//Execute a query
 		$query = str_replace('\"', '"', $query);

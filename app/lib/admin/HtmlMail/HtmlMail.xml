@@ -16,7 +16,7 @@
 			<layout>simple</layout>
 			<pager></pager>
 			<group></group>
-			<orderBy>code</orderBy>
+			<orderBy>title</orderBy>
 			<label>#title</label>
 			<permissions>
 				<superadmin>
@@ -29,6 +29,10 @@
 					<canView>false</canView>
 				</superadmin>
 			</permissions>
+			<labelAdmin>
+				<label type="link">#title</label>
+				<label>#description</label>
+			</labelAdmin>
 		</form>
 	</info>
 	<attributes>
@@ -39,7 +43,7 @@
 		<attribute>
 			<name>code</name>
 			<label>code</label>
-			<type>text</type>
+			<type>text-unchangeable</type>
 			<required>notEmpty</required>
 		</attribute>
 		<attribute>
@@ -71,6 +75,12 @@
 			<name>replyTo</name>
 			<label>replyTo</label>
 			<type>text-long</type>
+		</attribute>
+		<attribute>
+			<name>description</name>
+			<lang>true</lang>
+			<label>description</label>
+			<type>textarea</type>
 		</attribute>
 		<attribute>
 			<name>mail</name>

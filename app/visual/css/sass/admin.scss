@@ -22,8 +22,10 @@ $bgColorMenu1: #2C3E50;
 $bgColorMenu2: #1A1D22;
 $bgColorMessage: #38B0A6;
 $bgColorMessageError: #FF3030;
+$red: #FD3535;
+$green: #15BA45;
 
-$fontFamily: Helvetica,Arial,'lucida grande',tahoma,verdana,arial,sans-serif;
+$fontFamily: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
 
 
 @mixin borderRadius($radius) {
@@ -115,7 +117,7 @@ textarea {
 		color: $white;
 	}
 	.headerIns {
-		max-width: 1000px;
+		max-width: 1200px;
 		margin: auto;
 	}
 	.headerLeft {
@@ -128,7 +130,10 @@ textarea {
 				display: block;
 				width: 125px;
 				height: 30px;
-				background: url(../../img/logo.png) no-repeat center center;
+				background-image: url(../../img/logo.png);
+				background-repeat: no-repeat;
+				background-position: top left;
+				background-size: contain;
 				@include hideText();
 			}
 		}
@@ -165,7 +170,7 @@ textarea {
 		}
 	}
 	.infoUser {
-		font-size: 0.9em;
+		font-size: 0.95em;
 		a:hover {
 			color: $blueLight3;
 		}
@@ -190,10 +195,10 @@ textarea {
 		padding-bottom: 1em;
 	}
 	h2 {
-		font-size: 1.5em;
+		font-size: 1.3em;
 		font-weight: normal;
 		color: $blueDark1;
-		padding-bottom: 1em;
+		padding-bottom: 10px;
 	}
 }
 .contentSimple {
@@ -234,17 +239,11 @@ textarea {
 		}
 	}
 }
-.simpleForm {
-	p {
-		font-size: 0.9em;
-		padding-bottom: 1em;
-	}
-}
 .contentSimpleInstall {
 	margin: 50px auto;
 }
 .contentIns {
-	width: 1000px;
+	width: 1200px;
 	margin: auto;
 	position: relative;
 	.contentTop {
@@ -259,17 +258,35 @@ textarea {
 		float: left;
 	}
 	.contentMenu {
-		width: 20%;
+		width: 15%;
 		float: left;
 		color: $white;
 		margin-top: 20px;
-		font-size: 0.8em;
-		.menuSideItem a {
-			display: block;
-			padding: 5px;
-			background: $blueLight2;
-			color: $white;
-			border-bottom: 1px solid $grayLight4;
+		font-size: 0.85em;
+		padding-bottom: 40px;
+		.menuSideItem {
+			a {
+				font-weight: normal;
+				display: block;
+				padding: 5px;
+				color: $white;
+				background: $blueLight2;
+				border-bottom: 1px solid $grayLight4;
+				&:hover {
+					background: $grayDark3;
+					color: $white;
+				}
+			}
+			span {
+				text-transform: uppercase;
+				font-size: 0.75rem;
+				font-weight: bold;
+				padding: 3px 0;
+				margin-top: 10px;
+				border-top: 1px solid $grayLight3; 
+				color: $grayDark2;
+				display: block;
+			}
 		}
 		.menuSideItem-1 a {
 			background: $blueLight1;
@@ -283,10 +300,6 @@ textarea {
 			background: $greenLight1;
 			color: $white;
 		}
-		.menuSideItem a:hover {
-			background: $grayDark1;
-			color: $grayLight1;
-		}
 		.btnModeExit a {
 			color: $bgColorMessageError;
 		}
@@ -295,7 +308,7 @@ textarea {
 		}
 	}
 	.contentInsWrapper {
-		width: 80%;
+		width: 85%;
 		float: right;
 		background: $grayLight2;
 	}
@@ -310,6 +323,9 @@ textarea {
 	.listAdmin {
 		padding-bottom: 10px;
 	}
+	.sublistAdmin {
+		padding-bottom: 20px;
+	} 
 	.sublistAdmin .listAdmin {
 		margin-left: 60px;
 		padding: 0px;
@@ -385,6 +401,9 @@ textarea {
 	.menuSimpleItemList span {
 		background-position: -224px 0px;	
 	}
+	.menuSimpleItemExport span {
+		background-position: -96px 0px;	
+	}
 }
 .formAdmin {
 	font-size: 0.9em;
@@ -425,6 +444,10 @@ textarea {
 			color: $grayDark2;
 		}
 	}
+	.formField select {
+		width: 100%;
+		max-width: 80%;
+	}
 	.formField .checkboxIns input {
 		float: left;
 		margin-right: 15px;
@@ -437,11 +460,30 @@ textarea {
 		border: 1px solid $grayLight4;
 		margin-bottom: 3px;
 	}
+	.formFieldsFile {
+		padding-top: 3px;
+		font-size: 0.8em;
+		a {
+			color: $grayDark2;
+			text-decoration: underline;
+			&:hover {
+				color: $grayDark3;
+			}
+		}
+	}
 	.multipleCheckboxes {
+		padding-bottom: 10px;
+		label {
+			padding-bottom: 10px;
+		}
 		.checkboxIns label {
 			font-weight: normal;
 			color: $grayDark2;
-		}		
+			padding-bottom: 2px;
+		}
+		.formField {
+			padding: 0px;
+		}
 	}
 	.selectCheckbox select,
 	.selectCheckbox .checkbox {
@@ -473,6 +515,32 @@ textarea {
 		float: left;
 		margin-right: 15px;
 	}
+	.btnExtraAction a {
+		border: 0px;
+		display: block;
+		width: 300px;
+		padding: 5px 10px;
+		text-align: center;
+		color: $white;
+		background: $greenLight1;
+		margin-top: 10px;
+		cursor: pointer;
+		font-weight: normal;
+		font-size: 0.9em;
+		@include borderRadius(3px);
+		&:hover {
+			background: $blueLight2;
+		}
+	}
+	.btnExtraActionInfo {
+		padding: 10px 0px;
+		color: $grayDark2;
+		font-size: 0.9em;
+		font-style: italic;
+		strong {
+			font-weight: bold;
+		}
+	}
 	.error {
 		color: $bgColorMessageError;
 	}
@@ -480,6 +548,22 @@ textarea {
 	.errorField textarea,
 	.errorField select {
 		border: 1px solid $bgColorMessageError;
+	}
+	p {
+		padding-bottom: 5px;
+	}
+}
+.simpleForm {
+	p {
+		font-size: 0.9em;
+		padding-bottom: 10px;
+	}
+	a {
+		color: $greenLight1;
+		@include animate();
+		&:hover {
+			color: $greenDark1;
+		}
 	}
 }
 //Form search
@@ -519,7 +603,10 @@ textarea {
 
 //Multiple forms
 .nestedFormFields {
+	margin-top: 10px;
+	padding-top: 20px;
 	padding-bottom: 10px;
+	border-top: 1px solid $grayDark3;
 	.nestedFormFieldsEmpty,
 	.nestedFormFieldsObject {
 		padding: 10px;
@@ -530,7 +617,7 @@ textarea {
 	.nestedFormFieldsAdd {
 		border: 0px;
 		display: block;
-		width: 200px;
+		width: 240px;
 		padding: 5px 7px;
 		text-align: center;
 		color: $white;
@@ -636,6 +723,14 @@ textarea {
 	background: $bgColorMessageError;	
 }
 
+//Map
+.map {
+	.mapIns {
+		width: 400px;
+		height: 250px;
+	}
+}
+
 //Labels
 .label {
 	font-size: 0.95em;
@@ -659,6 +754,16 @@ textarea {
 			overflow: hidden;
 			text-indent: -5000px;
 		}
+	}
+	.labelstyle_long {
+		float: left;
+		width: 85%;
+		margin-right: 5px;
+	}
+	.labelstyle_big {
+		float: left;
+		width: 65%;
+		margin-right: 5px;
 	}
 	.labelstyle_regular {
 		float: left;
@@ -685,8 +790,8 @@ textarea {
 		font-style: italic;
 	}
 	.labelstyle_image {
-		width: 70px;
 		float: left;
+		width: 20%;
 		margin-right: 10px;
 		img {
 			width: 100%;
@@ -697,6 +802,14 @@ textarea {
 	}
 	.activeItem_1 {
 		background: $bgActive;
+	}
+	.labelTypeAdminSmall {
+		display: inline-block;
+		padding: 1px 5px;
+		background: $blueLight2;
+		color: $white;
+		font-size: 0.8em;
+		font-weight: bold;
 	}
 }
 
@@ -830,5 +943,843 @@ textarea {
 		right: 0px;
 		background: url(../../img/arrowRight.png) no-repeat center center;
 		float: right;
+	}
+}
+.imagesChoice {
+	padding: 10px 0px;
+	.imagesChoiceTitle {
+		color: $blueLight1;
+		font-size: 0.9em;
+		font-weight: bold;
+		padding-bottom: 5px;
+	}
+	img {
+		height: 50px;
+		padding: 2px;
+		background: $white;
+		border: 1px solid $grayLight3;
+		margin-right: 5px;
+		cursor: pointer;
+		&:hover {
+			background: $greenLight1;
+			border: 1px solid $greenLight1;
+		}
+	}
+}
+
+.fieldsBlock {
+	margin-bottom: 30px;
+	padding-bottom: 30px;
+	border-bottom: 1px solid $grayLight3;
+	&.fieldsBlockLast {
+		margin-bottom: 0px;
+		padding-bottom: 0px;
+		border-bottom: 0px;
+	}
+}
+.labelChrono {
+	float: left;
+	width: 30%;
+	padding-right: 2%;
+	.labelChronoDescription {
+		font-size: 0.8em;
+		color: $grayDark3;
+		font-style: italic;
+	}
+}
+
+
+.listAnnotations {
+	.listAnnotationsItem {
+		padding-bottom: 20px;
+		margin-bottom: 20px;
+		border-bottom: 1px solid $grayLight3;
+		&:last-child {
+			padding-bottom: 0;
+			margin-bottom: 0;
+			border-bottom: 0;
+		}
+	}
+	.listAnnotationsTitle {
+		color: $blueLight1;
+		font-size: 1.1em;
+		font-weight: bold;
+		padding-bottom: 10px;
+	}
+	.listAnnotationsItems {
+		padding-left: 30px;
+	}
+	.responsesAdmin {
+		font-size: 0.8em;
+		color: $grayDark3;
+		padding: 5px;
+		border-bottom: 1px solid $grayLight1;
+		background: lighten($grayLight1, 5%);
+		.responsesAdminLeft {
+			width: 50%;
+			float: left;
+			padding-left: 25%;
+		}
+		.responsesAdminRight {
+			width: 25%;
+			float: right;
+			text-align: right;
+			.responsesAdminOption {
+				display: inline-block;
+				margin: 0px 3px 3px 0px;
+				font-size: 0.8em;
+				font-weight: bold;
+				padding: 3px 5px;
+				background: $red;
+				color: $white;
+				cursor: pointer;
+				@include animate();
+				&:hover {
+					opacity: 0.6;
+				}
+			}
+		}
+	}
+	.annotationAdmin {
+		padding-bottom: 3px;
+		margin-bottom: 3px;
+		border-bottom: 1px solid $grayLight2;
+		&:last-child {
+			padding-bottom: 0;
+			margin-bottom: 0;
+			border-bottom: 0;
+		}
+		&.annotationAdminHidden {
+			color: $grayLight3;
+		}
+	}
+	.annotationAdminIns {
+		display: table;
+		table-layout: fixed;
+		font-size: 0.8em;
+		strong {
+			font-weight: bold;
+		}
+		.annotationAdminItem {
+			display: table-cell;
+			padding: 3px;
+		}
+		.annotationAdminItem1 {
+			width: 15%;
+			font-size: 0.9em;
+			opacity: 0.6;
+		}
+		.annotationAdminItem3 {
+			width: 25%;
+		}
+	}
+	.annotationAdminOptions {
+		text-align: right;
+		.annotationAdminOption {
+			display: inline-block;
+			margin: 0px 3px 3px 0px;
+			font-size: 0.8em;
+			font-weight: bold;
+			padding: 3px 5px;
+			background: $grayDark3;
+			color: $white;
+			cursor: pointer;
+			@include animate();
+			&:hover {
+				opacity: 0.6;
+			}
+		}
+		.annotationAdminOptionDelete {
+			background: $red;
+		}
+		.annotationAdminOptionPublic {
+			background: $green;
+		}
+	}
+}
+
+.backButton {
+	padding-bottom: 10px;
+	a {
+		font-size: 0.7em;
+		display: inline-block;
+		padding: 5px 10px;
+		background: $blueLight1;
+		color: $white;
+		&:hover {
+			background: $blueDark1;
+		}
+	}
+}
+
+.formWrapper {
+	.formLine {
+		&.formLine4,
+		&.formLine3,
+		&.formLine2 {
+			& > .formField {
+				width: 23%;
+				margin-right: 2%;
+				float: left;
+				input,
+				select,
+				textarea {
+					width: 100%;
+				}
+				.checkBoxInline {
+					input,
+					select {
+						width: auto;
+					}
+				}
+			}
+		}
+		&.formLine3 {
+			& > .formField {
+				width: 31%;
+			}
+		}
+		&.formLine2 {
+			& > .formField {
+				width: 48%;
+			}
+		}
+		&.formLineMultiple {
+			padding-top: 10px;
+			margin-top: 10px;
+			border-top: 1px solid $grayLight3;
+			.formField {
+				float: left;
+				width: 23%;
+				margin-right: 2%;
+				float: left;
+				label {
+					overflow: hidden;
+					text-overflow: ellipsis;
+					white-space: nowrap;
+				}
+			}
+		}
+		&.formLineHidden {
+			.multipleCheckboxesIns {
+				max-height: 200px;
+				overflow: auto;
+				margin-bottom: 20px;
+				background: rgba($white, 0.25);
+				padding: 10px;
+				border: 1px solid $grayLight3;
+			}
+		}
+		&.formLineSimple {
+			padding-bottom: 20px;
+			margin-bottom: 20px;
+			border-bottom: 1px solid $grayLight3;
+		}
+		&.formLinePrice {
+			padding: 20px 0;
+			margin: 20px 0;
+			border-bottom: 1px solid $grayLight3;	
+			strong {
+				font-size: 1.1em;
+				display: block;
+				font-weight: bold;
+			}
+		}
+		p {
+			strong {
+				font-weight: bold;
+			}
+		}
+		h3 {
+			font-weight: bold;
+			font-size: 1.1em;
+			padding-bottom: 5px;
+		}
+	}
+	.formFieldTable {
+		display: table;
+		table-layout: fixed;
+		width: 100%;
+		border-collapse: collapse;
+		margin: 20px auto;
+		background: $grayLight1;
+		.formFieldRow {
+			display: table-row;
+		}
+		.formFieldRowHeader {
+			.formFieldCell {
+				background: $grayDark3;
+				color: $white;
+				text-align: center;
+				font-weight: bold;
+			}
+		}
+		.formFieldCell {
+			display: table-cell;
+			padding: 10px;
+			border: 1px solid $grayLight3;
+			vertical-align: top;
+			&.formFieldCellCenter {
+				text-align: center;
+			}
+			&.formFieldCell5 {
+				width: 5%;
+			}
+			&.formFieldCell10 {
+				width: 10%;
+			}
+			&.formFieldCell15 {
+				width: 15%;
+			}
+			&.formFieldCell20 {
+				width: 20%;
+			}
+		}
+	}
+}
+
+.formFieldsBlocks {
+	.formFieldsBlock {
+		padding-bottom: 10px;
+		margin-bottom: 10px;
+		border-bottom: 1px solid $grayLight3;
+		&:last-child {
+			padding-bottom: 0;
+			margin-bottom: 0;
+			border-bottom: 0;			
+		}
+		h2 {
+			font-weight: bold;
+			padding-bottom: 10px;
+			color: $blueDark1;
+		}
+	}
+	.formFieldsBlock3 {
+		.formField {
+			float: left;
+			width: 30%;
+			margin: 0 2% 5px 0;
+			input,
+			select,
+			textarea {
+				max-width: 100%;
+			}
+		}
+	}
+	.formFieldsBlockAddresses {
+		.nestedFormFields {
+			> label {
+				display: none;
+			}
+		}
+		.nestedFormFields {
+			padding: 0;
+			margin: 0;
+			border: 0;
+		}
+		.nestedFormFieldsObject {
+			width: 29%;
+			margin: 0 2% 10px 0;
+			float: left;
+			input,
+			select,
+			textarea {
+				width: 100%;
+			}
+		}
+		.nestedFormFieldsContent {
+			padding-top: 15px;
+		}
+		.nestedFormFieldsNew {
+			clear: both;
+		}
+	}
+}
+
+.adminTable {
+	display: table;
+	table-layout: fixed;
+	width: 100%;
+	box-sizing: border-box;
+	border-collapse: collapse;
+	.adminTableRow {
+		display: table-row;
+		&.adminTableRowHeader {
+			.adminTableItem {
+				font-weight: bold;
+				text-align: center;
+				background-color: $grayLight2;
+			}
+		}
+		&:nth-child(2n+2) {
+			.adminTableItem {
+				background: $grayLight1;
+			}	
+		}
+		&.adminTableRowTotal {
+			.adminTableItem {
+				background: lighten($blueDark1, 65%);
+				color: $blueDark1;
+				font-weight: bold;
+			}
+		}
+	}
+	.adminTableItem {
+		display: table-cell;
+		padding: 5px;
+		border: 1px solid $grayLight3;
+		box-sizing: border-box;
+		background: $white;
+		font-size: 0.8em;
+		vertical-align: top;
+		&.adminTableItem5 {
+			width: 5%;
+		}
+		&.adminTableItem10 {
+			width: 10%;
+		}
+		&.adminTableItem15 {
+			width: 15%;
+		}
+		&.adminTableItem20 {
+			width: 20%;
+		}
+		&.adminTableItem30 {
+			width: 30%;
+		}
+		&.adminTableItem40 {
+			width: 40%;
+		}
+		&.adminTableItem50 {
+			width: 50%;
+		}
+		&.adminTableItemSingle {
+			text-overflow: ellipsis;
+			overflow: hidden;
+			white-space: nowrap;
+		}
+		&.adminTableItemPrice {
+			text-align: right;
+			span {
+				font-size: 0.8em;
+			}
+		}
+		.adminTableItemActive {
+			width: 10px;
+			height: 10px;
+			overflow: hidden;
+			background: $grayLight3;
+			text-indent: -5000px;
+			display: block;
+			margin: auto;
+			&.adminTableItemActive1 {
+				background: $green;
+			}
+		}
+		a {
+			color: $blueDark1;
+			display: block;
+			&:hover {
+				color: $blueLight2;
+			}
+		}
+	}
+	.adminTableItemDelete,
+	.adminTableItemModify {
+		a {
+			display: block;
+			width: 16px;
+			height: 16px;
+			background-image: url(../../img/icons16.png);
+			background-position: -96px 0px;
+			cursor: pointer;
+			text-indent: -5000px;
+			overflow: hidden;
+			margin: auto;
+			&:hover {
+				opacity: 0.5;
+			}
+		}
+	}
+	.adminTableItemModify {
+		a {
+			background-position: -32px 0px;
+		}
+	}
+	.adminTableItemCenter {
+		text-align: center;
+	}
+	.formField {
+		input,
+		textarea,
+		select {
+			max-width: 100%;
+		}
+	}
+	// Sorter
+	thead {
+		.tablesorter-header {
+			background-image: url(../../img/bg.gif);
+			background-repeat: no-repeat;
+			background-position: center right;
+			background-color: $grayLight2 !important;
+			padding: 10px 5px;
+			cursor: pointer;
+			&.sorter-false {
+				background-image: none;
+				cursor: default;
+			}
+			&.tablesorter-headerAsc {
+				background-image: url(../../img/asc.gif);
+				background-color: darken($grayLight2, 10%) !important;
+			}
+			&.tablesorter-headerDesc {
+				background-image: url(../../img/desc.gif);
+				background-color: darken($grayLight2, 10%) !important;
+			}
+		}
+	}
+}
+#adminTableStock {
+	.formField {
+		label {
+			display: none;
+		}
+	}
+	.stockForm {
+		.adminTableRowInfoEdit {
+			display: none;
+		}
+		.stockFormEdit,
+		.stockFormSave {
+			text-align: center;
+			display: inline-block;
+			padding: 3px 10px;
+			background: $grayDark3;
+			color: $white;
+			font-size: 0.9em;
+			font-weight: bold;
+			cursor: pointer;
+			@include borderRadius(3px);
+			&:hover {
+				background: $blueDark1;
+			}
+		}
+		.stockFormSave {
+			background: $green;
+		}
+	}
+	.stockFormEmpty {
+		display: none;
+	}
+}
+.adminTableStockOptions {
+	padding-top: 20px;
+	.adminTableStockAdd {
+		display: inline-block;
+		padding: 10px 20px;
+		background: $green;
+		font-weight: bold;
+		color: $white;
+		cursor: pointer;
+		@include borderRadius(3px);
+		&:hover {
+			background: $grayDark3;
+		}
+	}
+}
+.nestedFormFields {
+	.formLine {
+		padding-right: 50px;
+	}
+}
+.orderState {
+	padding-left: 20px;
+	position: relative;
+	&:after {
+		position: absolute;
+		top: 5px;
+		left: 0;
+		display: block;
+		width: 10px;
+		height: 10px;
+		background: $grayLight3;
+		content: " ";
+	}
+	&.orderState1 {
+		&:after {
+			background: $red;
+		}
+	}
+	&.orderState2 {
+		&:after {
+			background: $green;
+		}
+	}
+	&.orderState3 {
+		&:after {
+			background: darken($red, 25%);
+		}
+	}
+	&.orderState4 {
+		&:after {
+			background: $blueLight2;
+		}
+	}
+}
+
+.multipleBlocks {
+	.multipleBlock {
+		margin-bottom: 30px;
+		padding-bottom: 30px;
+		border-bottom: 1px solid $grayLight3;
+		&:last-child {
+			margin-bottom: 0;
+			padding-bottom: 0;
+			border-bottom: 0;
+		}
+		.multipleBlockHeader {
+			padding-bottom: 20px;
+			h2 {
+				width: 50%;
+				float: left;
+				font-weight: bold;
+				font-size: 1.2em;
+				padding-top: 10px;
+			}
+			a {
+				display: block;
+				width: 180px;
+				padding: 10px 10px;
+				float: right;
+				background: $green;
+				color: $white;
+				font-weight: bold;
+				text-align: center;
+				@include borderRadius(3px);
+				@include animate();
+				&:hover {
+					background: $blueDark1;
+				}
+			}
+		}
+	}
+}
+
+.orderOptions {
+	margin: 10px;
+	width: 440px;
+	float: left;
+	&:last-child {
+		margin-bottom: 0;
+	}
+	.orderOption {
+		background: $grayLight1;
+		border: 1px solid darken($grayLight1, 5%);
+		padding: 5px 10px;
+		border-left: 3px solid $grayLight4;
+		min-height: 125px;
+		&.orderOptionShip {
+			border-left: 3px solid $greenLight1;
+			.orderOptionLeft .formSubmitWrapper input,
+			.orderOptionLeft .formSubmitWrapper input:hover {
+				background: $greenLight1;
+			}
+			.orderOptionRight h2 {
+				color: $greenLight1;
+			}
+		}
+		&.orderOptionCancel {
+			border-left: 3px solid $red;
+			.orderOptionLeft .formSubmitWrapper input,
+			.orderOptionLeft .formSubmitWrapper input:hover {
+				background: $red;
+			}
+			.orderOptionRight h2 {
+				color: $red;
+			}
+		}
+		&.orderOptionFinish {
+			border-left: 3px solid $blueDark1;
+			.orderOptionLeft .formSubmitWrapper input,
+			.orderOptionLeft .formSubmitWrapper input:hover {
+				background: $blueDark1;
+			}
+			.orderOptionRight h2 {
+				color: $blueDark1;
+			}
+		}
+		&.orderOptionSendMessage {
+			border-left: 3px solid $blueLight2;
+			.orderOptionLeft .formSubmitWrapper input,
+			.orderOptionLeft .formSubmitWrapper input:hover {
+				background: $blueLight2;
+			}
+			.orderOptionRight h2 {
+				color: $blueLight2;
+			}
+		}
+		.orderOptionLeft {
+			width: 60%;
+			float: right;
+			label {
+				font-weight: normal;
+				font-size: 0.9em;
+				padding: 0;
+				padding-bottom: 3px;
+			}
+			.formField {
+				input,
+				textarea {
+					width: 100%;
+				}
+			}
+			.formSubmitWrapper {
+				input {
+					width: 100%;
+					padding: 5px;
+					text-align: center;
+					display: block;
+					cursor: pointer;
+					background: $grayDark3;
+					color: $white;
+					font-weight: normal;
+					text-transform: uppercase;
+					font-size: 1em;
+					border: 0;
+					font-weight: bold;
+					&:hover {
+						background: darken($grayDark3, 10%);
+					}
+				}
+			}
+		}
+		.orderOptionRight {
+			width: 35%;
+			float: left;
+			color: $grayDark1;
+			p {
+				font-size: 0.9em;
+			}
+			h2 {
+				font-weight: bold;
+				padding-bottom: 10px;
+				font-size: 1.2em;
+				color: $grayDark1;
+			}
+		}
+	}
+}
+.orderOptionsMessage {
+	margin: 10px 0;
+	padding: 10px;
+	text-align: center;
+	font-size: 0.9em;
+	text-transform: uppercase;
+	color: $white;
+	background: $grayDark1;
+	&.orderOptionsMessage2 {
+		background: $greenLight1;
+	}
+	&.orderOptionsMessage3 {
+		background: $red;
+	}
+	&.orderOptionsMessage4 {
+		background: $blueDark1;
+	}
+	span {
+		font-weight: bold;
+		font-size: 1.2em;
+		display: inline-block;
+		padding: 0 0 0 20px;
+	}
+	em {
+		font-style: normal;
+		font-size: 0.9em;
+		text-transform: none;
+		opacity: 0.8;
+	}
+}
+
+.orderModify {
+	padding: 10px;
+	background: $grayLight1;
+	border: 1px solid darken($grayLight1, 5%);
+	margin: 30px 0;
+	form {
+		padding: 0;
+		margin: 0;
+		border: 0;
+	}
+	.orderStockItem {
+		padding-bottom: 20px;
+		&:last-child {
+			padding-bottom: 0;
+		}
+		h3 {
+			font-weight: bold;
+			font-size: 1em;
+			padding-bottom: 5px;
+			color: $blueDark1;
+			span {
+				color: $grayDark1;
+				padding-right: 10px;
+				display: inline-block;
+			}
+		}
+	}
+	.adminTable {
+		font-size: 1.1em;
+	}
+}
+.orderModifyOptions {
+	margin: 30px 0;
+}
+.orderModifySimpleOptions {
+	text-align: right;
+	padding-top: 5px;
+	&.orderModifySimpleOptionAll {
+		text-align: left;
+		padding-bottom: 20px;
+		.orderModifySimpleOption {
+			padding: 0 5px 0 0;
+			a {
+				background: $blueLight4;
+				border: 1px solid darken($blueLight4, 5%);
+				color: $white;
+				&:hover {
+					background: $blueLight1;
+				}
+			}
+		}	
+	}
+	.orderModifySimpleOption {
+		display: inline-block;
+		padding: 0 0 0 5px;
+		a {
+			display: inline-block;
+			padding: 5px 10px;
+			background: lighten($grayDark2, 50%);
+			border: 1px solid lighten($grayDark2, 45%);
+			color: $grayDark2;
+			font-size: 0.9em;
+			font-weight: normal;
+			strong {
+				font-weight: bold;
+			}
+			&:hover {
+				background: $grayDark1;
+				color: $white;
+			}
+		}
+		&.orderModifySimpleOptionImportant {
+			a {
+				background: lighten($grayDark2, 55%);
+				&:hover {
+					background: $grayDark1;
+					color: $white;
+				}
+			}
+		}
 	}
 }

@@ -7,7 +7,7 @@ class Db_Connection extends Singleton {
 		//Initialize a connection
 		$this->connexion_pdo = null;
 		try{
-			$this->connexion_pdo = new PDO(PDO_DSN, USER, PASSWD, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+			$this->connexion_pdo = new PDO(PDO_DSN, DB_USER, DB_PASSWORD, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
 		} catch(PDOException $error){
 			if (DEBUG) {
 				throw new Exception($error->getMessage());

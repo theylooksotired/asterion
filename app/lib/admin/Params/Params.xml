@@ -36,11 +36,6 @@
 			<required>notEmpty</required>
 		</attribute>
 		<attribute>
-			<label>help</label>
-			<name>help</name>
-			<type>hidden</type>
-		</attribute>
-		<attribute>
 			<label>information</label>
 			<name>information</name>
 			<type>text-long</type>

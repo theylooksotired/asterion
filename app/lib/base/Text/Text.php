@@ -10,12 +10,11 @@ class Text {
 		//Cut and decode a string by the number of words
 		$html = '';
 		$textOriginal = $text;
-		$text = htmlentities(strip_tags(html_entity_decode($text, ENT_QUOTES, 'UTF-8')), ENT_QUOTES, 'UTF-8');
+		$text = strip_tags($text);
 		$text = htmlspecialchars_decode($text);
 		$textArray = explode(' ',$text);
 		$textArray = array_slice($textArray, 0, $numWords);
 		foreach ($textArray as $word) {
-			$word = (strlen($word)>25) ? htmlentities(substr(html_entity_decode($word), 0, 25)).'...' : $word;
 			$html .= $word.' ';
 		}
 		return $html;
@@ -79,6 +78,11 @@ class Text {
 	static public function moneyDollar($number) {
 		//Format a value into money
 		return Text::money($number).' <span>$USD</span>';
+	}
+
+	static public function moneyEuros($number) {
+		//Format a value into money
+		return Text::money($number).' <span>&euro;</span>';
 	}
 	
 	static public function csvArray($text) {

@@ -9,8 +9,9 @@ class UserTypeMenu_Ui extends Ui{
 
 	public function renderMenu() {
 		//Render the menu item
+		$content = ($this->object->get('action')!='') ? '<a href="'.url($this->object->get('action'), true).'">'.$this->object->get('name').'</a>' : '<span>'.$this->object->get('name').'</span>';
 		return '<div class="menuSideItem menuSideItem-'.$this->object->get('type').'">
-					<a href="'.url($this->object->get('action'), true).'">'.$this->object->get('name').'</a>
+					'.$content.'
 				</div>';
 	}
 	

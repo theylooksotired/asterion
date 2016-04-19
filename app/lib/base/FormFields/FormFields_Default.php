@@ -17,6 +17,7 @@ class FormFields_Default {
 		$this->options['label'] = (string)$this->item->label;
 		$this->options['placeholder'] = (string)$this->item->placeholder;
 		$this->options['lang'] = (string)$this->item->lang;
+		$this->options['layout'] = (string)$this->item->layout;
 		$this->options['required'] = ((string)$this->item->required!='') ? true : false;
 		$this->options['typeField'] = 'text';
 	}
@@ -56,6 +57,9 @@ class FormFields_Default {
 		$classError = (isset($options['error']) && $options['error']!='') ? 'errorField' : '';
 		$placeholder = (isset($options['placeholder'])) ? 'placeholder="'.__($options['placeholder']).'"' : '';
 		$required = (isset($options['required']) && $options['required']) ? 'required' : '';
+		//DELETE
+		$required = '';
+		//DELETE
 		$layout = (isset($options['layout'])) ? $options['layout'] : '';
 		switch ($layout) {
 			default:
@@ -64,6 +68,16 @@ class FormFields_Default {
 								'.$label.'
 								'.$error.'
 								<input '.$typeField.' '.$name.' '.$size.' '.$value.' '.$id.' '.$disabled.' '.$placeholder.' '.$required.'/>
+								<div class="clearer"></div>
+							</div>
+						</div>';
+			break;
+			case 'color':
+				return '<div class="'.$type.' formField '.$class.' '.$classError.'">
+							<div class="formFieldIns">
+								'.$label.'
+								'.$error.'
+								<input class="color" '.$typeField.' '.$name.' '.$size.' '.$value.' '.$id.' '.$disabled.' '.$placeholder.' '.$required.'/>
 								<div class="clearer"></div>
 							</div>
 						</div>';

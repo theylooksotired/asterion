@@ -160,5 +160,10 @@ class File {
 		}
 	}
 
+	static public function fileExtension($filename) {
+		$info = explode('.', $filename);
+		return strtolower($info[count($info)-1]);
+	}
+
 }
 ?>
