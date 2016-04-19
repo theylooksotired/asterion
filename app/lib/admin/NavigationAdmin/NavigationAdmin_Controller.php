@@ -48,8 +48,7 @@ class NavigationAdmin_Controller extends Controller{
 		//Check if the user is connected
 		$this->login = User_Login::getInstance();
 		if (!$this->login->isConnected()) {
-			echo url('User/login', true).'dd';
-			//header('Location: '.url('User/login', true));
+			header('Location: '.url('User/login', true));
 			exit();
 		}
 	}
