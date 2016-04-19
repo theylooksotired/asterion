@@ -1,4 +1,11 @@
 <?php
+/**********************************************/
+/**********************************************/
+// Asterion
+// Main configuration file
+// More information on http://www.asterion-cms.com
+/**********************************************/
+/**********************************************/
 
 // Title of the page
 define('TITLE', 'Base Site');

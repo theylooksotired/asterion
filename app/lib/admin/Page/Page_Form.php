@@ -1,6 +1,3 @@
 <?php
-class Page_Form extends Form{
-
-}
-
+class Page_Form extends Form {}
 ?>

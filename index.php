@@ -30,7 +30,8 @@ try {
 }
 
 //Select the visualization mode and return the formatted content
-$mode = isset($mode) ? $mode : 'public';
+$mode = (isset($mode)) ? $mode : 'public';
+$mode = (!isset($title)) ? 'ajax' : $mode;
 switch ($mode) {
     default:
         $file = BASE_FILE.'visual/templates/'.$mode.'.php';

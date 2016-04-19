@@ -2,7 +2,7 @@
 class Controller_Factory {
 
     static function factory($GET=array(), $POST=array(), $FILES=array()) {
-        //Get the right controller for the object
+        // Get the right controller for the object
         $type = (isset($GET['type'])) ? $GET['type'] : '';
         $objectController = $type.'_Controller';
         $addLocation = $type.'/'.$objectController.'.php';
@@ -11,7 +11,8 @@ class Controller_Factory {
                 return new $objectController($GET, $POST, $FILES);
             }    
         }
-        throw new Exception('Could not load controller '.$type);
+        header('Location: '.url('error'));
+        exit();
     }
 
 }

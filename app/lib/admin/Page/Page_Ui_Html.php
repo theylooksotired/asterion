@@ -1,8 +1,5 @@
 <?php
-
-class Page_Ui_Html extends UiHtml{
-
-    protected $object;
+class Page_Ui_Html extends Ui {
 
     public function __construct (Page & $object) {
         $this->object = $object;
@@ -16,5 +13,4 @@ class Page_Ui_Html extends UiHtml{
     }
 
 }
-
 ?>
