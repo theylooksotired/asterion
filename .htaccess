@@ -1,16 +1,30 @@
+################################################
+################################################
+# Asterion
+# .htaccess file to configure the Apache server
+################################################
+################################################
+
+#################################
+# Send the Not Found pages to a proper URL
 ErrorDocument 403 /error403
 ErrorDocument 404 /error404
 
+#################################
+# Rewrite conditions
 <IfModule mod_rewrite.c>
     RewriteEngine On
+    # The following two lines are used to force the use of www
+    # RewriteCond %{HTTP_HOST} !^www\.
+    # RewriteRule ^(.*)$ http://www.%{HTTP_HOST}/$1 [R=301,L]
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^(.*)$ index.php?url=$1 [QSA,L]
 </IfModule>
-
 Options All -Indexes
 
-# BEGIN EXPIRES
+#################################
+# Expiration of the different files
 <IfModule mod_expires.c>
     ExpiresActive On
     ExpiresDefault "access plus 10 days"
@@ -23,7 +37,6 @@ Options All -Indexes
     ExpiresByType application/javascript "access plus 1 week"
     ExpiresByType application/x-icon "access plus 1 year"
 </IfModule>
-# END EXPIRES
 <Files 403.shtml>
 order allow,deny
 allow from all
