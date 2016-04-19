@@ -20,7 +20,7 @@ define('DEBUG', true);
 define('LANGS', 'en:es:fr');
 
 // Session and cookies
-define('SESSION_NAME', 'base-site');
+define('SESSION_NAME', 'asterion');
 session_start(SESSION_NAME);
 define('COOKIE_TIME', 3600000);
 
