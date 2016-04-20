@@ -1,6 +1,16 @@
 <?php
+/**
+* @file
+*
+* The autoload.php file charges the proper class in memory
+* when an object is instantiated. It searches in the locations defined
+* in the configuration file.
+*
+* @author Leano Martinet <info@asterion-cms.com>
+* @package Asterion
+* @version 3.0.1
+*/
 function __autoload($className) {
-    //Find the class in the model or framework and load it
     $objectName = $className;
     if (strpos($className, '_')!==false) {
         $class = explode('_', $className);
@@ -13,6 +23,6 @@ function __autoload($className) {
             return true;
         }
     }
-    throw new Exception('Error on Autoload : the file for '.$className.' doesn\'t exists');
+    throw new Exception('Error on Autoload: The file for '.$className.' does not exist');
 }
 ?>
