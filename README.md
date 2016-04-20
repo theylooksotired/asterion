@@ -10,17 +10,23 @@ The philosophy behind **Asterion** is to concentrate every resource that a websi
 
 This framework is not designed for direct customers, it is designed for web developers that are skilled in **PHP**, **HTML**, **CSS** and **MySQL**.
 
+<br/>
+<br/>
+<br/>
+
 ## Installation
 
 Asterion works in **PHP** *(version 5.3 with the PDO-MySQL extension)* and a **MySQL** database.
 
 You must have a proper **Apache server** running or either **MAMP** (http://www.mamp.info) or **EasyPhp** (http://www.easyphp.org) to run the framework.
 
+<br/>
+
 ### Installing a new project
 
 To install a new project from scratch, follow these steps:
 
-#### 1. Download the Asterion files and put them in your web server.
+##### 1. Download the Asterion files and put them in your web server.
 
 You should put all the Asterion files on your local folder or webserver in a file like:
 
@@ -42,7 +48,7 @@ And the public one that will be accessible using a web browser:
 http://localhost/my_asterion_website/
 ```
 
-#### 2. Create a MySQL database in your server or your emulator.
+##### 2. Create a MySQL database in your server or your emulator.
 
 We do not offer an installation script, so you'll have to create the empty database via **phpMyAdmin** or the console's mysql command. In this case we need the following information:
 
@@ -52,7 +58,7 @@ We do not offer an installation script, so you'll have to create the empty datab
 * The **prefix** of the tables, in case that you will use the same database for multiple websites.
 * Eventually, the **port** to connect to the database, by default is 3306.
 
-#### 3. Configure Asterion.
+##### 3. Configure Asterion.
 To configure the framework, you should open the configure file located in:
 
 ```php
@@ -107,7 +113,7 @@ The **EMAIL** constant is the main email address, **Asterion** will use it to cr
 define('EMAIL', 'info@asterion.org');
 ```
 
-#### 4. Test your installation.
+##### 4. Test your installation.
 You should go to your browser and test the landing page that should be on:
 
 ```
@@ -122,19 +128,21 @@ http://localhost/asterion/admin
 
 To connect you have to use the email defined in the configuration file. The initial password is *asterion*. For security reasons you should change it on your first connection.
 
+<br/>
+
 ### Migration of an Asterion website to production
 
 Asterion is very flexible when dealing with migration to a new server or to another location. First of all it doesn't encode any information in the database except for the passwords and it uses a simple data structure that is completely human readable.
 
 To migrate an Asterion website you have to follow these steps:
 
-#### 1. Migrate the files manually.
+##### 1. Migrate the files manually.
 First of all, you should save a copy of all the files. Then, you should either upload them to the production server or to the new folder where you want your site to work.
 
-#### 2. Migrate the database manually.
+##### 2. Migrate the database manually.
 Given the fact that Asterion does not provide an installation script, you should dump the actual database and create a new one on your server to import the data. If you are just moving the location of the files you do not need this step since the connection to the database remains the same.
 
-#### 3. Re-configure your site.
+##### 3. Re-configure your site.
 Since you migrated the site, there are some lines in the configuration file to update. Firstly, you should open the configuration file in:
 
 ```php
@@ -168,7 +176,7 @@ define('DB_PORT', '3306');
 define('DB_PREFIX', 'ast_');
 ```
 
-#### 4. Test your website.
+##### 4. Test your website.
 Now, you should go to your browser and test your landing page that should be on:
 
 ```php
@@ -180,6 +188,11 @@ Usually you should see a correct copy of your website. You also have access to t
 ```php
 http://www.my-website.com/admin
 ```
+
+<br/>
+<br/>
+<br/>
+<br/>
 
 ## Installation troubleshoot
 
