@@ -1,4 +1,20 @@
 <?php
+/**
+* @file
+*
+* The phpHelper.php includes several functions that are not existing
+* in the basic PHP version. It also includes some functions that can be
+* used as shortcuts for common actions.
+*
+* @author Leano Martinet <info@asterion-cms.com>
+* @package Asterion
+* @version 3.0.1
+*/
+
+/**
+* Function to check if the "get_called_class" exists
+* and create it if it does not.
+*/
 if(!function_exists('get_called_class')) {
     function get_called_class($bt = false,$l = 1) {
         //Find called class
@@ -40,8 +56,10 @@ if(!function_exists('get_called_class')) {
     } 
 }
 
+/**
+* Function to fill an array with keys.
+*/
 function array_fillkeys($target, $value='') {
-    //Fill an array with keys
     $filledArray = array();
     foreach($target as $key=>$val) {
         $filledArray[$val] = is_array($value) ? $value[$key] : $value;
@@ -49,11 +67,17 @@ function array_fillkeys($target, $value='') {
     return $filledArray;
 }
 
+/**
+* Function to check if a URL exists.
+*/
 function url_exists($url) {
     //Check if a URL exists
     return (!$fp = curl_init($url)) ? false : true;
 }
 
+/**
+* Function to remove an entire directory on the server.
+*/
 function rrmdir($dir) {
     //Remove an entire directoy 
     foreach(glob($dir.'/*') as $file) { 
@@ -66,13 +90,24 @@ function rrmdir($dir) {
     @rmdir($dir);
 }
 
+/**
+* Function to translate using the translation "code" of the LangTrans object.
+*/
 function __($code) {
-    //Alias for the translations
     return LangTrans::translate($code);
 }
 
+/**
+* Function to build an URL using the correct path to the website.
+* 
+* $url: The single path for the URL
+* $admin: Boolean to determine if the URL is for the BackEnd
+* 
+* Example:
+* echo url('about-us');
+* > http://localhost/asterion/about-us
+*/
 function url($url='', $admin=false) {
-    //Alias for getting a proper url
     if (!is_array($url)) {
         return Url::getUrl($url, $admin);
     } else {
