@@ -1,30 +1,42 @@
-################################################
-################################################
-# Asterion
-# .htaccess file to configure the Apache server
-################################################
-################################################
+###
+# @file
+#
+# The .htaccess file is used to configure the Apache server.
+# It is crucial to Asterion since it uses the rewrite conditions
+# to load the proper variables of the requested URL.
+# 
+# @author Leano Martinet <info@asterion-cms.com>
+# @package Asterion
+# @version 3.0.1
+##
 
-#################################
-# Send the Not Found pages to a proper URL
+##
+# The following lines send the "Not Found" pages to a proper URL
+##
 ErrorDocument 403 /error403
 ErrorDocument 404 /error404
 
-#################################
-# Rewrite conditions
+##
+# Rewrite conditions to parse all of the requested URLs
+##
 <IfModule mod_rewrite.c>
     RewriteEngine On
-    # The following two lines are used to force the use of www
+    ##
+    # The following two lines can be used in certain servers
+    # to force the use of www in the URL
+    #
     # RewriteCond %{HTTP_HOST} !^www\.
     # RewriteRule ^(.*)$ http://www.%{HTTP_HOST}/$1 [R=301,L]
+    ##
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^(.*)$ index.php?url=$1 [QSA,L]
 </IfModule>
 Options All -Indexes
 
-#################################
-# Expiration of the different files
+##
+# Expiration of the different files in the HTTP response
+##
 <IfModule mod_expires.c>
     ExpiresActive On
     ExpiresDefault "access plus 10 days"
