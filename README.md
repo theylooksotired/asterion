@@ -200,7 +200,7 @@ If you don't see the simple page or you get an error message when testing your w
 
 If you don't find the error here, you should contact us directly to get a solution.
 
-### Solution to errors of the database connection
+##### Solution to errors of the database connection
 One of the most common errors is that the website cannot connect to the database.
 
 In order to solve this problem, first you should check if your database is running. You should have general access through a manager like **PHPMyAdmin** or **SQLManager**.
@@ -221,7 +221,7 @@ define('DB_PASSWORD', '');
 define('DB_PORT', '3306');
 ```
 
-### Solution to errors of your file system
+##### Solution to errors of your file system
 As stated in the first installation step, the most important thing to configure are the two constants that point to your website:
 
 ```php
@@ -238,7 +238,7 @@ define('LOCAL_FILE', '/home/path_to_my_website/public_htm/asterion/');
 
 A common error is to forget the slash **/** at the end of both paths.
 
-### You don't see anything or you get an HTTP 500 error
+##### You don't see anything or you get an HTTP 500 error
 
 If you get a complete white page or you get the **HTTP 500 Internal server error**, it means that there is something wrong with the configuration of your server. Usually this kind of errors comes from the server configuration and not from Asterion.
 
