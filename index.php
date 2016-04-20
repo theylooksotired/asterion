@@ -1,20 +1,49 @@
 <?php
+/**
+* @file
+* @author Leano Martinet <info@asterion-cms.com>
+*
+* The index.php file is one of the main files on the Asterion framework.
+* It is in charge of loading the configuration, intializing the site,
+* loading the content variables and handling the HTML response to the user.
+*
+* @package Asterion
+* @version 3.0.1
+*/
 
-// Configure site
+/**
+* The APP_FOLDER constant defines the public folder of the application.
+* It can be used to load different versions of it.
+* Then, Asterion loads the proper configuration depending on that version.
+*/
 define('APP_FOLDER', 'base');
 require_once(APP_FOLDER.'/config/config.php');
 
-// Initialize basic services
+/**
+* If the DEBUG mode is activated on the configuration file, Asterion allows
+* error reporting and runs the script to create the basic tables.
+*/
 if (DEBUG) {
     error_reporting(E_ALL);
     ini_set('display_errors', '1');
     Init::initSite();
 }
+
+/**
+* Asterion initializes the common services.
+* The Url::init() function parses the URL of the request.
+* The Lang::init() function loads the translations in a global array.
+* The Params::init() function loads the parameters in a global array.
+*/
 Url::init();
 Lang::init();
 Params::init();
 
-//Get informations from the controller
+/**
+* Asterion loads the controller according to the "type" variable
+* defined in the URL, by default it will use the Navigation controller.
+* Then it loads the content and some extra informations for the template.
+*/
 try {
     $control = Controller_Factory::factory($_GET, $_POST, $_FILES);
     $content = $control->controlActions();
@@ -29,14 +58,19 @@ try {
     $content .= (DEBUG) ? '<pre>'.$e->getTraceAsString().'</pre>' : '';
 }
 
-//Select the visualization mode and return the formatted content
+/**
+* Finally, Asterion checks the "mode" variable to return the response.
+* By default it uses the public.php template, however it is possible to
+* create or add customized headers to the response.
+*/
 $mode = (isset($mode)) ? $mode : 'public';
-$mode = (!isset($title)) ? 'ajax' : $mode;
 switch ($mode) {
     default:
         $file = BASE_FILE.'visual/templates/'.$mode.'.php';
-        if (file_exists($file)) {
+        if (file_exists($file) && isset($title)) {
             include($file);
+        } else {
+            echo $content;
         }
     break;
     case 'admin':
