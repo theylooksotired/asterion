@@ -2,6 +2,8 @@
 *Asterion is a simple multilingual web framework designed for developers.*
 *It is written mainly in PHP and built over the LAMP environment.*
 
+<br/>
+
 One of the main problems that web developers confront is to create completely customized multilingual websites in a short period of time. With the market **Content Management Systems (CMS)** we get a jungle of modules and plugins that had to be customized and updated all the time. We had no control over the **HTML** or **JavaScript** and we have to spend hours checking on forums to solve simple problems.
 
 So, we created a simple tool that can let developers code freely.
@@ -13,6 +15,7 @@ This framework is not designed for direct customers, it is designed for web deve
 <br/>
 <br/>
 <br/>
+<br/>
 
 ## Installation
 
@@ -20,6 +23,7 @@ Asterion works in **PHP** *(version 5.3 with the PDO-MySQL extension)* and a **M
 
 You must have a proper **Apache server** running or either **MAMP** (http://www.mamp.info) or **EasyPhp** (http://www.easyphp.org) to run the framework.
 
+<br/>
 <br/>
 
 ### Installing a new project
@@ -128,6 +132,7 @@ http://localhost/asterion/admin
 
 To connect you have to use the email defined in the configuration file. The initial password is *asterion*. For security reasons you should change it on your first connection.
 
+<br/>
 <br/>
 
 ### Migration of an Asterion website to production
