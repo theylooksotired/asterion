@@ -1,12 +1,12 @@
 <?php
 /**
 * @file
-* @author Leano Martinet <info@asterion-cms.com>
 *
 * The index.php file is one of the main files on the Asterion framework.
 * It is in charge of loading the configuration, intializing the site,
 * loading the content variables and handling the HTML response to the user.
 *
+* @author Leano Martinet <info@asterion-cms.com>
 * @package Asterion
 * @version 3.0.1
 */
