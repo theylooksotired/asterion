@@ -1,6 +1,22 @@
 <?php
+/**
+* @class Controller
+*
+* This is the "controller" component of the MVC pattern used by Asterion.
+* All of the controllers for the content objects extend from this class.
+*
+* @author Leano Martinet <info@asterion-cms.com>
+* @package Asterion
+* @version 3.0.1
+*/
 abstract class Controller{
 
+    /**
+    * The general constructor for the controllers.
+    * $GET : Array with the loaded $_GET values.
+    * $POST : Array with the loaded $_POST values.
+    * $FILES : Array with the loaded $_FILES values.
+    */
     protected function __construct($GET, $POST, $FILES) {
         $this->type = isset($GET['type']) ? $GET['type'] : '';
         $this->action = isset($GET['action']) ? $GET['action'] : 'list';
@@ -13,32 +29,63 @@ abstract class Controller{
         $this->login = User_Login::getInstance();
     }
     
+    /**
+    * Function to get the title for a page.
+    * By default it uses the title defined in the Parameters.
+    */
     public function getTitle() {
         return (isset($this->titlePage)) ? $this->titlePage.' - '.Params::param('titlePage') : Params::param('titlePage');
-    }    
+    }   
 
+    /**
+    * Function to get the extra header tags for a page.
+    * It can be used to load extra CSS or JS files.
+    */
     public function getHeader() {
         return (isset($this->header)) ? $this->header : '';
     }
 
+    /**
+    * Function to get the meta-description for a page.
+    * By default it uses the meta-description defined in the Parameters.
+    */
     public function getMetaDescription() {
         return (isset($this->metaDescription) && $this->metaDescription!='') ? $this->metaDescription : Params::param('metaDescription');
     }
 
+    /**
+    * Function to get the meta-keywords for a page.
+    * By default it uses the keywords defined in the Parameters.
+    */
     public function getMetaKeywords() {
         return (isset($this->metaKeywords)) ? $this->metaKeywords : Params::param('metaKeywords');
     }
 
+    /**
+    * Function to get the meta-image for a page.
+    * By default it uses the LOGO defined in the configuration file.
+    */
     public function getMetaImage() {
         return (isset($this->metaImage) && $this->metaImage!='') ? $this->metaImage : LOGO;
     }
 
+    /**
+    * Function to get the mode to render a page.
+    * By default it uses the public method.
+    * The render goes on the main index.php file.
+    */
     public function getMode() {
         return (isset($this->mode)) ? $this->mode : 'public';
     }
 
+    /**
+    * Main function of the controller.
+    * It works as a huge switch that uses the $action attribute defined in the URL.
+    * By default this actions are built for the BackEnd since we usually do not modify
+    * the objects in the FrontEnd. However for those situations we must override this
+    * function in the child controller.
+    */
     public function controlActions(){
-        //Control all the main admin actions
         $this->mode = 'admin';
         $this->object = new $this->type();
         $this->titlePage = __((string)$this->object->info->info->form->title);
@@ -49,16 +96,21 @@ abstract class Controller{
                 header('Location: '.url($this->type.'/listAdmin', true));
             break;
             case 'reWriteTable':
-                //Rewrite a table and eliminate all contents
+                /**
+                * This action rewrites the entire table eliminating all the information.
+                * It is used in certain cases to re-structure some content objects.
+                */
                 $this->checkLoginAdmin();
                 $this->object->createTable(true);
                 header('Location: '.url($this->type.'/listAdmin', true));
             break;
             case 'listAdmin':
-                //List the items of the object
+                /**
+                * This is the main action for the BackEnd. If we are in DEBUG mode
+                * it will create the table automatically.
+                */
                 $this->checkLoginAdmin();
                 if (DEBUG) {
-                    //Create the table
                     Db::initTable($this->object->className);
                 }
                 $this->menuInside = $this->menuInside();
@@ -66,12 +118,20 @@ abstract class Controller{
                 return $ui->render();
             break;
             case 'insertView':
+                /**
+                * This is the action that shows the form to insert a record in the BackEnd.
+                */
                 $this->checkLoginAdmin();
                 $this->menuInside = $this->menuInside();
                 $this->content = $this->insertView();
                 return $ui->render();
             break;
             case 'insert':
+                /**
+                * This is the action that inserts a record in the BackEnd.
+                * If the insertion is successful it shows a form to check the record,
+                * if not it creates a form with the errors to correct.
+                */
                 $this->checkLoginAdmin();
                 $insert = $this->insert();
                 if ($insert['success']=='1') {
@@ -84,6 +144,9 @@ abstract class Controller{
                 }
             break;
             case 'insertCheck':
+                /**
+                * This is the action that shows the form to check a record insertion.
+                */
                 $this->checkLoginAdmin();
                 $this->message = __('savedForm');
                 $this->menuInside = $this->menuInside();
@@ -92,6 +155,9 @@ abstract class Controller{
             break;
             case 'modifyView':
             case 'modifyViewNested':
+                /**
+                * This is the action that shows the form to modify a record.
+                */
                 $this->checkLoginAdmin();
                 $nested = ($this->action == 'modifyViewNested') ? true : false;
                 $this->menuInside = $this->menuInside();
@@ -100,6 +166,9 @@ abstract class Controller{
             break;
             case 'modify':
             case 'modifyNested':
+                /**
+                * This is the action that updates a record when updating it.
+                */
                 $this->checkLoginAdmin();
                 $nested = ($this->action == 'modifyNested') ? true : false;
                 $modify = $this->modify($nested);
@@ -116,11 +185,18 @@ abstract class Controller{
                 }
             break;
             case 'delete':
+                /**
+                * This is the action that deletes a record.
+                */
                 $this->checkLoginAdmin();
                 $this->delete();
                 header('Location: '.url($this->type.'/listAdmin', true));
             break;
             case 'sortSave':
+                /**
+                * This is the action that saves the order of a list of records.
+                * It is used when sorting using the BackEnd.
+                */
                 $this->checkLoginAdmin();
                 $this->mode = 'ajax';
                 $object = new $this->type();
@@ -128,6 +204,9 @@ abstract class Controller{
                 $object->updateOrder($newOrder);
             break;
             case 'addSimple':
+                /**
+                * This is the action that adds a simple record.
+                */
                 $this->checkLoginAdmin();
                 $this->mode = 'ajax';
                 $formObject = $this->type.'_Form';
@@ -135,6 +214,9 @@ abstract class Controller{
                 return $form->createFormFieldsMultiple();
             break;
             case 'multiple-delete':
+                /**
+                * This is the action that deletes multiple records at once.
+                */
                 $this->checkLoginAdmin();
                 $this->mode = 'ajax';
                 if (isset($this->values['list-ids'])) {
@@ -147,6 +229,10 @@ abstract class Controller{
             break;
             case 'multiple-activate':
             case 'multiple-deactivate':
+                /**
+                * This is the action that activates or deactivates multiple records at once.
+                * It just works on records that have an attribute named "active",
+                */
                 $this->checkLoginAdmin();
                 $this->mode = 'ajax';
                 if (isset($this->values['list-ids'])) {
@@ -162,6 +248,10 @@ abstract class Controller{
                 }
             break;
             case 'autocomplete':
+                /**
+                * This is the action that returns a json string with the records that match a search string.
+                * It is used for the autocomplete text input.
+                */
                 $this->mode = 'json';
                 $autocomplete = (isset($_GET['term'])) ? $_GET['term'] : '';
                 if ($autocomplete!='') {
@@ -198,7 +288,9 @@ abstract class Controller{
                 }
             break;
             case 'search':
-                //List the items searched
+                /**
+                * This is the action that does the default "search" on a content object.
+                */
                 $this->checkLoginAdmin();
                 if ($this->id != '') {
                     $this->content = $this->listAll();
