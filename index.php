@@ -19,32 +19,32 @@
 define('APP_FOLDER', 'base');
 require_once(APP_FOLDER.'/config/config.php');
 
-/**
-* If the DEBUG mode is activated on the configuration file, Asterion allows
-* error reporting and runs the script to create the basic tables.
-*/
-if (DEBUG) {
-    error_reporting(E_ALL);
-    ini_set('display_errors', '1');
-    Init::initSite();
-}
-
-/**
-* Asterion initializes the common services.
-* The Url::init() function parses the URL of the request.
-* The Lang::init() function loads the translations in a global array.
-* The Params::init() function loads the parameters in a global array.
-*/
-Url::init();
-Lang::init();
-Params::init();
-
-/**
-* Asterion loads the controller according to the "type" variable
-* defined in the URL, by default it will use the Navigation controller.
-* Then it loads the content and some extra informations for the template.
-*/
 try {
+    /**
+    * If the DEBUG mode is activated on the configuration file, Asterion allows
+    * error reporting and runs the script to create the basic tables.
+    */
+    if (DEBUG) {
+        error_reporting(E_ALL);
+        ini_set('display_errors', '1');
+        Init::initSite();
+    }
+    
+    /**
+    * Asterion initializes the common services.
+    * The Url::init() function parses the URL of the request.
+    * The Lang::init() function loads the translations in a global array.
+    * The Params::init() function loads the parameters in a global array.
+    */
+    Url::init();
+    Lang::init();
+    Params::init();
+
+    /**
+    * Asterion loads the controller according to the "type" variable
+    * defined in the URL, by default it will use the Navigation controller.
+    * Then it loads the content and some extra informations for the template.
+    */
     $control = Controller_Factory::factory($_GET, $_POST, $_FILES);
     $content = $control->controlActions();
     $title = $control->getTitle();
@@ -54,6 +54,7 @@ try {
     $metaImage = $control->getMetaImage();
     $mode = $control->getMode();
 } catch (Exception $e) {
+    $mode = 'ajax';
     $content = '<pre>'.$e->getMessage().'</pre>';
     $content .= (DEBUG) ? '<pre>'.$e->getTraceAsString().'</pre>' : '';
 }
@@ -67,10 +68,8 @@ $mode = (isset($mode)) ? $mode : 'public';
 switch ($mode) {
     default:
         $file = BASE_FILE.'visual/templates/'.$mode.'.php';
-        if (file_exists($file) && isset($title)) {
+        if (file_exists($file)) {
             include($file);
-        } else {
-            echo $content;
         }
     break;
     case 'admin':
