@@ -1,6 +1,19 @@
 <?php
+/**
+* @class Csv
+*
+* This class deals with the comma-separated files.
+*
+* @author Leano Martinet <info@asterion-cms.com>
+* @package Asterion
+* @version 3.0.1
+*/
 class Csv {
 
+    /**
+    * This function converts a CSV file into a set of arrays.
+    * $fileName : The basename of the CSV file in the "data" folder.
+    */
     static public function toArrays($fileName) {
         $csv = Csv::loadData($fileName);
         $arrays = array();
@@ -25,6 +38,10 @@ class Csv {
         return $arrays;
     }
 
+    /**
+    * Loads the initial CSV data of a content object.
+    * $fileName : The basename of the CSV file in the "data" folder.
+    */
     static public function loadData($fileName) {
         $file = APP_FILE.'data/'.$fileName.'.csv';
         if (is_file($file)) {
