@@ -15,24 +15,27 @@
 * Function to check if the "get_called_class" exists
 * and create it if it does not.
 */
-if(!function_exists('get_called_class')) {
-    function get_called_class($bt = false,$l = 1) {
-        //Find called class
-        if (!$bt) $bt = debug_backtrace();
-        if (!isset($bt[$l])) throw new Exception("Cannot find called class -> stack level too deep.");
-        if (!isset($bt[$l]['type'])) {
+if (!function_exists('get_called_class')) {
+    function get_called_class($flag=false, $indexFlag=1) {
+        if (!$flag) {
+        	$flag = debug_backtrace();
+        }
+        if (!isset($flag[$indexFlag])) {
+        	throw new Exception("Cannot find called class. Stack level too deep.");
+        }
+        if (!isset($flag[$indexFlag]['type'])) {
             throw new Exception ('type not set');
         }
-        else switch ($bt[$l]['type']) {
+        else switch ($flag[$indexFlag]['type']) {
             case '::':
-                $lines = file($bt[$l]['file']);
+                $indexFlagines = file($flag[$indexFlag]['file']);
                 $i = 0;
                 $callerLine = '';
                 do {
                     $i++;
-                    $callerLine = $lines[$bt[$l]['line']-$i] . $callerLine;
-                } while (strpos($callerLine,$bt[$l]['function']) === false);
-                preg_match('/([a-zA-Z0-9\_]+)::'.$bt[$l]['function'].'/',
+                    $callerLine = $indexFlagines[$flag[$indexFlag]['line']-$i] . $callerLine;
+                } while (strpos($callerLine,$flag[$indexFlag]['function']) === false);
+                preg_match('/([a-zA-Z0-9\_]+)::'.$flag[$indexFlag]['function'].'/',
                             $callerLine,
                             $matches);
                 if (!isset($matches[1])) {
@@ -41,17 +44,17 @@ if(!function_exists('get_called_class')) {
                 switch ($matches[1]) {
                     case 'self':
                     case 'parent':
-                        return get_called_class($bt,$l+1);
+                        return get_called_class($flag,$indexFlag+1);
                     default:
                         return $matches[1];
                 }
-            case '->': switch ($bt[$l]['function']) {
+            case '->': switch ($flag[$indexFlag]['function']) {
                     case '__get':
-                        if (!is_object($bt[$l]['object'])) throw new Exception ("Edge case fail. __get called on non object.");
-                        return get_class($bt[$l]['object']);
-                    default: return $bt[$l]['class'];
+                        if (!is_object($flag[$indexFlag]['object'])) throw new Exception ("Edge case fail. __get called on non object.");
+                        return get_class($flag[$indexFlag]['object']);
+                    default: return $flag[$indexFlag]['class'];
                 }
-            default: throw new Exception ("Unknown backtrace method type");
+            default: throw new Exception ("Unknown backtrace method type.");
         }
     } 
 }
