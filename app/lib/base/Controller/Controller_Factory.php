@@ -12,9 +12,9 @@ class Controller_Factory {
 
     /**
     * The main function to load the controller for the content object.
-    * $GET : Array with the loaded $_GET values
-    * $POST : Array with the loaded $_POST values
-    * $FILES : Array with the loaded $_FILES values
+    * $GET : Array with the loaded $_GET values.
+    * $POST : Array with the loaded $_POST values.
+    * $FILES : Array with the loaded $_FILES values.
     */
     static function factory($GET=array(), $POST=array(), $FILES=array()) {
         $type = (isset($GET['type'])) ? $GET['type'] : '';
