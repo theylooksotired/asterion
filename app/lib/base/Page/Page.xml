@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-* @structure UserType
+* @structure Page
 *
 * @author Leano Martinet <info@asterion-cms.com>
 * @package Asterion
 * @version 3.0.1
 -->
 <object>
-    <name>UserType</name>
+    <name>Page</name>
     <info>
         <sql>
-            <primary>idUserType</primary>
-            <onDelete>UserTypeMenu</onDelete>
+            <primary>idPage</primary>
         </sql>
         <form>
-            <title>userTypes</title>
-            <label>#name</label>
+            <title>pages</title>
+            <label>#code</label>
+            <orderBy>code</orderBy>
             <permissions>
                 <superadmin>
                     <canViewList>true</canViewList>
@@ -25,42 +25,58 @@
                 </superadmin>
             </permissions>
         </form>
-        <nav></nav>
     </info>
     <attributes>
         <attribute>
-            <name>idUserType</name>
+            <name>idPage</name>
             <type>id-autoincrement</type>
         </attribute>
-        <attribute>
+         <attribute>
             <name>code</name>
             <label>code</label>
             <type>text</type>
             <required>notEmpty</required>
         </attribute>
         <attribute>
-            <name>name</name>
-            <label>name</label>
+            <name>title</name>
+            <label>title</label>
             <required>notEmpty</required>
             <type>text-large</type>
         </attribute>
         <attribute>
-            <name>managesPermissions</name>
-            <label>managesPermissions</label>
-            <type>checkbox</type>
+            <name>titleUrl</name>
+            <lang>true</lang>
+            <type>hidden-url</type>
+            <refAttribute>title</refAttribute>
         </attribute>
         <attribute>
-            <name>idUserTypeMenu</name>
-            <label>menu</label>
-            <type>multiple-object</type>
-            <refObject>UserTypeMenu</refObject>
-            <lnkAttribute>idUserType</lnkAttribute>
+            <name>metaDescription</name>
+            <label>metaDescription</label>
+            <lang>true</lang>
+            <type>textarea</type>
+        </attribute>
+        <attribute>
+            <name>metaKeywords</name>
+            <label>metaKeywords</label>
+            <lang>true</lang>
+            <type>textarea</type>
+        </attribute>
+        <attribute>
+            <name>page</name>
+            <label>page</label>
+            <lang>true</lang>
+            <type>textarea-ck</type>
         </attribute>
     </attributes>
     <indexes>
         <index>
             <name>code</name>
             <fields>code</fields>
+        </index>
+        <index>
+            <name>titleUrl</name>
+            <lang>true</lang>
+            <fields>titleUrl</fields>
         </index>
     </indexes>
 </object>

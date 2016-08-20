@@ -23,6 +23,7 @@ try {
     /**
     * If the DEBUG mode is activated on the configuration file, Asterion allows
     * error reporting and runs the script to create the basic tables.
+    * It also saves the default data for the administration system.
     */
     if (DEBUG) {
         error_reporting(E_ALL);
@@ -52,6 +53,7 @@ try {
     $metaKeywords = $control->getMetaKeywords();
     $metaDescription = $control->getMetaDescription();
     $metaImage = $control->getMetaImage();
+    $metaUrl = $control->getMetaUrl();
     $mode = $control->getMode();
 } catch (Exception $e) {
     $mode = 'ajax';
@@ -60,7 +62,7 @@ try {
 }
 
 /**
-* Finally, Asterion checks the "mode" variable to return the response.
+* Asterion checks the "mode" variable to return the response.
 * By default it uses the public.php template, however it is possible to
 * create or add customized headers to the response.
 */
@@ -80,6 +82,10 @@ switch ($mode) {
     break;
     case 'json':
         header('Content-Type: application/json');
+        echo $content;
+    break;
+    case 'js':
+        header('Content-Type: application/js');
         echo $content;
     break;
 }

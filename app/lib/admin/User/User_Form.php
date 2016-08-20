@@ -1,4 +1,13 @@
 <?php
+/**
+* @class UserForm
+*
+* This class manages the forms for the User objects.
+*
+* @author Leano Martinet <info@asterion-cms.com>
+* @package Asterion
+* @version 3.0.1
+*/
 class User_Form extends Form{
 
     public function loginAdmin() {

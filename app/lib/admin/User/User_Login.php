@@ -57,7 +57,8 @@ class User_Login {
         $this->info['idUser'] = $user->id();
         $this->info['email'] = $user->get('email');
         $this->info['label'] = $user->getBasicInfo();
-        $this->info['type'] = $type->get('code');
+        $this->info['code'] = $type->get('code');
+        $this->info['idUserType'] = $type->id();
         $this->sessionAdjust($this->info);
     }
 

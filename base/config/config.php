@@ -26,11 +26,14 @@ define('TITLE', 'Base Site');
 define('SERVER_URL', 'http://localhost');
 define('BASE_STRING','/asterion/');
 define('LOCAL_URL', SERVER_URL.BASE_STRING);
-define('LOCAL_FILE', $_SERVER['DOCUMENT_ROOT'].BASE_STRING);
+//define('LOCAL_FILE', $_SERVER['DOCUMENT_ROOT'].BASE_STRING);
+define('LOCAL_FILE', '/home/leanomartinet/Documents/picsStff'.BASE_STRING);
 define('BASE_URL', LOCAL_URL.APP_FOLDER.'/');
 define('BASE_FILE', LOCAL_FILE.APP_FOLDER.'/');
 define('APP_URL', LOCAL_URL.'app/');
 define('APP_FILE', LOCAL_FILE.'app/');
+define('DATA_URL', LOCAL_URL.'app/data/');
+define('DATA_FILE', LOCAL_FILE.'app/data/');
 
 /**
 * The DEBUG constant defines if we are in debug mode or not.
@@ -85,6 +88,7 @@ $_ENV['locations'][] = FRAMEWORK_FILE.'admin/';
 /**
 * The following lines define the access to the database.
 */
+define('DB_USE', true);
 define('DB_SERVER', 'localhost');
 define('DB_USER', 'root');
 define('DB_PASSWORD', 'lucyinthesky');

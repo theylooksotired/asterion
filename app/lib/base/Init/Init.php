@@ -1,102 +1,55 @@
 <?php
+/**
+* @class Init
+*
+* This class contains static functions to initialize the website.
+* It is only called in DEBUG mode and it helps to setup Asterion for the first time.
+*
+* @author Leano Martinet <info@asterion-cms.com>
+* @package Asterion
+* @version 3.0.1
+*/
 class Init {
     
+    /**
+    * Main function to initialize the website.
+    */
     static public function initSite(){
-        //Initialize the site
-        $lang = new Lang();
-        $lang->createTable();
-        Lang::insertConfig();
-        $langTrans = new LangTrans();
-        $langTrans->createTable();
-        LangTrans::insertConfig();
-        $params = new Params();
-        $params->createTable();
-        Params::insertConfig();
-        $userType = new UserType();
-        $userType->createTable();
-        $userTypeMenu = new UserTypeMenu();
-        $userTypeMenu->createTable();
-        $user = new User();
-        $user->createTable();
-        $userTypes = UserType::countResults();
-        if ($userTypes==0) {    
-            //Initialize default values for User, UserType and UserTypeMenu
-            $newUserType = new UserType();
-            $newUserType->insert(array('code'=>'superadmin', 'name'=>'Super Admin'));
-            $newUser = new User();
-            $newUser->insert(array('idUserType'=>$newUserType->id(),
-                                    'name'=>'Super Admin',
-                                    'email'=>EMAIL,
-                                    'password'=>'asterion',
-                                    'active'=>'1'));
-            $newUserTypeMenu = new UserTypeMenu();
-            $newUserTypeMenu->insert(array('idUserType'=>$newUserType->id(),
-                                            'name_en'=>'Pages',
-                                            'name_fr'=>'Pages',
-                                            'name_es'=>'P&aacute;ginas',
-                                            'action'=>'Page',
-                                            'type'=>'0'));
-            $newUserTypeMenu = new UserTypeMenu();
-            $newUserTypeMenu->insert(array('idUserType'=>$newUserType->id(),
-                                            'name_en'=>'Email templates',
-                                            'name_fr'=>'Gabarits des emails',
-                                            'name_es'=>'Plantillas de los emails',
-                                            'action'=>'HtmlMailTemplate',
-                                            'type'=>'1'));
-            $newUserTypeMenu = new UserTypeMenu();
-            $newUserTypeMenu->insert(array('idUserType'=>$newUserType->id(),
-                                            'name_en'=>'Emails',
-                                            'name_fr'=>'Emails',
-                                            'name_es'=>'Emails',
-                                            'action'=>'HtmlMail',
-                                            'type'=>'1'));
-            $newUserTypeMenu = new UserTypeMenu();
-            $newUserTypeMenu->insert(array('idUserType'=>$newUserType->id(),
-                                            'name_en'=>'Users',
-                                            'name_fr'=>'Utilisateurs',
-                                            'name_es'=>'Usuarios',
-                                            'action'=>'User',
-                                            'type'=>'1'));
-            $newUserTypeMenu = new UserTypeMenu();
-            $newUserTypeMenu->insert(array('idUserType'=>$newUserType->id(),
-                                            'name_en'=>'User Types',
-                                            'name_fr'=>'Types d\'utilisateurs',
-                                            'name_es'=>'Tipos de usuarios',
-                                            'action'=>'UserType',
-                                            'type'=>'1'));
-            $newUserTypeMenu = new UserTypeMenu();
-            $newUserTypeMenu->insert(array('idUserType'=>$newUserType->id(),
-                                            'name_en'=>'Site parameters',
-                                            'name_fr'=>'Param&egrave;tres du site',
-                                            'name_es'=>'Par&aacute;metros',
-                                            'action'=>'Params',
-                                            'type'=>'2'));
-            $newUserTypeMenu = new UserTypeMenu();
-            $newUserTypeMenu->insert(array('idUserType'=>$newUserType->id(),
-                                            'name_en'=>'Translations',
-                                            'name_fr'=>'Traductions',
-                                            'name_es'=>'Traducciones',
-                                            'action'=>'LangTrans',
-                                            'type'=>'2'));
-            $newUserTypeMenu = new UserTypeMenu();
-            $newUserTypeMenu->insert(array('idUserType'=>$newUserType->id(),
-                                            'name_en'=>'Logout',
-                                            'name_fr'=>'D&eacute;connexion',
-                                            'name_es'=>'Salir',
-                                            'action'=>'User/logout',
-                                            'type'=>'3'));
+        Lang::saveInitialValues();
+        Params::saveInitialValues();
+        Init::saveInitialValues('LangTrans');
+        Init::saveInitialValues('UserType');
+        Init::saveInitialValues('UserTypeMenu');
+        Init::saveInitialValues('User', array('EMAIL'=>EMAIL));
+        Init::saveInitialValues('HtmlSectionAdmin');
+        Init::saveInitialValues('HtmlMailTemplate');
+        Init::saveInitialValues('HtmlMail');
+        Init::saveInitialValues('Permission');
+    }
+
+    /**
+    * Load the initial values at the time of installation
+    * and save them in the database.
+    */
+    static public function saveInitialValues($className, $extraValues=array()) {
+        $object = new $className;
+        $object->createTable();
+        $numberItems = $object->countResults();
+        $dataUrl = DATA_FILE.$className.'.json';
+        if (file_exists($dataUrl) && $numberItems==0) {
+            $items = json_decode(file_get_contents($dataUrl), true);
+            foreach ($items as $item) {
+                $itemSave = new $className;
+                if (count($extraValues) > 0) {
+                    foreach ($extraValues as $keyExtraValue=>$itemExtraValue) {
+                        foreach ($item as $keyItem=>$eleItem) {
+                            $item[$keyItem] = str_replace('##'.$keyExtraValue, $itemExtraValue, $eleItem);
+                        }
+                    }
+                }
+                $itemSave->insert($item);
+            }
         }
-        //Initialize the admin section
-        $htmlSectionAdmin = new HtmlSectionAdmin();
-        $htmlSectionAdmin->createTable();
-        HtmlSectionAdmin::insertConfig();
-        //Initialize the email managment section
-        $htmlMailTemplate = new HtmlMailTemplate();
-        $htmlMailTemplate->createTable();
-        HtmlMailTemplate::insertConfig();
-        $htmlMail = new HtmlMail();
-        $htmlMail->createTable();
-        HtmlMail::insertConfig();
     }
 
 }

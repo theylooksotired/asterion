@@ -15,7 +15,7 @@ class Db_Sql {
     static public function countResults($options=array()) {
         //Counts the number of objects in the DB (static function)
         $table = (isset($options['table'])) ? $options['table'] : get_called_class();
-        $where = (isset($options['where'])) ? $options['where'] : '1=1';
+        $where = (isset($options['where']) && $options['where']!='') ? $options['where'] : '1=1';
         $query = 'SELECT COUNT(*) AS numElements 
                         FROM '.Db::prefixTable($table).'
                         WHERE '.$where;
@@ -64,7 +64,7 @@ class Db_Sql {
         //Returns a single object (static function)
         $table = (isset($options['table'])) ? $options['table'] : get_called_class();
         $fields = (isset($options['fields'])) ? $options['fields'] : '*';
-        $where = (isset($options['where'])) ? $options['where'] : '1=1';
+        $where = (isset($options['where']) && $options['where']!='') ? $options['where'] : '1=1';
         $order = (isset($options['order']) && $options['order']!='') ? ' ORDER BY '.$options['order'] : '';
         $limit = (isset($options['limit']) && $options['limit']!='') ? ' LIMIT '.$options['limit'].',1' : ' LIMIT 1';
         $object = new $table();
@@ -86,7 +86,7 @@ class Db_Sql {
         //Returns a list of objects (static function)
         $table = (isset($options['table'])) ? $options['table'] : get_called_class();
         $fields = (isset($options['fields'])) ? $options['fields'] : '*';
-        $where = (isset($options['where'])) ? $options['where'] : '1=1';
+        $where = (isset($options['where']) && $options['where']!='') ? $options['where'] : '1=1';
         $order = (isset($options['order']) && $options['order']!='') ? ' ORDER BY '.$options['order'] : '';
         $limit = (isset($options['limit']) && $options['limit']!='') ? ' LIMIT '.$options['limit'] : '';
         $objectType = (isset($options['object'])) ? $options['object'] : $table;
@@ -119,6 +119,7 @@ class Db_Sql {
     public function readListQuery($query) {
         //Returns a list using a query
         $objectType = $this->className;
+        $query = str_replace('##', DB_PREFIX, $query);
         $result = Db::returnAll($query);
         $list = array();
         foreach ($result as $name) {

@@ -228,6 +228,14 @@ class Db_Object extends Db_Sql {
         }
         return $result;
     }
+
+    public function infoSearch() {
+        return (string)$this->info->info->form->search;
+    }
+
+    public function infoSearchQuery() {
+        return (string)$this->info->info->form->searchQuery;
+    }
     
     public function get($name) {
         //Gets the value of an attribute

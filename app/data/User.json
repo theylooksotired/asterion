@@ -1,0 +1,16 @@
+[
+	{
+		"idUserType": "1",
+		"name": "Asterion Administrator",
+		"email": "##EMAIL",
+		"password": "asterion",
+		"active": "1"
+	},
+	{
+		"idUserType": "2",
+		"name": "Asterion Editor",
+		"email": "editor@asterion-cms.com",
+		"password": "asterion",
+		"active": "1"
+	}
+]

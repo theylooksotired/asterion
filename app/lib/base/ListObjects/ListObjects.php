@@ -8,7 +8,7 @@ class ListObjects {
         $this->message = (isset($options['message'])) ? $options['message'] : '';
         $this->query = (isset($options['query'])) ? $options['query'] : '';
         $this->queryCount = (isset($options['queryCount'])) ? $options['queryCount'] : '';
-        $this->results = (isset($this->options['results'])) ? intval($this->options['results']) : '';
+        $this->results = (isset($this->options['results']) && $this->options['results']>0) ? intval($this->options['results']) : '';
         $this->populate();
     }
 

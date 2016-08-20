@@ -1,17 +1,24 @@
 <?php
+/**
+* @class NavigationAdmin_Controller
+*
+* This is the controller for all the actions in the administration area.
+*
+* @author Leano Martinet <info@asterion-cms.com>
+* @package Asterion
+* @version 3.0.1
+*/
 class NavigationAdmin_Controller extends Controller{
 
-    public function __construct($GET, $POST, $FILES) {
-        parent::__construct($GET, $POST, $FILES);
-    }
-
+    /**
+    * Main function to control the administration system
+    */
     public function controlActions(){
         $ui = new NavigationAdmin_Ui($this);
         $this->mode = 'admin';
         switch ($this->action) {
             default:
-            case 'intro':
-                $this->login();
+                $this->login = User::loginAdmin();
                 $this->content = '<div class="pageIntro">'.HtmlSectionAdmin::show('intro').'</div>';
                 return $ui->render();
             break;
@@ -41,15 +48,6 @@ class NavigationAdmin_Controller extends Controller{
                 }
                 return 'info_translations = '.json_encode($translations).';';
             break;
-        }
-    }
-
-    public function login() {
-        //Check if the user is connected
-        $this->login = User_Login::getInstance();
-        if (!$this->login->isConnected()) {
-            header('Location: '.url('User/login', true));
-            exit();
         }
     }
 

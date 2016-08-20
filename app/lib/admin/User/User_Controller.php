@@ -1,9 +1,14 @@
 <?php
+/**
+* @class UserController
+*
+* This class is the controller for the User objects.
+*
+* @author Leano Martinet <info@asterion-cms.com>
+* @package Asterion
+* @version 3.0.1
+*/
 class User_Controller extends Controller {
-
-    public function __construct($GET, $POST, $FILES) {
-        parent::__construct($GET, $POST, $FILES);
-    }
 
     public function controlActions(){
         $ui = new NavigationAdmin_Ui($this);

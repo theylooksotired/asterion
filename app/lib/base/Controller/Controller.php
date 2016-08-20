@@ -17,7 +17,7 @@ abstract class Controller{
     * $POST : Array with the loaded $_POST values.
     * $FILES : Array with the loaded $_FILES values.
     */
-    protected function __construct($GET, $POST, $FILES) {
+    public function __construct($GET, $POST, $FILES) {
         $this->type = isset($GET['type']) ? $GET['type'] : '';
         $this->action = isset($GET['action']) ? $GET['action'] : 'list';
         $this->id = isset($GET['id']) ? $GET['id'] : '';
@@ -70,6 +70,14 @@ abstract class Controller{
     }
 
     /**
+    * Function to get the url address for a page.
+    * A common use is the canonical URL of the current page.
+    */
+    public function getMetaUrl() {
+        return (isset($this->metaUrl) && $this->metaUrl!='') ? $this->metaUrl : '';
+    }
+
+    /**
     * Function to get the mode to render a page.
     * By default it uses the public method.
     * The render goes on the main index.php file.
@@ -90,19 +98,12 @@ abstract class Controller{
         $this->object = new $this->type();
         $this->titlePage = __((string)$this->object->info->info->form->title);
         $this->layout = (string)$this->object->info->info->form->layout;
+        $this->menuInside = $this->menuInside();
         $ui = new NavigationAdmin_Ui($this);
         switch ($this->action) {
             default:
                 header('Location: '.url($this->type.'/listAdmin', true));
-            break;
-            case 'reWriteTable':
-                /**
-                * This action rewrites the entire table eliminating all the information.
-                * It is used in certain cases to re-structure some content objects.
-                */
-                $this->checkLoginAdmin();
-                $this->object->createTable(true);
-                header('Location: '.url($this->type.'/listAdmin', true));
+                exit();
             break;
             case 'listAdmin':
                 /**
@@ -113,8 +114,7 @@ abstract class Controller{
                 if (DEBUG) {
                     Db::initTable($this->object->className);
                 }
-                $this->menuInside = $this->menuInside();
-                $this->content = $this->listAll();
+                $this->content = $this->listAdmin();
                 return $ui->render();
             break;
             case 'insertView':
@@ -122,8 +122,11 @@ abstract class Controller{
                 * This is the action that shows the form to insert a record in the BackEnd.
                 */
                 $this->checkLoginAdmin();
-                $this->menuInside = $this->menuInside();
-                $this->content = $this->insertView();
+                $uiObjectName = $this->type.'_Ui';
+                $uiObject = new $uiObjectName($this->object);
+                $this->content = $uiObject->renderForm(array('values'=>$this->values,
+                                                            'action'=>url($this->object->className.'/insert', true),
+                                                            'class'=>'formAdmin formAdminInsert'));
                 return $ui->render();
             break;
             case 'insert':
@@ -136,32 +139,47 @@ abstract class Controller{
                 $insert = $this->insert();
                 if ($insert['success']=='1') {
                     header('Location: '.url($this->type.'/insertCheck/'.$insert['id'], true));
+                    exit();
                 } else {
                     $this->messageError = __('errorsForm');
-                    $this->menuInside = $this->menuInside();
                     $this->content = $insert['html'];
                     return $ui->render();
                 }
             break;
+            case 'modifyView':
             case 'insertCheck':
                 /**
                 * This is the action that shows the form to check a record insertion.
                 */
                 $this->checkLoginAdmin();
-                $this->message = __('savedForm');
-                $this->menuInside = $this->menuInside();
-                $this->content = $this->modifyView();
+                $this->message = ($this->action=='insertCheck') ? __('savedForm') : '';
+                $this->object = $this->object->readObject($this->id);
+                $uiObjectName = $this->type.'_Ui';
+                $uiObject = new $uiObjectName($this->object);
+                $values = array_merge($this->object->valuesArray(), $this->values);
+                $this->content = $uiObject->renderForm(array_merge(
+                                                            array('values'=>$values,
+                                                                    'action'=>url($this->object->className.'/modify', true),
+                                                                    'class'=>'formAdmin formAdminModify'),
+                                                            array('submit'=>array('save'=>__('save'),
+                                                                    'saveCheck'=>__('saveCheck')))));
                 return $ui->render();
             break;
-            case 'modifyView':
             case 'modifyViewNested':
                 /**
                 * This is the action that shows the form to modify a record.
                 */
                 $this->checkLoginAdmin();
-                $nested = ($this->action == 'modifyViewNested') ? true : false;
-                $this->menuInside = $this->menuInside();
-                $this->content = $this->modifyView($nested);
+                $this->object = $this->object->readObject($this->id);
+                $uiObjectName = $this->type.'_Ui';
+                $uiObject = new $uiObjectName($this->object);
+                $values = array_merge($this->object->valuesArray(), $this->values);
+                $this->content = $uiObject->renderForm(array_merge(
+                                                        array('values'=>$values,
+                                                                'action'=>url($this->object->className.'/modifyNested', true),
+                                                                'class'=>'formAdmin formAdminModify',
+                                                                'nested'=>true),
+                                                        array()));
                 return $ui->render();
             break;
             case 'modify':
@@ -178,6 +196,7 @@ abstract class Controller{
                     } else {
                         header('Location: '.url($this->type.'/listAdmin', true));
                     }
+                    exit();
                 } else {
                     $this->messageError = __('errorsForm');
                     $this->content = $modify['html'];
@@ -189,8 +208,13 @@ abstract class Controller{
                 * This is the action that deletes a record.
                 */
                 $this->checkLoginAdmin();
-                $this->delete();
+                if ($this->id != '') {
+                    $type = new $this->type();
+                    $object = $type->readObject($this->id);
+                    $object->delete();
+                }
                 header('Location: '.url($this->type.'/listAdmin', true));
+                exit();
             break;
             case 'sortSave':
                 /**
@@ -293,7 +317,7 @@ abstract class Controller{
                 */
                 $this->checkLoginAdmin();
                 if ($this->id != '') {
-                    $this->content = $this->listAll();
+                    $this->content = $this->listAdmin();
                     return $ui->render();
                 } else {
                     if (isset($this->values['search']) && $this->values['search']!='') {
@@ -307,123 +331,118 @@ abstract class Controller{
         }
     }
 
-    public function listAll() {
-        $classUi = $this->type.'_Ui';
-        // Order list
-        $orderAttribute = (string)$this->object->info->info->form->orderBy;
-        $order = '';
-        if ($orderAttribute!='') {
-            $orderInfo = $this->object->attributeInfo($orderAttribute);
-            $order = (is_object($orderInfo) && (string)$orderInfo->lang == "true") ? $orderAttribute.'_'.Lang::active() : $orderAttribute;
+    /**
+    * Render the list of the items in the administration area
+    */
+    public function listAdmin() {
+        if ((string)$this->object->info->info->form->group!='') {
+            return $this->listGroupAdmin();
         }
-        // Multiple actions
-        $multipleActionsHtml = '';
-        $multipleChoice = false;
-        $multipleActions = (array)$this->object->info->info->form->multipleActions->action;
-        if (count($multipleActions) > 0) {
-            $multipleChoice = true;
-            $multipleActionsOptions = '';
-            foreach ($multipleActions as $multipleAction) {
-                $multipleActionsOptions .= '<div class="multipleAction multipleOption" rel="'.url($this->object->className.'/multiple-'.$multipleAction, true).'">'.__($multipleAction.'Selected').'</div>';    
-            }
-            $multipleActionsHtml = '<div class="multipleActions">
-                                        <div class="multipleAction multipleActionCheckAll">
-                                            '.FormFields_Checkbox::create(array('name'=>'checkboxList')).'
-                                        </div>
-                                        '.$multipleActionsOptions.'
-                                        <div class="clearer"></div>
-                                    </div>';
-        }
-        // Search form
-        $search = (string)$this->object->info->info->form->search;
-        $searchQuery = (string)$this->object->info->info->form->searchQuery;
+        $search = $this->object->infoSearch();
+        $searchQuery = $this->object->infoSearchQuery();
         $searchValue = urldecode($this->id);
-        $formSearch = '';
-        if ($search!='' || $searchQuery!='') {
-            $fieldsSearch = FormFields_Text::create(array('name'=>'search', 'value'=>$searchValue));
-            $formSearch = '<div class="formAdminSearchWrapper">
-                                '.Form::createForm($fieldsSearch, array('action'=>url($this->type.'/search', true), 'submit'=>__('search'), 'class'=>'formAdminSearch')).'
-                                <div class="clearer"></div>
+        $sortableListClass = ($this->object->hasOrd()) ? 'sortableList' : '';
+        $options['order'] = $this->orderField();
+        $options['results'] = (int)$this->object->info->info->form->pager;
+        $options['where'] = ($search!='' && $searchValue!='') ? str_replace('#SEARCH', $searchValue, $search) : '';
+        $options['query'] = ($searchQuery!='' && $searchValue!='') ? str_replace('#SEARCH', $searchValue, $searchQuery) : '';
+        $list = new ListObjects($this->type, $options);
+        $multipleChoice = (count((array)$this->object->info->info->form->multipleActions->action) > 0);
+        return $this->searchForm().'
+                '.$this->multipleActionsControl().'
+                <div class="listAdmin '.$sortableListClass.'" rel="'.url($this->object->className.'/sortSave/', true).'">
+                    '.$list->showListPager(array('function'=>'Admin',
+                                                'message'=>'<div class="message">'.__('noItems').'</div>'),
+                                            array('userType'=>$this->login->get('type'), 'multipleChoice'=>$multipleChoice)).'
+                </div>';
+    }
+
+    /**
+    * Render the list of the items when is the case of a group
+    */
+    public function listGroupAdmin() {
+        $group = (string)$this->object->info->info->form->group;
+        $items = $this->object->getValues($group, true);
+        $listItems = '';
+        foreach ($items as $key=>$item) {
+            $sortableListClass = ($this->object->hasOrd()) ? 'sortableList' : '';
+            $list = new ListObjects($this->type, array('where'=>$group.'="'.$key.'"',
+                                                        'function'=>'Admin',
+                                                        'order'=>$this->orderField()));
+            $listItems .= '<div class="sublistAdmin">
+                                <h2>'.$item.'</h2>
+                                <div class="listAdmin '.$sortableListClass.'" rel="'.url($this->object->className.'/sortSave/', true).'">
+                                    '.$list->showList(array('function'=>'Admin',
+                                                            'message'=>'<div class="message">'.__('noItems').'</div>'),
+                                                        array('userType'=>$this->login->get('type'))).'
+                                </div>
                             </div>';
         }
-        $searchTitle = '';
-        // Group objects
-        $classSort = ($this->permissions('canOrder')) ? 'sortableList' : '';
-        $listItems = '';
-        $group = (string)$this->object->info->info->form->group;
-        if ($group!='') {
-            $items = $this->object->getValues($group, true);
-            $listItems = '';
-            foreach ($items as $key=>$item) {
-                $list = new ListObjects($this->type, array('where'=>$group.'="'.$key.'"', 'function'=>'Admin', 'order'=>$order));
-                if (!$list->isEmpty()) {
-                    $classSort = ($this->permissions('canOrder')) ? 'sortableList' : '';
-                    if (!$list->isEmpty()) {
-                        $listItems .= '<div class="sublistAdmin">
-                                            <h2>'.$item.'</h2>
-                                            <div class="listAdmin '.$classSort.'" rel="'.url($this->object->className.'/sortSave/', true).'">
-                                                '.$list->showList(array('function'=>'Admin'), array('userType'=>$this->login->get('type'), 'multipleChoice'=>$multipleChoice)).'
-                                            </div>
-                                        </div>';                        
-                    }
-                }
-            }
-        } else {
-            $pager = (int)$this->object->info->info->form->pager;
-            if (($search!='' || $searchQuery!='') && $searchValue!='') {
-                $searchTitle = '<div class="backButton"><a href="'.url($this->object->className.'/listAdmin', true).'">&#8592; '.__('viewAllItems').'</a></div>
-                                <h2>'.__('resultsFor').': "'.$searchValue.'"'.'</h2>';
-                if ($search!='') {
-                    $list = new ListObjects($this->type, array('where'=>str_replace('#SEARCH', $searchValue, $search), 'function'=>'Admin', 'order'=>$order, 'limit'=>'20'));
-                } else {
-                    $list = new ListObjects($this->type, array('query'=>str_replace('#SEARCH', $searchValue, $searchQuery)));
-                }
-                $listItems = $list->pager(array('admin'=>true)).'
-                            <div class="listAdmin '.$classSort.'" rel="'.url($this->object->className.'/sortSave/', true).'">
-                                '.$list->showList(array('function'=>'Admin', 'message'=>'<div class="message">'.__('noItems').'</div>'), array('userType'=>$this->login->get('type'))).'
-                            </div>
-                            '.$list->pager(array('admin'=>true));
-            } else {
-                if ($pager > 0) {
-                    $list = new ListObjects($this->type, array('function'=>'Admin', 'order'=>$order, 'results'=>$pager));
-                } else {
-                    $list = new ListObjects($this->type, array('function'=>'Admin', 'order'=>$order));
-                }
-                if (!$list->isEmpty()) {
-                    $listItems = $multipleActionsHtml.'
-                                '.$list->pager(array('admin'=>true)).'
-                                <div class="listAdmin '.$classSort.'" rel="'.url($this->object->className.'/sortSave/', true).'">
-                                    '.$list->showList(array('function'=>'Admin'), array('userType'=>$this->login->get('type'), 'multipleChoice'=>$multipleChoice)).'
-                                </div>
-                                '.$list->pager(array('admin'=>true));
-                }
-            }
+        return $listItems;
+    }
+
+    /**
+    * Check for the order field
+    */
+    public function orderField() {
+        $orderAttribute = (string)$this->object->info->info->form->orderBy;
+        if ($orderAttribute!='') {
+            $orderInfo = $this->object->attributeInfo($orderAttribute);
+            return (is_object($orderInfo) && (string)$orderInfo->lang == "true") ? $orderAttribute.'_'.Lang::active() : $orderAttribute;
         }
-        return $formSearch.'
-                '.$searchTitle.'
-                '.$listItems;
     }
 
-    public function insertView() {
-        //Render an insertion form
-        $uiObjectName = $this->type.'_Ui';
-        $uiObject = new $uiObjectName($this->object);
-        return $uiObject->renderForm(array('values'=>$this->values, 'action'=>url($this->object->className.'/insert', true), 'class'=>'formAdmin formAdminInsert'));
+    /**
+    * Render the multiple actions control
+    */
+    public function multipleActionsControl() {
+        $multipleActions = (array)$this->object->info->info->form->multipleActions->action;
+        if (count($multipleActions) > 0) {
+            $multipleActionsOptions = '';
+            foreach ($multipleActions as $multipleAction) {
+                $linkMultiple = url($this->object->className.'/multiple-'.$multipleAction, true);
+                $multipleActionsOptions .= '<div class="multipleAction multipleOption" rel="'.$linkMultiple.'">
+                                                '.__($multipleAction.'Selected').'
+                                            </div>';    
+            }
+            return '<div class="multipleActions">
+                        <div class="multipleAction multipleActionCheckAll">
+                            '.FormFields_Checkbox::create(array('name'=>'checkboxList')).'
+                        </div>
+                        '.$multipleActionsOptions.'
+                    </div>';
+        }
     }
 
-    public function modifyView($nested=false){
-        //Render a modify form
-        $action = ($nested) ? 'modifyNested' : 'modify';
-        $this->object = $this->object->readObject($this->id);
-        $uiObjectName = $this->type.'_Ui';
-        $uiObject = new $uiObjectName($this->object);
-        $values = array_merge($this->object->valuesArray(), $this->values);
-        $submitArray = (!$nested) ? array('submit'=>array('save'=>__('save'), 'saveCheck'=>__('saveCheck'))) : array();
-        return $uiObject->renderForm(array_merge(array('values'=>$values, 'action'=>url($this->object->className.'/'.$action, true), 'class'=>'formAdmin formAdminModify', 'nested'=>$nested), $submitArray));
+    /**
+    * Render a search form for the object
+    */
+    public function searchForm() {
+        $search = $this->object->infoSearch();
+        $searchQuery = $this->object->infoSearchQuery();
+        $searchValue = urldecode($this->id);
+        if ($search!='' || $searchQuery!='') {
+            $fieldsSearch = FormFields_Text::create(array('name'=>'search', 'value'=>$searchValue));
+            $searchInfo = '';
+            if ($this->id!='') {
+                $searchInfo = '<div class="button buttonBack">
+                                    <a href="'.url($this->object->className.'/listAdmin', true).'">'.__('viewAllItems').'</a>
+                                </div>
+                                <h2>'.__('resultsFor').': "'.$searchValue.'"'.'</h2>';
+            }
+            return '<div class="formAdminSearchWrapper">
+                        '.Form::createForm($fieldsSearch, array('action'=>url($this->type.'/search', true),
+                                                                'submit'=>__('search'),
+                                                                'class'=>'formAdminSearch')).'
+                        '.$searchInfo.'
+                    </div>';
+        }
     }
 
+    /**
+    * Insert an element and return the proper information to render
+    */
     public function insert(){
-        //Insert an element and return the proper information to render
         $formClass = $this->type.'_Form';
         $form = new $formClass($this->values);
         $errors = $form->isValid();
@@ -449,8 +468,10 @@ abstract class Controller{
         }
     }
     
+    /**
+    * Modify an element and return the proper information to render
+    */
     public function modify($nested=false) {
-        //Modify an element and return the proper information to render
         $action = ($nested) ? 'modifyNested' : 'modify';
         if (isset($this->values[$this->object->primary])) {
             $this->object = $this->object->readObject($this->values[$this->object->primary]);
@@ -480,116 +501,73 @@ abstract class Controller{
         }
     }
 
-    public function delete(){
-        //Delete an element and return the proper information to render
-        if ($this->id != '') {
-            $type = new $this->type();
-            $object = $type->readObject($this->id);
-            $object->delete();
-        }
-    }
-
+    /**
+    * Render the inside menu for certain actions
+    */
     public function menuInside($action='') {
-        //Return the menu
         $items = '';
         $action = ($action!='') ? $action : $this->action;
         switch ($action) {
             case 'listAdmin':
-                if ($this->permissions('canInsert')) {
-                    $items = '<div class="menuSimpleItem menuSimpleItemInsert">
-                                <a href="'.url($this->type.'/insertView', true).'"><span></span>'.__('insertNew').'</a>
-                            </div>';
-                }
+                $items = '<div class="menuSimpleItem menuSimpleItemInsert">
+                            <a href="'.url($this->type.'/insertView', true).'">'.__('insertNew').'</a>
+                        </div>';
             break;
             case 'insertView':
             case 'insert':
             case 'modifyView':
                 $items = '<div class="menuSimpleItem menuSimpleItemCancel">
-                            <a href="'.url($this->type.'/listAdmin', true).'"><span></span>'.__('cancel').'</a>
+                            <a href="'.url($this->type.'/listAdmin', true).'">'.__('cancel').'</a>
                         </div>';
             break;
             case 'insertCheck':
-                $insertMenu = '';
-                if ($this->permissions('canInsert')) {
-                    $insertMenu = '<div class="menuSimpleItem menuSimpleItemInsert">
-                                        <a href="'.url($this->type.'/insertView', true).'"><span></span>'.__('insertNew').'</a>
-                                    </div>';
-                }
-                $items = $insertMenu.'
+                $items = '<div class="menuSimpleItem menuSimpleItemInsert">
+                            <a href="'.url($this->type.'/insertView', true).'">'.__('insertNew').'</a>
+                        </div>
                         <div class="menuSimpleItem menuSimpleItemList">
-                            <a href="'.url($this->type.'/listAdmin', true).'"><span></span>'.__('viewList').'</a>
+                            <a href="'.url($this->type.'/listAdmin', true).'">'.__('viewList').'</a>
                         </div>';
             break;
             case 'listBack':
                 $items = '<div class="menuSimpleItem menuSimpleItemList">
-                            <a href="'.url($this->type.'/listAdmin', true).'"><span></span>'.__('viewList').'</a>
+                            <a href="'.url($this->type.'/listAdmin', true).'">'.__('viewList').'</a>
                         </div>';
             break;
 
         }
-        if ($items!='') {
-            return '<div class="menuSimple">
-                        '.$items.'    
-                        <div class="clearer"></div>
-                    </div>';            
-        }
+        return ($items!='') ? '<nav class="menuSimple">'.$items.'</nav>' : '';
     }
 
-    // Functions to manage the permissions
+    /**
+    * Functions to manage the permissions
+    */
     public function checkLoginAdmin() {
-        if (!$this->login->isConnected()) {
-            if ($this->mode == 'ajax') {
-                return __('notConnected');
-            } else {            
-                header('Location: '.url('User/login', true));
-            }
-            exit();
-        }
-        $type = $this->login->get('type');
-        $this->permissions = $this->object->info->info->form->permissions->$type;
-        switch ($this->action) {
-            case 'reWriteTable':
-                $this->permissionsDeny('canRewrite');
-            break;
-            default:
-            case 'listAdmin':
-                $this->permissionsDeny('canViewList');
-            break;
-            case 'insertView':
-            case 'insert':
-            case 'insertCheck':
-                $this->permissionsDeny('canInsert');
-            break;
-            case 'modifyView':
-            case 'modifyViewNested':
-            case 'modify':
-            case 'multiple-activate':
-                $this->permissionsDeny('canModify');
-            break;
-            case 'delete':
-            case 'multiple-delete':
-                $this->permissionsDeny('canDelete');
-            break;
-            case 'sortSave':
-                $this->permissionsDeny('canOrder');
-            break;
-        }
-    }
-
-    function permissionsDeny($option='') {
-        $urlPermissions = url('NavigationAdmin/permissions', true);
-        if (!is_object($this->permissions) || (string)$this->permissions->$option != "true") {
-            if ($this->mode == 'ajax') {
-                return __('permissionsDeny');
-            } else {            
-                header('Location: '.$urlPermissions);
-                exit();
+        $this->login = User::loginAdmin();
+        $type = UserType::read($this->login->get('idUserType'));
+        if ($type->get('managesPermissions')!='1') {
+            $permissionsCheck = array('listAdmin'=>'permissionListAdmin',
+                                        'insertView'=>'permissionInsert',
+                                        'insert'=>'permissionInsert',
+                                        'insertCheck'=>'permissionInsert',
+                                        'modifyView'=>'permissionModify',
+                                        'modifyViewNested'=>'permissionModify',
+                                        'modify'=>'permissionModify',
+                                        'multiple-activate'=>'permissionModify',
+                                        'sortSave'=>'permissionModify',
+                                        'delete'=>'permissionDelete',
+                                        'multiple-delete'=>'permissionDelete');
+            $permissionCheck = $permissionsCheck[$this->action];
+            $permission = Permission::readFirst(array('where'=>'objectName="'.$this->type.'" AND idUserType="'.$type->id().'" AND '.$permissionCheck.'="1"'));
+            if ($permission->id()=='') {
+                if ($this->mode == 'ajax') {
+                    return __('permissionsDeny');
+                } else {            
+                    header('Location: '.url('NavigationAdmin/permissions', true));
+                    exit();
+                }
             }
         }
     }
 
-    function permissions($option) {
-        return (isset($this->permissions) && is_object($this->permissions) && (string)$this->permissions->$option == "true");
-    }
 }
 ?>

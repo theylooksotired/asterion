@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+* @structure UserType
+*
+* @author Leano Martinet <info@asterion-cms.com>
+* @package Asterion
+* @version 3.0.1
+-->
 <object>
     <name>UserTypeMenu</name>
     <info>
@@ -9,6 +16,7 @@
         <form>
             <title>menu</title>
             <orderBy>ord</orderBy>
+            <group>idUserType</group>
             <label>#name</label>
             <permissions>
                 <superadmin>
@@ -35,7 +43,8 @@
         </attribute>
         <attribute>
             <name>idUserType</name>
-            <type>linkid-autoincrement</type>
+            <type>select</type>
+            <refObject>UserType</refObject>
         </attribute>
         <attribute>
             <name>name</name>

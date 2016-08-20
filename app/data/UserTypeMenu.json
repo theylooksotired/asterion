@@ -1,0 +1,58 @@
+[
+	{
+		"idUserType": "1",
+		"name_en": "Pages",
+		"name_fr": "Pages",
+		"name_es": "Páginas",
+		"action": "Page",
+		"type": "0"
+	},
+	{
+		"idUserType": "1",
+		"name_en": "Email templates",
+		"name_fr": "Gabarits des emails",
+		"name_es": "Plantillas de los emails",
+		"action": "HtmlMailTemplate",
+		"type": "1"
+	},
+	{
+		"idUserType": "1",
+		"name_en": "Emails",
+		"name_fr": "Emails",
+		"name_es": "Emails",
+		"action": "HtmlMail",
+		"type": "1"
+	},
+	{
+		"idUserType": "1",
+		"name_en": "Users",
+		"name_fr": "Utilisateurs",
+		"name_es": "Usuarios",
+		"action": "User",
+		"type": "1"
+	},
+	{
+		"idUserType": "1",
+		"name_en": "User Types",
+		"name_fr": "Types d'utilisateurs",
+		"name_es": "Tipos de usuarios",
+		"action": "UserType",
+		"type": "1"
+	},
+	{
+		"idUserType": "1",
+		"name_en": "Site parameters",
+		"name_fr": "Paramètres du site",
+		"name_es": "Parámetros",
+		"action": "Params",
+		"type": "2"
+	},
+	{
+		"idUserType": "1",
+		"name_en": "Translations",
+		"name_fr": "Traductions",
+		"name_es": "Traducciones",
+		"action": "LangTrans",
+		"type": "2"
+	}
+]

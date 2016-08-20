@@ -1,29 +1,50 @@
 <?php
+/**
+* @class Ui
+*
+* This is the main class for the User Interface.
+* It is used mainly to render HTML blocks for the different objects.
+*
+* @author Leano Martinet <info@asterion-cms.com>
+* @package Asterion
+* @version 3.0.1
+*/
 class Ui {
 
+    /**
+    * Constructor
+    */
     public function __construct ($object) {
         $this->object = $object;
     }
-    
+
+    /**
+    * Render a div with the basic information
+    */
     public function renderPublic() {
-        //Render a div with the basic information
         return '<div class="item item_'.$this->object->className.'">
                     '.$this->object->getBasicInfo().'
                 </div>';
     }
 
+    /**
+    * Render a link
+    */
     public function renderLink() {
-        //Render a link
         return $this->object->link();
     }
 
+    /**
+    * Render the simple information for a csv format
+    */
     public function renderCsv() {
-        //Render the simple information for a csv format
         return $this->object->getBasicInfo().',';
     }
 
+    /**
+    * Render the object to send it within an email
+    */
     public function renderEmail() {
-        //Render the object to send it within an email
         $content = '';
         foreach($this->object->info->attributes->attribute as $item) {
             $name = (string)$item->name;
@@ -68,20 +89,21 @@ class Ui {
         return '<p>'.$content.'</p>';
     }
     
+    /**
+    * Render the object for the admin area
+    */
     public function renderAdmin($options=array()) {
-        //Render the object for the admin area
         $userType = (isset($options['userType'])) ? $options['userType'] : '';
         $nested = (isset($options['nested']) && $options['nested']==true) ? true : false;
         $class = (isset($options['class'])) ? $options['class'] : '';
-        $info = $this->object->info->info->form;
-        $permissions = $info->permissions->$userType;
-        $canModify = (is_object($permissions) && (string)$permissions->canModify == "true") ? $this->modify($nested) : '';
-        $label = (is_object($permissions) && (string)$permissions->canModify == "true") ? $this->label(true, $nested) : $this->label(false, $nested);
-        $canDelete = (is_object($permissions) && (string)$permissions->canDelete == "true") ? $this->delete() : '';
-        $canOrder = (is_object($permissions) && (string)$permissions->canOrder == "true") ? $this->order() : '';
-        $relOrd = (is_object($permissions) && (string)$permissions->canOrder == "true") ? 'rel="'.$this->object->id().'"' : '';
-        $viewPublic = (is_object($permissions) && (string)$permissions->canView == "true") ? $this->view() : '';
-        $layout = (string)$info->layout;
+        $permissions = Permission::getAll($this->object->className);
+        $label = ($permissions['permissionModify']=='1') ? $this->label(true, $nested) : $this->label(false, $nested);
+        $canModify = ($permissions['permissionModify']=='1') ? $this->modify($nested) : '';
+        $canDelete = ($permissions['permissionDelete']=='1') ? $this->delete() : '';
+        $canOrder = ($permissions['permissionModify']=='1' && $this->object->hasOrd()) ? $this->order() : '';
+        $relOrd = ($permissions['permissionModify']=='1') ? 'rel="'.$this->object->id().'"' : '';
+        $viewPublic = ($permissions['permissionListAdmin']=='1') ? $this->view() : '';
+        $layout = (string)$this->object->info->info->form->layout;
         $multipleChoice = '';
         if (isset($options['multipleChoice']) && $options['multipleChoice']==true) {
             $multipleChoice .= '<div class="checkboxAdmin">
@@ -100,14 +122,15 @@ class Ui {
                         <div class="lineAdminLabel">
                             '.$label.'
                         </div>
-                        <div class="clearer"></div>
                     </div>
                     <div class="modifySpace"></div>
                 </div>';
     }
     
+    /**
+    * Render the object as a sitemap url
+    */
     public function renderSitemap($options=array()) {
-        //Render the object as a sitemap url
         $changefreq = isset($options['changefreq']) ? $options['changefreq'] : 'weekly';
         $priority = isset($options['priority']) ? $options['priority'] : '1';
         $xml = '<url>
@@ -119,8 +142,10 @@ class Ui {
         return Text::minimize($xml);
     }
 
+    /**
+    * Render the object as a sitemap url
+    */
     public function renderRss($options=array()) {
-        //Render the object as a sitemap url
         $xml = ' <item>
                         <title>'.$this->object->getBasicInfo().'</title>
                         <link>'.$this->object->url().'</link>
@@ -129,8 +154,10 @@ class Ui {
         return Text::minimize($xml);
     }
 
+    /**
+    * Render a form for the object
+    */
     public function renderForm($options=array()) {
-        //Render a form for the object
         $nested = (isset($options['nested']) && $options['nested']==true) ? true : false;
         $values = (isset($options['values'])) ? $options['values'] : '';
         $action = (isset($options['action'])) ? $options['action'] : '';
@@ -142,8 +169,10 @@ class Ui {
         return Form::createForm($form->createFormFields(false, $nested), array('action'=>$action, 'submit'=>$submit, 'class'=>$class, 'nested'=>$nested));
     }
 
+    /**
+    * Create a label in the admin using the information in the XML file
+    */
     public function label($canModify=false, $nested=false) {
-        //Create a label in the admin using the information in the XML file
         if (isset($this->object->info->info->form->labelAdmin->label)) {
             $labelSections = $this->object->info->info->form->labelAdmin->label;
             $html = '';
@@ -164,15 +193,17 @@ class Ui {
             }
             $html .= '<div class="clearer"></div>';
         } else {        
-            $html = ($canModify) ? '<a href="'.$this->linkModify($nested).'">'.$this->object->getBasicInfoAdmin().'</a>' : $this->object->getBasicInfoAdmin();
+            $html = ($canModify=='1') ? '<a href="'.$this->linkModify($nested).'">'.$this->object->getBasicInfoAdmin().'</a>' : $this->object->getBasicInfoAdmin();
         }
         return '<div class="label">
                     '.$html.'
                 </div>';
     }
 
+    /**
+    * Render the label text
+    */
     public function labelText($type, $styleInside, $label, $canModify=false, $nested=false) {
-        //Format the label text
         $labelText = ($type=="label" || $type=="labelLink") ? $this->object->decomposeText((string)$label, true) : $this->object->decomposeText((string)$label);
         $labelText = ($type=="date") ? Date::sqlText($labelText) : $labelText;
         $labelText = ($type=="dateSimple") ? Date::sqlDate($labelText) : $labelText;
@@ -186,6 +217,9 @@ class Ui {
                 </div>';
     }
 
+    /**
+    * Render the label text when multiple is active
+    */
     public function labelMultiple($objectName, $objectNameConnector, $separator=', ') {
         $objectNameIns = new $objectName();
         $query = 'SELECT DISTINCT o.*
@@ -201,40 +235,52 @@ class Ui {
         return $html;
     }
 
+    /**
+    * Return the link for modification, in an admin context
+    */
     public function linkModify($nested=false) {
-        //Return the link for modification, in an admin context
         $link = ($nested) ? 'modifyViewNested' : 'modifyView';
         return url($this->object->className.'/'.$link.'/'.$this->object->id(), true);
     }
 
+    /**
+    * Return the link for deletion, in an admin context
+    */
     public function linkDelete() {
-        //Return the link for deletion, in an admin context
         return url($this->object->className.'/delete/'.$this->object->id(), true);
     }
 
+    /**
+    * Return a div with the delete link
+    */
     public function delete() {
-        //Return a div with the delete link
         return '<div class="iconSide iconDelete">
                     <a href="'.$this->linkDelete().'">'.__('delete').'</a>
                 </div>';
     }
     
+    /**
+    * Return a div with the modify link
+    */
     public function modify($nested=false) {
-        //Return a div with the modify link
         return '<div class="iconSide iconModify">
                     <a href="'.$this->linkModify($nested).'">'.__('modify').'</a>
                 </div>';
     }
     
+    /**
+    * Return a div with the view public link
+    */
     public function view() {
-        //Return a div with the view public link
         return '<div class="iconSide iconView">
                     <a href="'.$this->object->url().'" target="_blank">'.__('view').'</a>
                 </div>';
     }
 
+    /**
+    * Return a div with the move handle
+    */
     public function order() {
-        //Return a div with the move handle
         return '<div class="iconSide iconHandle">
                     <span>'.__('move').'</span>
                 </div>';
