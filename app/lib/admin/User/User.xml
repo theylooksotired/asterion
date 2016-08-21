@@ -13,30 +13,11 @@
             <primary>idUser</primary>
             <created>true</created>
             <modified>true</modified>
-            <order>false</order>
-            <engine>MyISAM</engine>
-            <onDelete></onDelete>
-            <onCreate></onCreate>
         </sql>
         <form>
             <title>users</title>
             <label>#name</label>
-            <layout>simple</layout>
-            <pager></pager>
-            <group></group>
             <orderBy>name</orderBy>
-            <label>#name</label>
-            <permissions>
-                <superadmin>
-                    <canRewrite>true</canRewrite>
-                    <canViewList>true</canViewList>
-                    <canInsert>true</canInsert>
-                    <canModify>true</canModify>
-                    <canDelete>true</canDelete>
-                    <canOrder>true</canOrder>
-                    <canView>true</canView>
-                </superadmin>
-            </permissions>
             <labelAdmin>
                 <label style="active" type="active">#active</label>
                 <label style="regular">
@@ -87,12 +68,10 @@
     <indexes>
         <index>
             <name>email</name>
-            <type></type>
             <fields>email</fields>
         </index>
         <index>
             <name>idUserType</name>
-            <type></type>
             <fields>idUserType</fields>
         </index>
     </indexes>

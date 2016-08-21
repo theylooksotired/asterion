@@ -1,41 +1,76 @@
 <?php
+/**
+* @class Date
+*
+* This is a helper class to manage dates in general.
+*
+* @author Leano Martinet <info@asterion-cms.com>
+* @package Asterion
+* @version 3.0.1
+*/
 class Date {
 
+    /**
+    * Return an array with the names of the months.
+    */
     public static function arrayMonths() {
         return array(1=>'january', 2=>'february', 3=>'march', 4=>'april', 5=>'may', 6=>'june', 7=>'july', 8=>'august', 9=>'september', 10=>'october', 11=>'november', 12=>'december');
     }
 
+    /**
+    * Return the days of a month in a certain year.
+    */
     public static function daysMonth($month, $year) {
         return cal_days_in_month(CAL_GREGORIAN, $month, $year);
     }
 
+    /**
+    * Return the next month of a date.
+    */
     public static function nextMonth($month, $year) {
         return ($month>=12) ? array('month'=>1, 'year'=>$year+1) : array('month'=>$month+1, 'year'=>$year);
     }
 
+    /**
+    * Return the previous month of a date.
+    */
     public static function prevMonth($month, $year) {
         return ($month<=1) ? array('month'=>12, 'year'=>$year-1) : array('month'=>$month-1, 'year'=>$year);
     }
 
+    /**
+    * Return the text label of a month.
+    */
     public static function textMonth($month) {
         $months = Date::arrayMonths();
         return __($months[__(intval($month))]);
     }
 
+    /**
+    * Return an array with the label of the months.
+    */
     public static function textMonthArray() {
+        $months = array();
         foreach (range(1,12) as $month) {
             $months[$month] = Date::textMonth($month);
         }
         return $months;
     }
 
+    /**
+    * Return an array with the first three letters of the label of the months.
+    */
     public static function textMonthArraySimple() {
+        $months = array();
         foreach (range(1,12) as $month) {
             $months[$month] = substr(html_entity_decode(Date::textMonth($month)), 0, 3);
         }
         return $months;
     }
 
+    /**
+    * Convert an SQL date into an associative array.
+    */
     public static function sqlArray($date, $trim=true) {
         $result = array();
         $result['day'] = ($trim==true) ? intval(ltrim(substr($date, 8, 2),'0')) : intval(substr($date, 8, 2));
@@ -46,35 +81,59 @@ class Date {
         return $result;
     }
     
+    /**
+    * Return an SQL date into a URL usable string.
+    */
     public static function sqlArrayUrl($date) {
         $result = Date::sqlArray($date);
         return $result['day'].'-'.$result['month'].'-'.$result['year'].'-'.$result['hour'].'-'.$result['minutes'];
     }
 
+    /**
+    * Get the date of a SQL formatted string.
+    */
     public static function sqlDate($date) {
         return substr($date, 0, 10);
     }
 
+    /**
+    * Get the day of a SQL formatted string.
+    */
     public static function sqlDay($date) {
         return substr($date, 8, 2);
     }
 
+    /**
+    * Get the month of a SQL formatted string.
+    */
     public static function sqlMonth($date) {
         return substr($date, 5, 2);
     }
 
+    /**
+    * Get the year of a SQL formatted string.
+    */
     public static function sqlYear($date) {
         return substr($date, 0, 4);
     }
 
+    /**
+    * Get the time of a SQL formatted string.
+    */
     public static function sqlTime($date) {
         return substr($date, 11, 5);
     }
 
+    /**
+    * Get the day and the month of a SQL formatted string.
+    */
     public static function sqlDayMonth($date) {
         return Date::sqlDay($date).'-'.Date::sqlMonth($date);
     }
 
+    /**
+    * Convert an URL date into an associative array.
+    */
     public static function urlArraySql($url) {
         $urlArray = explode('-', $url);
         $result = array();
@@ -86,11 +145,17 @@ class Date {
         return $result;
     }
 
+    /**
+    * This function converts a CSV file into a set of arrays.
+    */
     public static function sqlInt($date) {
         $date = Date::sqlArray($date);
         return mktime($date['hour'], $date['minutes'], 0, $date['month'], $date['day'], $date['year']);
     }
 
+    /**
+    * Convert a SQL formatted date into a label text, hour is optional.
+    */
     public static function sqlText($date, $withHour=false) {
         if ($date!='') {
             $dateArray = Date::sqlArray($date);
@@ -100,6 +165,9 @@ class Date {
         }
     }
 
+    /**
+    * Convert a SQL formatted date into a small label text, hour is optional.
+    */
     public static function sqlTextSmall($date, $withHour=false) {
         if ($date!='') {
             $dateArray = Date::sqlArray($date);
@@ -109,6 +177,9 @@ class Date {
         }
     }
 
+    /**
+    * Convert a SQL formatted date into a simple text, hour is optional.
+    */
     public static function sqlTextSimple($date, $withHour=0) {
         if ($date!='') {
             $dateArray = Date::sqlArray($date);
@@ -118,6 +189,9 @@ class Date {
         }
     }
 
+    /**
+    * Get the hour of a SQL formatted date.
+    */
     public static function sqlHour($date) {
         if ($date!='') {
             $dateArray = Date::sqlArray($date);
@@ -125,10 +199,16 @@ class Date {
         }
     }
 
+    /**
+    * Load the date from a POST formatted value.
+    */
     public static function postFormat($postValue) {
         return str_pad($_POST[$postValue.'yea'], 2, "0", STR_PAD_LEFT).'-'.str_pad($_POST[$postValue.'mon'], 2, "0", STR_PAD_LEFT).'-'.str_pad($_POST[$postValue.'day'], 2, "0", STR_PAD_LEFT);
     }
     
+    /**
+    * Create a text label from a date array.
+    */
     public static function arrayText($date, $withHour=0) {
         if (is_array($date)) {
             $html = $date['day'].' '.Date::textMonth($date['month']).', '.$date['year'];
@@ -137,6 +217,9 @@ class Date {
         }
     }
 
+    /**
+    * Convert an SQL formatted date into a URL text string.
+    */
     public static function sqlUrl($date) {
         if ($date!='') {
             $dateArray = Date::sqlArray($date);
@@ -145,16 +228,25 @@ class Date {
         }
     }
     
-    public static function minutes($hour, $minutes) {
+    /**
+    * Calculate the minutes using hours.
+    */
+    public static function minutes($hour, $minutes=0) {
         return intval($hour)*60 + intval($minutes);
     }
 
+    /**
+    * Calculate the integer difference of two dates.
+    */
     public static function differenceInt($dateStart, $dateEnd) {
         $start = Date::sqlInt($dateStart);
         $end = Date::sqlInt($dateEnd);
         return $end - $start;
     }
 
+    /**
+    * Calculate a difference associative array of two dates.
+    */
     public static function difference($dateStart, $dateEnd) {
         $difference = Date::differenceInt($dateStart, $dateEnd);
         $result = array();
@@ -164,43 +256,20 @@ class Date {
         return $result;
     }
     
+    /**
+    * Format a publication date for RSS files.
+    */
     public static function pubDate($date) {
         $values = Date::sqlArray($date);
         return date('D, d M Y H:i:s O', mktime($values['hour'], $values['minutes'], 0, $values['month'], $values['day'], $values['year']));
     }
     
+    /**
+    * Format today's publication date for RSS files.
+    */
     public static function pubDateToday() {
         return date('D, d M Y H:i:s O');
     }
 
-    public function dayStartEnd($dateStartIni, $dateEndIni, $month, $year) {
-        $dateStart = Date::sqlArray($dateStartIni);
-        $dateEnd = Date::sqlArray($dateEndIni);
-        $dateIniMonth = Date::sqlInt($year.'-'.$month.'-01 00:00:00');
-        if (($dateStart['month']==$month && $dateStart['year']==$year) || ($dateEnd['month']==$month && $dateEnd['year']==$year) || ($dateIniMonth>=Date::sqlInt($dateStartIni) && $dateIniMonth<=Date::sqlInt($dateEndIni))) {
-            if (Date::differenceInt($dateStartIni, $dateEndIni) < 0) {
-                $dateAux = $dateStart;
-                $dateStart = $dateEnd;
-                $dateEnd = $dateAux;
-            }
-            if ($dateStart['month'] < $month) {
-                $dateStart['day'] = 1;
-            }
-            if ($dateEnd['month'] > $month) {
-                $dateEnd['day'] = Date::daysMonth($month, $year);
-            }
-            $results = array();
-            if ($dateStart['year']!=$year && $dateEnd['year']!=$year) {
-                $results = array('dayStart'=>0, 'dayEnd'=>0);
-            } else {
-                $results['dayStart'] = ($dateStart['year']!=$year) ? 1 : $dateStart['day'];
-                $results['dayEnd'] = ($dateEnd['year']!=$year) ? Date::daysMonth($month, $year) : $dateEnd['day'];
-            }
-        } else {
-            $results = array('dayStart'=>0, 'dayEnd'=>0);
-        }
-        return $results;
-    }
-    
 }
 ?>

@@ -1,17 +1,20 @@
 <?php
-
+/**
+* @class HtmlSectionAdminUi
+*
+* This class manages the UI for the HtmlSectionAdmin objects.
+*
+* @author Leano Martinet <info@asterion-cms.com>
+* @package Asterion
+* @version 3.0.1
+*/
 class HtmlSectionAdmin_Ui extends Ui{
 
-    protected $object;
-
-    public function __construct (HtmlSectionAdmin & $object) {
-        $this->object = $object;
-    }
-
-    public function renderPage() {
-        return '<div class="pageSimple">
-                    '.$this->object->get('section').'
-                </div>';
+	/**
+    * Render an HTML section
+    */
+    public function renderPublic() {
+        return '<div class="pageSimple">'.$this->object->get('section').'</div>';
     }
 
 }

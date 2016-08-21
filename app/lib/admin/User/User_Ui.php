@@ -8,7 +8,6 @@
 * @package Asterion
 * @version 3.0.1
 */
-
 class User_Ui extends Ui{
 
     static public function infoHtml() {

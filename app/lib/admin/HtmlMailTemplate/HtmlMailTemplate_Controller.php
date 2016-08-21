@@ -1,10 +1,19 @@
 <?php
+/**
+* @class HtmlMailTemplateController
+*
+* This class is the controller for the HtmlMailTemplate objects.
+*
+* @author Leano Martinet <info@asterion-cms.com>
+* @package Asterion
+* @version 3.0.1
+*/
 class HtmlMailTemplate_Controller extends Controller {
 
-    public function __construct($GET, $POST, $FILES) {
-        parent::__construct($GET, $POST, $FILES);
-    }
-
+    /**
+    * We changed the main control function to have access to a single template.
+    * Deleting this function makes possible to create multiple templates
+    */
     public function controlActions(){
         $this->mode = 'admin';
         $this->object = new $this->type();

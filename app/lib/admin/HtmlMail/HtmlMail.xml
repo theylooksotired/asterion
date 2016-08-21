@@ -1,34 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+* @structure HtmlMail
+*
+* @author Leano Martinet <info@asterion-cms.com>
+* @package Asterion
+* @version 3.0.1
+-->
 <object>
     <name>HtmlMail</name>
     <info>
         <sql>
             <primary>idHtmlMail</primary>
-            <label>code</label>
-            <created>false</created>
-            <modified>false</modified>
-            <order>false</order>
-            <engine>MyISAM</engine>
-            <onDelete></onDelete>
         </sql>
         <form>
             <title>mails</title>
             <layout>simple</layout>
-            <pager></pager>
-            <group></group>
             <orderBy>title</orderBy>
             <label>#title</label>
-            <permissions>
-                <superadmin>
-                    <canRewrite>true</canRewrite>
-                    <canViewList>true</canViewList>
-                    <canInsert>true</canInsert>
-                    <canModify>true</canModify>
-                    <canDelete>true</canDelete>
-                    <canOrder>false</canOrder>
-                    <canView>false</canView>
-                </superadmin>
-            </permissions>
             <labelAdmin>
                 <label type="link">#title</label>
                 <label>#description</label>
@@ -93,12 +81,10 @@
     <indexes>
         <index>
             <name>code</name>
-            <type></type>
             <fields>code</fields>
         </index>
         <index>
             <name>titleUrl</name>
-            <type></type>
             <fields>titleUrl</fields>
             <lang>true</lang>
         </index>

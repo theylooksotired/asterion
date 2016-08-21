@@ -80,7 +80,6 @@ class NavigationAdmin_Ui extends Ui{
                             '.Lang_Ui::showLangs(true).'
                             '.User_Ui::infoHtml().'
                         </div>
-                        <div class="clearer"></div>
                     </div>
                 </header>';
     }

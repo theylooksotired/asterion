@@ -1,12 +1,19 @@
 <?php
+/**
+* @class HtmlMailTemplate
+*
+* This class represents the template for the emails
+*
+* @author Leano Martinet <info@asterion-cms.com>
+* @package Asterion
+* @version 3.0.1
+*/
 class HtmlMailTemplate extends Db_Object {
 
-    public function __construct($values=array()) {
-        parent::__construct($values);
-    }
-
+	/**
+    * Load an object using its code
+    */
     static public function code($code) {
-        //Return the object using it's code
         return HtmlMailTemplate::readFirst(array('where'=>'code="'.$code.'"'));
     }
 

@@ -16,14 +16,6 @@
             <title>pages</title>
             <label>#code</label>
             <orderBy>code</orderBy>
-            <permissions>
-                <superadmin>
-                    <canViewList>true</canViewList>
-                    <canInsert>false</canInsert>
-                    <canModify>true</canModify>
-                    <canDelete>true</canDelete>
-                </superadmin>
-            </permissions>
         </form>
     </info>
     <attributes>

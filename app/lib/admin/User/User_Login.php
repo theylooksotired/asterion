@@ -1,6 +1,20 @@
 <?php
+/**
+* @class UserLogin
+*
+* This class manages the login User objects.
+* It is a singleton, so it can only be instantiated one object using a function.
+*
+* @author Leano Martinet <info@asterion-cms.com>
+* @package Asterion
+* @version 3.0.1
+*/
 class User_Login {
     
+    /**
+    * Singleton pattern.
+    * To instantiate this object we use the getInstance() static function.
+    */
     protected static $login = null;
     protected $info;
 
@@ -12,33 +26,45 @@ class User_Login {
     private function __clone() {}
 
     public static function getInstance() {
-        //There's just one instance of this object
         if (null === self::$login) {
             self::$login = new self();
         }
         return self::$login;
     }
     
+    /**
+    * Get the id of the logged user
+    */
     public function id() {
         return $this->get('idUser');
     }
 
+    /**
+    * Universal getter
+    */
     public function get($value) {
         return (isset($this->info[$value])) ? $this->info[$value] : '';
     }
     
+    /**
+    * Update the session array
+    */
     private function sessionAdjust($info=array()) {
-        //Update the session array
         Session::set('infoUser', $info);
     }
 
+    /**
+    * Check if the user is connected
+    */
     public function isConnected() {
-        //Check if the user is connected
         return (isset($this->info['idUser']) && $this->info['idUser']!='') ? true : false;
     }
     
+    /**
+    * Check the user login using it's email and password.
+    * If so, it saves the user values in the session.
+    */
     public function checklogin($options) {
-        //Check the user login using it's email and password. If so, it saves the user values in the session
         $email = (isset($options['email'])) ? $options['email'] : '';
         $password = (isset($options['password'])) ? $options['password'] : '';
         $user = User::readFirst(array('where'=>'email="'.$email.'" AND password="'.md5($password).'" AND active="1"'));
@@ -51,8 +77,10 @@ class User_Login {
         }
     }
 
+    /**
+    * Automatically login a user
+    */
     public function autoLogin($user) {
-        //Automatically login a user
         $type = UserType::read($user->get('idUserType'));
         $this->info['idUser'] = $user->id();
         $this->info['email'] = $user->get('email');
@@ -62,11 +90,13 @@ class User_Login {
         $this->sessionAdjust($this->info);
     }
 
+    /**
+    * Eliminate session values and logout a user
+    */
     public function logout() {
-        //Eliminate session values and logout a user
         $this->info = array();
         $this->sessionAdjust();
     }
-    
+
 }
 ?>

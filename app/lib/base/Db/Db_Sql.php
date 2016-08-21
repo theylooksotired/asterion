@@ -1,6 +1,18 @@
 <?php
+/**
+* @class DbSql
+*
+* This is the class that connects the object with the database in a logical level.
+*
+* @author Leano Martinet <info@asterion-cms.com>
+* @package Asterion
+* @version 3.0.1
+*/
 class Db_Sql {
 
+    /**
+    * Construct the object.
+    */
     public function __construct($values=array()) {
         $this->className = get_class($this);
         $this->tableName = Db::prefixTable($this->className);
@@ -12,8 +24,10 @@ class Db_Sql {
         $this->values = array('created'=>$created, 'modified'=>$modified, 'ord'=>$ord);
     }
 
+    /**
+    * Counts the number of objects in the DB (static function).
+    */
     static public function countResults($options=array()) {
-        //Counts the number of objects in the DB (static function)
         $table = (isset($options['table'])) ? $options['table'] : get_called_class();
         $where = (isset($options['where']) && $options['where']!='') ? $options['where'] : '1=1';
         $query = 'SELECT COUNT(*) AS numElements 
@@ -23,14 +37,18 @@ class Db_Sql {
         return $result['numElements'];
     }
 
+    /**
+    * Counts the number of objects in the DB.
+    */
     public function countResultsObject($options=array()) {
-        //Counts the number of objects in the DB
         $options['table'] = (isset($options['table']) && $options['table']!='') ? $options['table'] : $this->className;
         return Db_Sql::countResults($options);
     }
 
+    /**
+    * Returns the values of an object (static function).
+    */
     static public function readValues($id, $options=array()) {
-        //Returns the values of an object (static function)
         $table = (isset($options['table'])) ? $options['table'] : get_called_class();
         $fields = (isset($options['fields'])) ? $options['fields'] : '*';
         $object = new $table();
@@ -40,28 +58,36 @@ class Db_Sql {
         return Db::returnSingle($query);
     }
 
+    /**
+    * Returns the values of an object (static function).
+    */
     public function readObjectValues($id, $options=array()) {
-        //Returns the values of an object (static function)
         $options['table'] = $this->className;
         return Db_Sql::readValues($id, $options);
     }
 
+    /**
+    * Returns a single object using its id (static function).
+    */
     static public function read($id, $options=array()) {
-        //Returns a single object using its id (static function)
         $table = (isset($options['table'])) ? $options['table'] : get_called_class();
         $options['table'] = $table;
         $values = Db_Sql::readValues($id, $options);
         return new $table($values);
     }
 
+    /**
+    * Returns a single object using its id.
+    */
     public function readObject($id, $options=array()) {
-        //Returns a single object using its id
         $options['table'] = $this->className;
         return Db_Sql::read($id, $options);
     }
 
+    /**
+    * Returns a single object (static function).
+    */
     public static function readFirst($options=array()) {
-        //Returns a single object (static function)
         $table = (isset($options['table'])) ? $options['table'] : get_called_class();
         $fields = (isset($options['fields'])) ? $options['fields'] : '*';
         $where = (isset($options['where']) && $options['where']!='') ? $options['where'] : '1=1';
@@ -76,14 +102,18 @@ class Db_Sql {
         return new $table(Db::returnSingle($query));
     }
 
+    /**
+    * Returns a single object.
+    */
     public function readFirstObject($options=array()) {
-        //Returns a single object
         $options['table'] = $this->className;
         return Db_Sql::readFirst($options);
     }
     
+    /**
+    * Returns a list of objects (static function).
+    */
     public static function readList($options=array()) {
-        //Returns a list of objects (static function)
         $table = (isset($options['table'])) ? $options['table'] : get_called_class();
         $fields = (isset($options['fields'])) ? $options['fields'] : '*';
         $where = (isset($options['where']) && $options['where']!='') ? $options['where'] : '1=1';
@@ -110,14 +140,18 @@ class Db_Sql {
         return $list;
     }
 
+    /**
+    * Returns a list of objects.
+    */
     public function readListObject($options=array()) {
-        //Returns a list of objects
         $options['table'] = (isset($options['table']) && $options['table']!='') ? $options['table'] : $this->className;
         return Db_Sql::readList($options);
     }
 
+    /**
+    * Returns a list using a query.
+    */
     public function readListQuery($query) {
-        //Returns a list using a query
         $objectType = $this->className;
         $query = str_replace('##', DB_PREFIX, $query);
         $result = Db::returnAll($query);
@@ -128,8 +162,10 @@ class Db_Sql {
         return $list;
     }
 
+    /**
+    * Insert values to an object, checks if it already exists to modify it instead.
+    */
     public function insert($values, $options=array()){
-        //Insert an object, checks if it already exists to modify it instead
         if (count($values)>0) {
             $values = $this->formatMultipleValues($values);
             if (isset($values[$this->primary])) {
@@ -179,8 +215,10 @@ class Db_Sql {
         }    
     }
 
+    /**
+    * Update the values of an object.
+    */
     public function modify($values, $options=array()){
-        //Modify an object
         if (count($values)>0 && $this->id()!='') {
             $values = $this->formatMultipleValues($values);
             $queryModified = '';
@@ -207,14 +245,19 @@ class Db_Sql {
         }
     }
 
+    /**
+    * Update a single attribute.
+    */
     public function modifySimple($attribute, $value) {
-        //Update a single attribute
         Db::execute('UPDATE '.$this->tableName.'
                         SET '.$attribute.' = :'.$attribute.'
                         WHERE '.$this->primary.' = :'.$this->primary, 
                     array($attribute=>$value, $this->primary=>$this->id()));
     }
 
+    /**
+    * Format the values when the type of the attribute is multiple.
+    */
     public function formatMultipleValues($values) {
         foreach($this->info->attributes->attribute as $item) {
             $name = (string)$item->name;
@@ -228,8 +271,10 @@ class Db_Sql {
         return $values;
     }
 
+    /**
+    * Insert the values related to an object.
+    */
     public function insertMultiple($values, $options=array()) {
-        //Insert the values related to an object
         foreach($this->info->attributes->attribute as $item) {
             $name = (string)$item->name;
             $type = (string)$item->type;
@@ -350,8 +395,10 @@ class Db_Sql {
         }
     }
 
+    /**
+    * Delete an object and related values in multiple tables.
+    */
     public function delete(){
-        //Delete an object and related values in multiple tables
         if ($this->id()!='') {
             $this->deleteFiles();
             $query = 'DELETE FROM '.$this->tableName.'
@@ -371,8 +418,10 @@ class Db_Sql {
         }
     }
 
+    /**
+    * Returns a SQL string in case of points.
+    */
     public function fieldPoints() {
-        //Returns a SQL string in case of points
         $points = $this->info->xpath('//type[.="point"]/parent::*');
         $fields = '';
         foreach($points as $point) {
@@ -382,8 +431,10 @@ class Db_Sql {
         return $fields;
     }
     
+    /**
+    * Update the order of a list of objects.
+    */
     public function updateOrder($values){
-        //Update the order of a list of objects
         $idObject = (string)$this->primary;
         $i=1;
         foreach($values as $value) {
@@ -395,8 +446,10 @@ class Db_Sql {
         }
     }
 
+    /**
+    * Creates the table using the information in the XML file.
+    */
     public function createTable($rewrite=false) {
-        //Creates the table using the information in the XML file
         if ($rewrite) {
             $query = 'DROP TABLE IF EXISTS `'.DB_PREFIX.$this->className.'`';
             Db::execute($query);
@@ -413,7 +466,7 @@ class Db_Sql {
         $query .= substr($queryFields, 0, -1).') ENGINE='.$engine.' COLLATE utf8_unicode_ci;';
         Db::execute($query);
         $this->createTableIndexes();
-        //Create related tables
+        // Create related tables
         if ((string)$this->info->info->sql->onCreate!='') {
             $relatedTables = explode(',',(string)$this->info->info->sql->onCreate);
             foreach ($relatedTables as $relatedTable) {
@@ -424,8 +477,10 @@ class Db_Sql {
         }
     }
 
+    /**
+    * Creates the table indexes defined in the class XML file.
+    */
     public function createTableIndexes($rewrite=false) {
-        //Creates the table indexes defined in the class XML file
         if (isset($this->info->indexes)) {        
             foreach($this->info->indexes->index as $item) {
                 $name = (string)$item->name;
@@ -452,8 +507,10 @@ class Db_Sql {
         }
     }
 
+    /**
+    * Creates a SET string used in the insertion and modification of the values in the DB.
+    */
     public function createSet($values, $complete=true) {
-        //Creates a SET string used in the insertion and modification of the values in the DB
         $query = '';
         $setValues = array();
         if (isset($values['ord']) && $values['ord']!='') {
@@ -623,15 +680,17 @@ class Db_Sql {
         return array('query'=>$query, 'setValues'=>$setValues);
     }
     
+    /**
+    * Upload the files of an object according the its attributes.
+    */
     public function uploadFiles($values=array()) {
-        //Upload the files
         $fields = $this->info->xpath('//type[.="file"]/parent::*');
         foreach($fields as $field) {
             $fieldName = (string)$field->name;
-            //Upload from the FILES array
+            // Upload from the FILES array
             if (isset($values['refMultiple']) && $values['refMultiple']!='') {
                 $fieldNameMultiple = $values['refMultiple'].'-'.$fieldName;
-                //Case multiple
+                // Case multiple
                 if (isset($_FILES[$fieldNameMultiple]) && isset($_FILES[$fieldNameMultiple]['tmp_name']) && $_FILES[$fieldNameMultiple]['tmp_name']!='') {
                     if ((string)$field->mode == 'image') {
                         $fileTmp = $_FILES[$fieldNameMultiple]['tmp_name'];
@@ -650,10 +709,10 @@ class Db_Sql {
                     }
                 }
             }
-            //Case single
+            // Case single
             if (isset($_FILES[$fieldName]) && isset($_FILES[$fieldName]['tmp_name']) && $_FILES[$fieldName]['tmp_name']!='') {
                 if ((string)$field->mode == 'adaptable') {
-                    //Image and file
+                    // Image and file
                     $fileTmp = $_FILES[$fieldName]['tmp_name'];
                     $fileName = $_FILES[$fieldName]['name'];
                     switch (File::fileExtension($fileName)) {
@@ -675,7 +734,7 @@ class Db_Sql {
                     }
                     unset($_FILES[$fieldName]);
                 } elseif ((string)$field->mode == 'image') {
-                    //Image only
+                    // Image only
                     $fileTmp = $_FILES[$fieldName]['tmp_name'];
                     $fileSave = Text::simpleUrlFileBase($this->id().'_'.$fieldName);
                     if (Image_File::saveImageUrl($fileTmp, $this->className, $fileSave)) {
@@ -683,7 +742,7 @@ class Db_Sql {
                     }
                     unset($_FILES[$fieldName]);
                 } else {
-                    //File only
+                    // File only
                     $fileTmp = $_FILES[$fieldName]['tmp_name'];
                     $fileSave = $this->id().'_'.Text::simpleUrlFile($_FILES[$fieldName]['name']);
                     if (File::uploadUrl($fileTmp, $this->className, $fileSave)) {
@@ -692,7 +751,7 @@ class Db_Sql {
                     unset($_FILES[$fieldName]);
                 }
             }
-            //Upload from an url
+            // Upload from an URL
             if (isset($values[$fieldName]) && is_string($values[$fieldName])) {
                 if ((string)$field->mode == 'image') {
                     $fileSave = Text::simpleUrlFileBase($this->id().'_'.$fieldName);
@@ -709,8 +768,10 @@ class Db_Sql {
         }
     }
 
+    /**
+    * Delete files from the server.
+    */
     public function deleteFiles() {
-        //Delete files from the server
         foreach($this->info->attributes->attribute as $item) {
             if ((string)$item->type == "file") {
                 $name = Text::simpleUrlFileBase();

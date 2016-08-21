@@ -1,15 +1,23 @@
 <?php
-
+/**
+* @class HtmlMailUi
+*
+* This class manages the UI for the HtmlMail objects.
+*
+* @author Leano Martinet <info@asterion-cms.com>
+* @package Asterion
+* @version 3.0.1
+*/
 class HtmlMail_Ui extends Ui{
 
-    protected $object;
-
-    public function __construct (HtmlMail & $object) {
-        $this->object = $object;
-    }
-
+    /**
+    * Render an email using values in the form #VALUE and a template code of the HtmlMailTemplate object
+    * Ex: If the template has the #NAME and #LASTNAME fields, we can fill them using:
+    * renderMail(array('values'=>array('NAME'=>'Ray', 'LASTNAME'=>'Bradbury')))
+    * Ex: If we also need to use an specific template, we use:
+    * renderMail(array('values'=>array('NAME'=>'Ray', 'LASTNAME'=>'Bradbury'), 'template'=>'welcomeToWebsite'))
+    */
     public function renderMail($options=array()) {
-        //Render an email using values in the form #VALUE and a template
         $values = (isset($options['values']) && is_array($options['values'])) ? $options['values'] : array();
         if (isset($options['template'])) {
             $template = HtmlMailTemplate::code($options['template']);

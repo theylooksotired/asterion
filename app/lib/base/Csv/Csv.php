@@ -2,7 +2,7 @@
 /**
 * @class Csv
 *
-* This class deals with the comma-separated files.
+* This is a helper class to manage comma-separated files (CSV) in an easier way.
 *
 * @author Leano Martinet <info@asterion-cms.com>
 * @package Asterion

@@ -1,17 +1,26 @@
 <?php
+/**
+* @class HtmlMail
+*
+* This class represents the wrapup for the emails
+*
+* @author Leano Martinet <info@asterion-cms.com>
+* @package Asterion
+* @version 3.0.1
+*/
 class HtmlMail extends Db_Object {
 
-    public function __construct($values=array()) {
-        parent::__construct($values);
-    }
-
+    /**
+    * Load an object using its code
+    */
     static public function code($code) {
-        //Return the object using it's code
         return HtmlMail::readFirst(array('where'=>'code="'.$code.'"'));
     }
 
+    /**
+    * Send an email formatted with a template
+    */
     static public function send($email, $code, $values=array(), $template='basic') {
-        //Send an email formatted with a template
         $htmlMail = HtmlMail::code($code);
         Email::send($email, $htmlMail->get('subject'), $htmlMail->showUi('Mail', array('values'=>$values, 'template'=>$template)), $htmlMail->get('replyTo'));
     }

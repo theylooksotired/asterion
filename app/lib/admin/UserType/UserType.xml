@@ -16,16 +16,7 @@
         <form>
             <title>userTypes</title>
             <label>#name</label>
-            <permissions>
-                <superadmin>
-                    <canViewList>true</canViewList>
-                    <canInsert>false</canInsert>
-                    <canModify>true</canModify>
-                    <canDelete>true</canDelete>
-                </superadmin>
-            </permissions>
         </form>
-        <nav></nav>
     </info>
     <attributes>
         <attribute>
