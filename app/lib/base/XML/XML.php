@@ -1,8 +1,19 @@
 <?php
+/**
+* @class XML
+*
+* This is a helper class to manage XML files.
+*
+* @author Leano Martinet <info@asterion-cms.com>
+* @package Asterion
+* @version 3.0.1
+*/
 class XML {
     
+    /**
+    * Write an XML file.
+    */
     static public function writeXML($fileName, $content, $headers='') {
-        //Write an XML file
         switch($headers) {
             default:
             case 'rss':
@@ -20,8 +31,10 @@ class XML {
         fclose($handle);
     }
 
+    /**
+    * Convert a XML file into an array.
+    */
     static public function toArray($xmlObject, &$array) {
-        //Convert a XML file into an array
         $children = $xmlObject->children();
         foreach ($children as $elementName => $node) {
             $nextIdx = count($array);
@@ -45,8 +58,10 @@ class XML {
         return;
     }
 
+    /**
+    * Read the XML file containing the class.
+    */
     static public function readClass($class) {
-        //Read the XML file containing the class
         $fileXML = '';
         $addLocation = $class.'/'.$class.'.xml';
         foreach ($_ENV['locations'] as $location) {
@@ -55,8 +70,10 @@ class XML {
         return simplexml_load_file($fileXML);
     }
 
+    /**
+    * Format a XML RSS file.
+    */
     static public function formatRss($content, $options=array()) {
-        //Format a XML RSS file
         $title = (isset($options['title'])) ? $options['title'] : Params::param('titlePage');
         $link = (isset($options['link'])) ? $options['link'] : LOCAL_URL;
         $description = (isset($options['description'])) ? $options['description'] : Params::param('metaDescription');
@@ -80,8 +97,10 @@ class XML {
                     </rss>';
     }
 
+    /**
+    * Format a XML sitemap file.
+    */
     static public function formatSitemap($content) {
-        //Format a XML sitemap file
         return '<?xml version="1.0" encoding="UTF-8"?>
                 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
                     '.$content.'

@@ -1,11 +1,26 @@
 <?php
+/**
+* @class NavigationController
+*
+* This is the controller for all the public actions of the website.
+*
+* @author Leano Martinet <info@asterion-cms.com>
+* @package Asterion
+* @version 3.0.1
+*/
 class Navigation_Controller extends Controller{
 
+    /**
+    * The constructor of the object.
+    */
     public function __construct($GET, $POST, $FILES) {
         parent::__construct($GET, $POST, $FILES);
         $this->ui = new Navigation_Ui($this);
     }
     
+    /**
+    * Main function to control the public actions.
+    */
     public function controlActions(){
         switch ($this->action) {
             default:
@@ -19,14 +34,8 @@ class Navigation_Controller extends Controller{
                 $this->content = 'Here goes the content';
                 return $this->ui->render();
             break;
-            case 'facebook':
-            case 'twitter':
-            case 'linkedin':
-            case 'facebook':
-                header('Location: '.Url::format(Params::param('link-'.$this->action)));
-                exit();
-            break;
         }
     }
+
 }
 ?>

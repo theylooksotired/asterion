@@ -235,7 +235,7 @@ abstract class Controller{
                 $this->mode = 'ajax';
                 $formObject = $this->type.'_Form';
                 $form = new $formObject();
-                return $form->createFormFieldsMultiple();
+                return $form->createFormFieldMultiple();
             break;
             case 'multiple-delete':
                 /**
@@ -407,7 +407,7 @@ abstract class Controller{
             }
             return '<div class="multipleActions">
                         <div class="multipleAction multipleActionCheckAll">
-                            '.FormFields_Checkbox::create(array('name'=>'checkboxList')).'
+                            '.FormField_Checkbox::create(array('name'=>'checkboxList')).'
                         </div>
                         '.$multipleActionsOptions.'
                     </div>';
@@ -422,7 +422,7 @@ abstract class Controller{
         $searchQuery = $this->object->infoSearchQuery();
         $searchValue = urldecode($this->id);
         if ($search!='' || $searchQuery!='') {
-            $fieldsSearch = FormFields_Text::create(array('name'=>'search', 'value'=>$searchValue));
+            $fieldsSearch = FormField_Text::create(array('name'=>'search', 'value'=>$searchValue));
             $searchInfo = '';
             if ($this->id!='') {
                 $searchInfo = '<div class="button buttonBack">
@@ -455,7 +455,7 @@ abstract class Controller{
                 $html = '<div class="message messageError">
                             '.$e->getMessage().'
                         </div>
-                        '.$form->createForm($form->createFormFields(), array('action'=>url($this->object->className.'/insert', true), 'submit'=>__('save'), 'class'=>'formAdmin formAdminInsert'));
+                        '.$form->createForm($form->createFormField(), array('action'=>url($this->object->className.'/insert', true), 'submit'=>__('save'), 'class'=>'formAdmin formAdminInsert'));
                 return array('success'=>'0', 'html'=>$html);
             }
             $multipleChoice = (count((array)$this->object->info->info->form->multipleActions) > 0) ? true : false;
@@ -463,7 +463,7 @@ abstract class Controller{
             return array('success'=>'1', 'html'=>$html, 'id'=>$object->id());
         } else {
             $form = new $formClass($this->values, $errors);
-            $html = $form->createForm($form->createFormFields(), array('action'=>url($this->object->className.'/insert', true), 'submit'=>__('save'), 'class'=>'formAdmin formAdminInsert'));
+            $html = $form->createForm($form->createFormField(), array('action'=>url($this->object->className.'/insert', true), 'submit'=>__('save'), 'class'=>'formAdmin formAdminInsert'));
             return array('success'=>'0', 'html'=>$html);
         }
     }
@@ -488,7 +488,7 @@ abstract class Controller{
                 $html = '<div class="message messageError">
                             '.$e->getMessage().'
                         </div>
-                        '.Form::createForm($form->createFormFields(false, $nested), array('action'=>url($this->type.'/'.$action.'/'.$this->id, true), 'submit'=>__('save'), 'class'=>'formAdmin', 'nested'=>$nested));
+                        '.Form::createForm($form->createFormField(false, $nested), array('action'=>url($this->type.'/'.$action.'/'.$this->id, true), 'submit'=>__('save'), 'class'=>'formAdmin', 'nested'=>$nested));
                 return array('success'=>'0', 'html'=>$html);
             }
             $multipleChoice = (count((array)$this->object->info->info->form->multipleActions) > 0) ? true : false;
@@ -496,7 +496,7 @@ abstract class Controller{
             return array('success'=>'1', 'id'=>$object->id(), 'html'=>$html);
         } else {
             $form = new $formClass($this->values, $errors);
-            $html = Form::createForm($form->createFormFields(false, $nested), array('action'=>url($this->type.'/'.$action.'/'.$this->id, true), 'submit'=>__('save'), 'class'=>'formAdmin', 'nested'=>$nested));
+            $html = Form::createForm($form->createFormField(false, $nested), array('action'=>url($this->type.'/'.$action.'/'.$this->id, true), 'submit'=>__('save'), 'class'=>'formAdmin', 'nested'=>$nested));
             return array('success'=>'0', 'html'=>$html);
         }
     }

@@ -1,6 +1,6 @@
 <?php
 /**
-* @class PageController
+* @class PageForm
 *
 * This class manages the forms for the Page objects.
 *

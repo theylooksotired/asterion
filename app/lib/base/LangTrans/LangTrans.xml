@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+* @structure LangTrans
+*
+* @author Leano Martinet <info@asterion-cms.com>
+* @package Asterion
+* @version 3.0.1
+-->
 <object>
     <name>LangTrans</name>
     <info>
@@ -7,17 +14,8 @@
         </sql>
         <form>
             <title>translations</title>
-            <layout>ajax</layout>
             <orderBy>code</orderBy>
             <label>#translation</label>
-            <permissions>
-                <superadmin>
-                    <canViewList>true</canViewList>
-                    <canInsert>true</canInsert>
-                    <canModify>true</canModify>
-                    <canDelete>true</canDelete>
-                </superadmin>
-            </permissions>
             <labelAdmin>
                 <label type="link">#code</label>
                 <label style="small">#translation</label>

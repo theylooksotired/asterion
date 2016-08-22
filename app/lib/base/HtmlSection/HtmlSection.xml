@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+* @structure HtmlSection
+*
+* @author Leano Martinet <info@asterion-cms.com>
+* @package Asterion
+* @version 3.0.1
+-->
 <object>
     <name>HtmlSection</name>
     <info>
@@ -9,16 +16,6 @@
             <title>sections</title>
             <orderBy>code</orderBy>
             <label>#title</label>
-            <permissions>
-                <superadmin>
-                    <canRewrite>true</canRewrite>
-                    <canViewList>true</canViewList>
-                    <canInsert>true</canInsert>
-                    <canModify>true</canModify>
-                    <canDelete>true</canDelete>
-                    <canView>true</canView>
-                </superadmin>
-            </permissions>
         </form>
         <nav>
             <labelSections>
@@ -62,12 +59,10 @@
     <indexes>
         <index>
             <name>code</name>
-            <type></type>
             <fields>code</fields>
         </index>
         <index>
             <name>titleUrl</name>
-            <type></type>
             <fields>titleUrl</fields>
             <lang>true</lang>
         </index>

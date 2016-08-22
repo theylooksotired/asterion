@@ -1,12 +1,21 @@
 <?php
+/**
+* @class Lang
+*
+* This class represents a language for the website.
+* It is used to manage the different translations.
+*
+* @author Leano Martinet <info@asterion-cms.com>
+* @package Asterion
+* @version 3.0.1
+*/
 class Lang extends Db_Object {
 
-    public function __construct($values=array()) {
-        parent::__construct($values);
-    }
 
+    /**
+    * Initialize the translations.
+    */
     static public function init() {
-        //Initialize the translations
         if (isset($_GET['lang'])) {
             $configLangs = Lang::configLangs();
             if (count($configLangs)>1) {
@@ -29,24 +38,30 @@ class Lang extends Db_Object {
         }
     }
     
+    /**
+    * Get the languages.
+    */
     static public function langs() {
-        //Get the languages
         if (!isset($_ENV['langs'])) {
             Lang::fillInfo();
         }
         return $_ENV['langs'];
     }
 
+    /**
+    * Get the language labels.
+    */
     static public function langLabels() {
-        //Get the language labels
         if (!isset($_ENV['langLabels'])) {
             Lang::fillInfo();
         }
         return $_ENV['langLabels'];
     }
 
+    /**
+    * Fill the laguange code and labels into ENV variables.
+    */
     static public function fillInfo() {
-        //Fill the laguange code and labels into ENV variables
         $query = 'SELECT * FROM '.Db::prefixTable('Lang');
         $langIds = array();
         $result = Db::returnAll($query);
@@ -57,13 +72,17 @@ class Lang extends Db_Object {
         $_ENV['langLabels'] = $result;        
     }
 
+    /**
+    * Get the active language.
+    */
     static public function active() {
-        //Get the active language
         return Session::get('lang');
     }
     
+    /**
+    * Get the label of a language.
+    */
     static public function getLabel($lang) {
-        //Get the label of a language
         foreach (Lang::langLabels() as $langLabel) {
             if ($langLabel['idLang']==$lang) {
                 return $langLabel['name'];
@@ -71,8 +90,10 @@ class Lang extends Db_Object {
         }
     }
 
+    /**
+    * Format the table field using the languages.
+    */
     static public function field($field) {
-        //Format the table field using the langs
         $result = '';
         foreach (Lang::langs() as $lang) {
             $result .= $field.'_'.$lang.',';
@@ -80,8 +101,10 @@ class Lang extends Db_Object {
         return substr($result, 0, -1);
     }
 
+    /**
+    * Initialize the table with default values.
+    */
     static public function saveInitialValues() {
-        //Initialize the table with default values
         $lang = new Lang();
         $lang->createTable();
         foreach (Lang::configLangs() as $code) {
@@ -92,16 +115,20 @@ class Lang extends Db_Object {
         }
     }
 
+    /**
+    * Return the language label.
+    */
     static public function langCode($code) {
-        //Return the language label
         $langs = array('en'=>'English',
                         'fr'=>'Fran&ccedil;ais',
                         'es'=>'Espa&ntilde;ol');
         return (isset($langs[$code])) ? $langs[$code] : $code;
     }
 
+    /**
+    * Check the langs in the config file.
+    */
     static public function configLangs() {
-        //Check the langs in the config file
         return explode(':',LANGS);
     }
     

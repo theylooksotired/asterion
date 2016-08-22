@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+* @structure Lang
+*
+* @author Leano Martinet <info@asterion-cms.com>
+* @package Asterion
+* @version 3.0.1
+-->
 <object>
     <name>Lang</name>
     <info>
@@ -11,15 +18,6 @@
             <title>langs</title>
             <layout>ajax</layout>
             <label>#name</label>
-            <permissions>
-                <superadmin>
-                    <canViewList>true</canViewList>
-                    <canInsert>true</canInsert>
-                    <canModify>true</canModify>
-                    <canDelete>true</canDelete>
-                    <canOrder>true</canOrder>
-                </superadmin>
-            </permissions>
         </form>
         <nav>
             <labelSections>

@@ -1,13 +1,26 @@
 <?php
+/**
+* @class ImageFile
+*
+* This is a helper class to deal with the image files.
+*
+* @author Leano Martinet <info@asterion-cms.com>
+* @package Asterion
+* @version 3.0.1
+*/
 class Image_File{
 
+    /**
+    * Save an image from a URL.
+    */
     static public function saveImageUrl($url, $objectName, $uploadName) {
-        //Save an image from a url
         return Image_File::saveFileImage($url, $uploadName, STOCK_FILE.$objectName, true);
     }
 
+    /**
+    * Save an image from an input file.
+    */
     static public function saveImage($objectName, $name, $fileName) {
-        //Save an image from an input file
         if (isset($_FILES[$name]) && $_FILES[$name]['tmp_name']!='') {
             $fileImage = $_FILES[$name]['tmp_name'];
             return Image_File::saveFileImage($fileImage, $fileName, STOCK_FILE.$objectName);
@@ -15,8 +28,10 @@ class Image_File{
         return false;
     }
     
+    /**
+    * Save the image and create versions of itself.
+    */
     static private function saveFileImage($fileImage, $fileName, $mainFolder, $copy=false) {
-        //Save the image and create versions of itself
         $localFolder = Text::simpleUrlFileBase($fileName);
         $folder = $mainFolder.'/'.$localFolder;
         if (is_dir($folder)) {
@@ -57,15 +72,16 @@ class Image_File{
                 @chmod($fileSmall, 0777);
                 @chmod($fileThumb, 0777);
                 @chmod($fileSquare, 0777);
-                //unset($image);
                 return true;
             }
         }
         return false;
     }
 
+    /**
+    * Delete an entire image folder.
+    */
     public static function deleteImage($objectName, $name) {
-        //Delete an entire image folder
         $directory = STOCK_FILE.$objectName.'/'.$name.'/';
         rrmdir($directory);
     }

@@ -1,4 +1,13 @@
 <?php
+/**
+* @class Singleton
+*
+* This is an abstract class for the singleton pattern.
+*
+* @author Leano Martinet <info@asterion-cms.com>
+* @package Asterion
+* @version 3.0.1
+*/
 abstract class Singleton {
     
     private static $instances = array();
@@ -14,6 +23,9 @@ abstract class Singleton {
     
     abstract protected function initialize();
     
+    /**
+    * Static function to retrieve an instance of the object.
+    */
     static public function getInstance() {
         $class = get_called_class();
         if (array_key_exists($class, self::$instances) === false)

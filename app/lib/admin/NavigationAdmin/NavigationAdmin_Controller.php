@@ -1,6 +1,6 @@
 <?php
 /**
-* @class NavigationAdmin_Controller
+* @class NavigationAdminController
 *
 * This is the controller for all the actions in the administration area.
 *
@@ -11,7 +11,7 @@
 class NavigationAdmin_Controller extends Controller{
 
     /**
-    * Main function to control the administration system
+    * Main function to control the administration system.
     */
     public function controlActions(){
         $ui = new NavigationAdmin_Ui($this);

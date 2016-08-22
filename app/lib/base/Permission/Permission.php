@@ -1,4 +1,13 @@
 <?php
+/**
+* @class Permission
+*
+* This class represents the permissions for objects.
+*
+* @author Leano Martinet <info@asterion-cms.com>
+* @package Asterion
+* @version 3.0.1
+*/
 class Permission extends Db_Object {
     
     /**

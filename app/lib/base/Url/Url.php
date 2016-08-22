@@ -1,8 +1,19 @@
 <?php
+/**
+* @class Url
+*
+* This is a helper class to manage URLs.
+*
+* @author Leano Martinet <info@asterion-cms.com>
+* @package Asterion
+* @version 3.0.1
+*/
 class Url {
 
+    /**
+    * Format a URL, adding the proper http, https or www if it's missing.
+    */
     static public function format($url) {
-        //Format a URL, adding the proper http, https or www if it's missing
         if (substr($url,0,8)=='https://' || substr($url,0,7)=='http://') {
             return $url;
         } else {
@@ -14,8 +25,10 @@ class Url {
         }
     }
     
+    /**
+    * Return the current URL.
+    */
     static public function currentUrl() {
-        //Return the current url
         $url = 'http';
         if (isset($_SERVER["HTTPS"]) && $_SERVER["HTTPS"] == "on") {$url .= "s";}
             $url .= "://";
@@ -27,8 +40,10 @@ class Url {
         return $url;
     }
 
+    /**
+    * Initialize the url when using multiple language.
+    */
     static public function initLang() {
-        //Initialize the url when using multiple language
         $url = (isset($_GET['url'])) ? $_GET['url'] : '';
         $info = explode('/', $url);
         $pagerString = PAGER_URL_STRING;
@@ -81,11 +96,13 @@ class Url {
         $_GET['action'] = (isset($_GET['action']) && $_GET['action']!='') ? $_GET['action'] : 'intro';
     }
 
+    /**
+    * Initialize the url when using only one language.
+    */
     static public function init() {
         if (count(Lang::langs())>1) {
             return Url::initLang();
         }
-        //Initialize the url when using only one language
         $url = (isset($_GET['url'])) ? $_GET['url'] : '';
         $info = explode('/', $url);
         $pagerString = (Params::param('pagerString')!='') ? Params::param('pager-string') : PAGER_URL_STRING;
@@ -137,8 +154,10 @@ class Url {
         $_GET['action'] = (isset($_GET['action']) && $_GET['action']!='') ? $_GET['action'] : 'intro';
     }
 
+    /**
+    * Create an URL using the language code.
+    */
     static public function urlLang($newLang) {
-        //Create an URL using the language code
         $url = (isset($_GET['url'])) ? $_GET['url'] : '';
         $info = explode('/', $url);
         if (isset($info[0]) && $info[0]==ADMIN_URL_STRING) {
@@ -149,8 +168,10 @@ class Url {
         return LOCAL_URL.implode('/', $info);
     }
 
+    /**
+    * Create an URL.
+    */
     static public function urlPage($page) {
-        //Create an URL
         $url = (isset($_GET['url'])) ? $_GET['url'] : '';
         $infoInfo = explode('/', $url);
         $info = array();
@@ -172,8 +193,10 @@ class Url {
         return LOCAL_URL.implode('/', $info);
     }
 
+    /**
+    * Format an URL using the language code.
+    */
     static public function getUrlLang($url='', $admin=false) {
-        //Format an URL using the language code
         if ($admin) {
             return LOCAL_URL.ADMIN_URL_STRING.'/'.Lang::active().'/'.$url;
         } else {
@@ -181,8 +204,10 @@ class Url {
         }
     }
 
+    /**
+    * Format an URL.
+    */
     static public function getUrl($url='', $admin=false) {
-        //Format an URL
         if (count(Lang::langs())>1) {
             return Url::getUrlLang($url, $admin);
         }

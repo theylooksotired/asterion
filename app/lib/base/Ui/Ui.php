@@ -12,14 +12,14 @@
 class Ui {
 
     /**
-    * Constructor
+    * The constructor of the object.
     */
     public function __construct ($object) {
         $this->object = $object;
     }
 
     /**
-    * Render a div with the basic information
+    * Render a div with the basic information.
     */
     public function renderPublic() {
         return '<div class="item item_'.$this->object->className.'">
@@ -28,21 +28,21 @@ class Ui {
     }
 
     /**
-    * Render a link
+    * Render a link.
     */
     public function renderLink() {
         return $this->object->link();
     }
 
     /**
-    * Render the simple information for a csv format
+    * Render the simple information for a CSV format.
     */
     public function renderCsv() {
         return $this->object->getBasicInfo().',';
     }
 
     /**
-    * Render the object to send it within an email
+    * Render the object to send it within an email.
     */
     public function renderEmail() {
         $content = '';
@@ -90,7 +90,7 @@ class Ui {
     }
     
     /**
-    * Render the object for the admin area
+    * Render the object for the admin area.
     */
     public function renderAdmin($options=array()) {
         $userType = (isset($options['userType'])) ? $options['userType'] : '';
@@ -107,7 +107,7 @@ class Ui {
         $multipleChoice = '';
         if (isset($options['multipleChoice']) && $options['multipleChoice']==true) {
             $multipleChoice .= '<div class="checkboxAdmin">
-                                    '.FormFields_Checkbox::create(array('name'=>$this->object->id())).'
+                                    '.FormField_Checkbox::create(array('name'=>$this->object->id())).'
                                 </div>';
         }
         return '<div class="lineAdmin'.$this->object->className.' lineAdminLayout'.ucwords($layout).' lineAdmin '.$class.'" '.$relOrd.'>
@@ -128,7 +128,7 @@ class Ui {
     }
     
     /**
-    * Render the object as a sitemap url
+    * Render the object as a sitemap url.
     */
     public function renderSitemap($options=array()) {
         $changefreq = isset($options['changefreq']) ? $options['changefreq'] : 'weekly';
@@ -143,7 +143,7 @@ class Ui {
     }
 
     /**
-    * Render the object as a sitemap url
+    * Render the object as a sitemap url.
     */
     public function renderRss($options=array()) {
         $xml = ' <item>
@@ -155,7 +155,7 @@ class Ui {
     }
 
     /**
-    * Render a form for the object
+    * Render a form for the object.
     */
     public function renderForm($options=array()) {
         $nested = (isset($options['nested']) && $options['nested']==true) ? true : false;
@@ -166,11 +166,11 @@ class Ui {
         $formClass = $this->object->className.'_Form';
         $objectForm = new $formClass;
         $form = $objectForm->newArray($values);
-        return Form::createForm($form->createFormFields(false, $nested), array('action'=>$action, 'submit'=>$submit, 'class'=>$class, 'nested'=>$nested));
+        return Form::createForm($form->createFormField(false, $nested), array('action'=>$action, 'submit'=>$submit, 'class'=>$class, 'nested'=>$nested));
     }
 
     /**
-    * Create a label in the admin using the information in the XML file
+    * Create a label in the admin using the information in the XML file.
     */
     public function label($canModify=false, $nested=false) {
         if (isset($this->object->info->info->form->labelAdmin->label)) {
@@ -201,7 +201,7 @@ class Ui {
     }
 
     /**
-    * Render the label text
+    * Render the label text.
     */
     public function labelText($type, $styleInside, $label, $canModify=false, $nested=false) {
         $labelText = ($type=="label" || $type=="labelLink") ? $this->object->decomposeText((string)$label, true) : $this->object->decomposeText((string)$label);
@@ -218,7 +218,7 @@ class Ui {
     }
 
     /**
-    * Render the label text when multiple is active
+    * Render the label text when multiple is active.
     */
     public function labelMultiple($objectName, $objectNameConnector, $separator=', ') {
         $objectNameIns = new $objectName();
@@ -236,7 +236,7 @@ class Ui {
     }
 
     /**
-    * Return the link for modification, in an admin context
+    * Return the link for modification, in an admin context.
     */
     public function linkModify($nested=false) {
         $link = ($nested) ? 'modifyViewNested' : 'modifyView';
@@ -244,14 +244,14 @@ class Ui {
     }
 
     /**
-    * Return the link for deletion, in an admin context
+    * Return the link for deletion, in an admin context.
     */
     public function linkDelete() {
         return url($this->object->className.'/delete/'.$this->object->id(), true);
     }
 
     /**
-    * Return a div with the delete link
+    * Return a div with the delete link.
     */
     public function delete() {
         return '<div class="iconSide iconDelete">
@@ -260,7 +260,7 @@ class Ui {
     }
     
     /**
-    * Return a div with the modify link
+    * Return a div with the modify link.
     */
     public function modify($nested=false) {
         return '<div class="iconSide iconModify">
@@ -269,7 +269,7 @@ class Ui {
     }
     
     /**
-    * Return a div with the view public link
+    * Return a div with the view public link.
     */
     public function view() {
         return '<div class="iconSide iconView">
@@ -278,7 +278,7 @@ class Ui {
     }
 
     /**
-    * Return a div with the move handle
+    * Return a div with the move handle.
     */
     public function order() {
         return '<div class="iconSide iconHandle">

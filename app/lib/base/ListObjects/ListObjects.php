@@ -1,6 +1,18 @@
 <?php
+/**
+* @class ListObjects
+*
+* This is a helper class to create and render lists of objects.
+*
+* @author Leano Martinet <info@asterion-cms.com>
+* @package Asterion
+* @version 3.0.1
+*/
 class ListObjects {
 
+    /**
+    * The constructor of the object.
+    */
     public function __construct($objectName, $options=array()) {
         $this->objectName = $objectName;
         $this->object = new $objectName();
@@ -12,17 +24,24 @@ class ListObjects {
         $this->populate();
     }
 
+    /**
+    * Gets an attribute value.
+    */
     public function get($value) {
-        //Gets an attribute value
         return (isset($this->$value)) ? $this->$value : '';
     }
 
+    /**
+    * Get the first element of the list.
+    */
     public function first() {
         return (count($this->list)>0) ? $this->list[0] : '';
     }
 
+    /**
+    * Count the total number of elements in the list.
+    */
     public function countTotal() {
-        //Count the total number of elements in the list
         if (!isset($this->countTotal)) {
             if ($this->queryCount!='') {
                 $result = Db::returnSingle($this->queryCount);
@@ -34,13 +53,17 @@ class ListObjects {
         return $this->countTotal;
     }
     
+    /**
+    * Check if the list is empty.
+    */
     public function isEmpty() {
-        //Check if the list is empty
         return (count($this->list)>0) ? false : true;
     }
 
+    /**
+    * Populate the list.
+    */
     public function populate() {
-        //Populate the list
         $page = (isset($_GET[PAGER_URL_STRING])) ? intval($_GET[PAGER_URL_STRING])-1 : 0;
         if ($this->query!='') {
             if ($this->results!='') {
@@ -55,8 +78,10 @@ class ListObjects {
         }
     }
 
+    /**
+    * Show the list using the Ui object.
+    */
     public function showList($options=array(), $params=array()) {
-        //Show the list using the Ui object
         $message = (isset($options['message'])) ? $options['message'] : $this->message;
         $function = (isset($this->options['function'])) ? $this->options['function'] : 'Public';
         $function = (isset($options['function'])) ? $options['function'] : $function;
@@ -85,8 +110,10 @@ class ListObjects {
         return $html;
     }
 
+    /**
+    * Render a pager for the list.
+    */
     public function pager($options=array()) {
-        //Render a pager for the list
         if (!isset($this->pagerHtml)) {
             $this->pagerHtml = '';
             $page = (isset($_GET[PAGER_URL_STRING])) ? intval($_GET[PAGER_URL_STRING]) : 0;
@@ -149,15 +176,16 @@ class ListObjects {
                                         '.$htmlListStart.'
                                         '.$html.'
                                         '.$htmlListEnd.'
-                                        <div class="clearer"></div>
                                     </div>';
             }
         }
         return $this->pagerHtml;
     }
 
+    /**
+    * Returns the list with a pager on top and another in the bottom.
+    */
     public function showListPager($options=array(), $params=array()) {
-        //Returns the list with a pager on top and another in the bottom
         $pager = $this->pager($options);
         $pagerTop = '';
         $pagerBottom = '';
@@ -172,7 +200,6 @@ class ListObjects {
                     </div>
                     '.$pagerBottom.'
                 </div>';
-
     }
 
 }

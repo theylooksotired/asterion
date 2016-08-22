@@ -1,12 +1,18 @@
 <?php
+/**
+* @class LangUi
+*
+* This class manages the UI for the Lang objects.
+*
+* @author Leano Martinet <info@asterion-cms.com>
+* @package Asterion
+* @version 3.0.1
+*/
 class Lang_Ui extends Ui{
 
-    protected $object;
-
-    public function __construct (Lang & $object) {
-        $this->object = $object;
-    }
-
+    /**
+    * Render the set of available languages.
+    */
     static public function showLangs($simple=false) {
         $langActive = Lang::active();
         $html = '';
@@ -21,12 +27,12 @@ class Lang_Ui extends Ui{
             }
             $html .= '</div>';
         }
-        return '<div class="langs">
-                    '.$html.'
-                    <div class="clearer"></div>
-                </div>';
+        return '<div class="langs">'.$html.'</div>';
     }
 
+    /**
+    * Render the set of available languages in a simple way.
+    */
     static public function showLangsSimple() {
         return Lang::showLangs(true);
     }

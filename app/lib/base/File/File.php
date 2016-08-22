@@ -1,8 +1,19 @@
 <?php
+/**
+* @class File
+*
+* This is a helper class to deal with the files.
+*
+* @author Leano Martinet <info@asterion-cms.com>
+* @package Asterion
+* @version 3.0.1
+*/
 class File {
 
+    /**
+    * Upload a file using the field name.
+    */
     static public function uploadUrl($url, $objectName, $uploadName) {
-        //Upload a file using the field name
         if (url_exists($url)) {
             $mainFolder = STOCK_FILE.$objectName.'Files';
             File::createDirectory($mainFolder);
@@ -15,8 +26,10 @@ class File {
         return false;
     }    
 
+    /**
+    * Upload a file using the field name.
+    */
     static public function upload($objectName, $name, $uploadName='') {
-        //Upload a file using the field name
         if (isset($_FILES[$name]) && $_FILES[$name]['tmp_name']!='') {
             $mainFolder = STOCK_FILE.$objectName.'Files';
             File::createDirectory($mainFolder);
@@ -28,8 +41,10 @@ class File {
         return false;
     }
 
+    /**
+    * Save content to a file.
+    */
     static public function saveFile($file, $content, $tiny=false) {
-        //Save content to a file
         @touch($file);
         if (file_exists($file)) {
             if ($tiny==true) {
@@ -45,56 +60,62 @@ class File {
         }
     }
     
+    /**
+    * Copy an entire directory and its files.
+    */
     static public function copyDirectory($source, $destination, $permissions=0755) {
-        //Copy an entire directory and its files
-            if (is_link($source)) {
-                    return symlink(readlink($source), $destination);
+        if (is_link($source)) {
+            return symlink(readlink($source), $destination);
+        }
+        if (is_file($source)) {
+            return copy($source, $destination);
+        }
+        if (!is_dir($destination)) {
+            mkdir($destination, $permissions);
+        }
+        $dir = dir($source);
+        while (false !== $entry = $dir->read()) {
+            if ($entry == '.' || $entry == '..') {
+                continue;
             }
-            if (is_file($source)) {
-                    return copy($source, $destination);
-            }
-            if (!is_dir($destination)) {
-                    mkdir($destination, $permissions);
-            }
-            $dir = dir($source);
-            while (false !== $entry = $dir->read()) {
-                    if ($entry == '.' || $entry == '..') {
-                            continue;
-                    }
-                    File::copyDirectory("$source/$entry", "$destination/$entry");
-            }
-            $dir->close();
-            return true;
+            File::copyDirectory("$source/$entry", "$destination/$entry");
+        }
+        $dir->close();
+        return true;
     }
 
+    /**
+    * Change the permissions of an entire directory an its files.
+    */
     static public function chmodDirectory($path, $fileMode, $dirMode) {
-        //Change the permissions of an entire directory an its files
-            if (is_dir($path) ) {
-                    if (!chmod($path, $dirMode)) {
-                            $dirMode_str=decoct($dirMode);
-                            return;
-                    }
-                    $directoryHead = opendir($path);
-                    while (($file = readdir($directoryHead)) !== false) {
-                            if($file != '.' && $file != '..') {
-                                    $fullPath = $path.'/'.$file;
-                                    File::chmodDirectory($fullPath, $fileMode, $dirMode);
-                            }
-                    }
-                    closedir($directoryHead);
-            } else {
-                    if (is_link($path)) {
-                            return;
-                    }
-                    if (!chmod($path, $fileMode)) {
-                            $fileMode_str=decoct($fileMode);
-                            return;
-                    }
+        if (is_dir($path) ) {
+            if (!chmod($path, $dirMode)) {
+                $dirMode_str=decoct($dirMode);
+                return;
             }
+            $directoryHead = opendir($path);
+            while (($file = readdir($directoryHead)) !== false) {
+                if($file != '.' && $file != '..') {
+                    $fullPath = $path.'/'.$file;
+                    File::chmodDirectory($fullPath, $fileMode, $dirMode);
+                }
+            }
+            closedir($directoryHead);
+        } else {
+            if (is_link($path)) {
+                return;
+            }
+            if (!chmod($path, $fileMode)) {
+                $fileMode_str=decoct($fileMode);
+                return;
+            }
+        }
     } 
 
+    /**
+    * Change headers and force a file download.
+    */
     static public function download($file, $options=array()) {
-        //Change headers and force a file download
         $content = (isset($options['content'])) ? $options['content'] : '';
         $contentType = (isset($options['contentType'])) ? $options['contentType'] : '';
         header('Cache-Control: public');
@@ -109,18 +130,25 @@ class File {
         }
     }
     
+    /**
+    * Get the basename of a file.
+    */
     static public function basename($file) {
-        //Get the basename of a file
         $info = pathinfo($file);
         return (isset($info['basename'])) ? $info['basename'] : '';
     }
 
+    /**
+    * Get the basename of a file.
+    */
     static public function filename($file) {
-        //Get the basename of a file
         $info = pathinfo($file);
         return (isset($info['filename'])) ? $info['filename'] : '';
     }
 
+    /**
+    * Create a directory in the server.
+    */
     static public function createDirectory($dirname) {
         if (!is_dir($dirname)) {
             if (!mkdir($dirname)) {
@@ -130,8 +158,10 @@ class File {
         @chmod($dirname, 0777);
     }
 
+    /**
+    * Delete a directory and all files and subdirectories in it.
+    */
     static public function deleteDirectory($dirname) {
-        //Delete a directory and all files and subdirectories in it
         if (is_dir($dirname)) {
             $handle = opendir($dirname);    
             if (!$handle) {                
@@ -152,6 +182,9 @@ class File {
         return true;
     }
 
+    /**
+    * Get the extension of an URL.
+    */
     static public function urlExtension($url) {
         if (url_exists($url)) {
             $urlComponents = parse_url($url);
@@ -160,6 +193,9 @@ class File {
         }
     }
 
+    /**
+    * Get the extension of a file.
+    */
     static public function fileExtension($filename) {
         $info = explode('.', $filename);
         return strtolower($info[count($info)-1]);

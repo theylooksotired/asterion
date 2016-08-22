@@ -1,11 +1,23 @@
 <?php
+/**
+* @class Image
+*
+* This is a helper class to deal with the images.
+*
+* @author Leano Martinet <info@asterion-cms.com>
+* @package Asterion
+* @version 3.0.1
+*/
 class Image {
 
-    protected $url; 
-    protected $mime;
-    protected $width;
-    protected $height;
+    public $url; 
+    public $mime;
+    public $width;
+    public $height;
 
+    /**
+    * The constructor of the object.
+    */
     public function __construct($file) {
         if (is_file($file)) {
             $info = getimagesize($file);
@@ -16,18 +28,24 @@ class Image {
         }
     }
 
+    /**
+    * Return an information of the image.
+    */
     public function get($item) {
-        //Return an information of the image
         return (isset($this->$item)) ? $this->$item : false;
     }
     
+    /**
+    * Return the public url of the image.
+    */
     public function getUrl() {
-        //Return the public url of the image
         return str_replace(LOCAL_FILE, LOCAL_URL, $this->get('url'));
     }
 
+    /**
+    * Return the image extension.
+    */
     public function getExtension() {
-        //Return the image extension
         switch ($this->mime) {
             case 'image/jpg':
             case 'image/jpeg':
@@ -42,8 +60,10 @@ class Image {
         }
     }
 
+    /**
+    * Return the type of the image.
+    */
     public static function getType($mime) {
-        //Return the type of the image
         $type = explode('/',$mime);
         $type = $type[1];
         if ($type == 'jpg') { $type = 'jpeg'; }
@@ -53,14 +73,18 @@ class Image {
         return $type;
     }
 
+    /**
+    * Return the file name of the image.
+    */
     public function getFileName() {
-        //Return the file name of the image
         $file = explode('.',basename($this->url));
         return $file[0];
     }
 
+    /**
+    * Convert an image to JPG.
+    */
     public function toJpg() {
-        //Convert an image into jpg
         if ($this->getExtension()!='jpg') {
             $extension = $this->getExtension();
             if ($extension != '') {
@@ -80,8 +104,10 @@ class Image {
         return true;
     }
 
+    /**
+    * Resize an image.
+    */
     public function resize($fileDestination, $newWidth, $maxHeight, $mime) {
-        //Resize an image
         $fileOrigin = $this->get('url');
         $type = $this->getType($mime);
         $function = 'imagecreatefrom'.$type;
@@ -107,8 +133,10 @@ class Image {
         }
     }
 
+    /**
+    * Convert an image into grayscale.
+    */
     public function grayscale($fileDestination) {
-        //Convert an image into grayscale
         $fileOrigin = $this->get('url');
         $type = $this->getType($mime);
         $function = "imagecreatefrom".$type;
@@ -129,8 +157,10 @@ class Image {
         imagejpeg($image, $fileDestination, 100);
     }
 
+    /**
+    * Resize an image an cut the borders to create a perfect square.
+    */
     public function resizeSquare($fileDestination, $newSide, $mime) {
-        //Resize an image an cut the borders to create a perfect square
         $fileOrigin = $this->get('url');
         $type = $this->getType($mime);
         $function = "imagecreatefrom".$type;

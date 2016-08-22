@@ -1,47 +1,56 @@
 <?php
+/**
+* @class DbObjectType
+*
+* This class manages all the available types to use as attributes in the object.
+* The list includes:
+*       id-autoincrement
+*       id-char32
+*       id-varchar
+*       text
+*       text-small
+*       text-large
+*       text-postalcode
+*       text-telephone
+*       text-integer
+*       text-double
+*       text-number
+*       text-email
+*       text-unchangeable
+*       hidden
+*       hidden-url
+*       hidden-login
+*       hidden-integer
+*       hidden-user
+*       password
+*       textarea
+*       textarea-small
+*       textarea-large
+*       textarea-ck
+*       select
+*       date
+*       date-complete
+*       date-hour
+*       date-text
+*       checkbox
+*       radio
+*       point
+*       file
+*       multiple-object
+*       multiple-checkbox
+*       linkid-autoincrement
+*       linkid-char32
+*       linkid-varchar
+*
+* @author Leano Martinet <info@asterion-cms.com>
+* @package Asterion
+* @version 3.0.1
+*/
 class Db_ObjectType {
 
-    /*
-    Available types:
-        id-autoincrement
-        id-char32
-        id-varchar
-        text
-        text-small
-        text-large
-        text-postalcode
-        text-telephone
-        text-integer
-        text-double
-        text-number
-        text-email
-        text-unchangeable
-        hidden
-        hidden-url
-        hidden-login
-        hidden-integer
-        hidden-user
-        password
-        textarea
-        textarea-small
-        textarea-large
-        textarea-ck
-        select
-        date
-        date-complete
-        date-hour
-        date-text
-        checkbox
-        radio
-        point
-        file
-        multiple-object
-        multiple-checkbox
-        linkid-autoincrement
-        linkid-char32
-        linkid-varchar
+    /**
+    * Function to create the table based on the information in the XML file
     */
-
     static public function createTableSql($item) {
         $sql = '';
         $name = (string)$item->name;
@@ -109,6 +118,9 @@ class Db_ObjectType {
         return $sql;
     }
 
+    /**
+    * Helper function to get the base type of an attribute
+    */
     static public function baseType($type) {
         if (strpos($type, '-')!==false) {
             $typeInfo = explode('-', $type);
