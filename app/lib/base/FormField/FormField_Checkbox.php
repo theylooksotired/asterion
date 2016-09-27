@@ -27,7 +27,7 @@ class FormField_Checkbox {
         $this->options['error'] = $this->errors[$this->name];
         $this->options['label'] = (string)$this->item->label;
         $this->options['placeholder'] = (string)$this->item->placeholder;
-        $this->options['typeField'] = 'text';
+        $this->options['typeField'] = (isset($options['typeField'])) ? $options['typeField'] : 'checkbox';
     }
 
     /**
@@ -49,6 +49,7 @@ class FormField_Checkbox {
         $error = (isset($options['error'])) ? '<div class="error">'.$options['error'].'</div>' : '';
         $errorClass = (isset($options['error']) && $options['error']!='') ? 'errorField' : '';
         $class = (isset($options['class'])) ? $options['class'] : '';
+        $class .= (isset($options['name'])) ? ' formField-'.Text::simpleUrl($options['name']) : '';
         $layout = (isset($options['layout'])) ? $options['layout'] : '';
         $object = (isset($options['object'])) ? $options['object'] : '';
         switch ($layout) {
@@ -58,7 +59,6 @@ class FormField_Checkbox {
                             <div class="checkboxIns">
                                 <input type="checkbox" '.$name.' '.$value.' '.$id.' '.$disabled.'/>
                                 '.$label.'
-                                <div class="clearer"></div>
                             </div>
                         </div>';
             break;

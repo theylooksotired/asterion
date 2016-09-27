@@ -354,7 +354,7 @@ class Db_Object extends Db_Sql {
     */
     public function getFileLink($attributeName) {
         $file = $this->getFileUrl($attributeName);
-        return ($file!='') ? '<a href="'.$file.'" target="_blank">'.__('viewFile').'</a>' : '';
+        return ($file!='') ? '<a href="'.$file.'" target="_blank" class="download">'.__('viewFile').'</a>' : '';
     }
 
     /**
@@ -457,7 +457,7 @@ class Db_Object extends Db_Sql {
     /**
     * Creates an instance of the UI object and returns a function to render.
     */
-    public function showUi($functionName, $params=array()) {
+    public function showUi($functionName='Public', $params=array()) {
         $uiObjectName = $this->className.'_Ui';
         $uiObject = new $uiObjectName($this);
         $render = 'render'.ucwords($functionName);

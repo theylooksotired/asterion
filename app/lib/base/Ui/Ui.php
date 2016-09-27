@@ -102,25 +102,26 @@ class Ui {
         $canDelete = ($permissions['permissionDelete']=='1') ? $this->delete() : '';
         $canOrder = ($permissions['permissionModify']=='1' && $this->object->hasOrd()) ? $this->order() : '';
         $relOrd = ($permissions['permissionModify']=='1') ? 'rel="'.$this->object->id().'"' : '';
-        $viewPublic = ($permissions['permissionListAdmin']=='1') ? $this->view() : '';
+        $viewPublic = ((string)$this->object->info->info->form->viewPublic == 'true') ? $this->view() : '';
         $layout = (string)$this->object->info->info->form->layout;
         $multipleChoice = '';
         if (isset($options['multipleChoice']) && $options['multipleChoice']==true) {
-            $multipleChoice .= '<div class="checkboxAdmin">
+            $multipleChoice .= '<div class="lineAdminCell lineAdminCheckbox">
                                     '.FormField_Checkbox::create(array('name'=>$this->object->id())).'
                                 </div>';
         }
+        $canOrder = ($canOrder!='') ? '<div class="lineAdminCell lineAdminOrder">'.$canOrder.'</div>' : '';
         return '<div class="lineAdmin'.$this->object->className.' lineAdminLayout'.ucwords($layout).' lineAdmin '.$class.'" '.$relOrd.'>
                     <div class="lineAdminWrapper">
+                        '.$canOrder.'
                         '.$multipleChoice.'
-                        <div class="lineAdminOptions">
-                            '.$viewPublic.'
-                            '.$canDelete.'
-                            '.$canModify.'
-                            '.$canOrder.'
-                        </div>
-                        <div class="lineAdminLabel">
+                        <div class="lineAdminCell lineAdminLabel">
                             '.$label.'
+                        </div>
+                        <div class="lineAdminCell lineAdminOptions">
+                            '.$viewPublic.'
+                            '.$canModify.'
+                            '.$canDelete.'
                         </div>
                     </div>
                     <div class="modifySpace"></div>
@@ -147,10 +148,10 @@ class Ui {
     */
     public function renderRss($options=array()) {
         $xml = ' <item>
-                        <title>'.$this->object->getBasicInfo().'</title>
-                        <link>'.$this->object->url().'</link>
-                        <description><![CDATA['.$this->object->get('description').']]></description>
-                    </item>';
+                    <title>'.$this->object->getBasicInfo().'</title>
+                    <link>'.$this->object->url().'</link>
+                    <description><![CDATA['.$this->object->get('description').']]></description>
+                </item>';
         return Text::minimize($xml);
     }
 
@@ -166,55 +167,66 @@ class Ui {
         $formClass = $this->object->className.'_Form';
         $objectForm = new $formClass;
         $form = $objectForm->newArray($values);
-        return Form::createForm($form->createFormField(false, $nested), array('action'=>$action, 'submit'=>$submit, 'class'=>$class, 'nested'=>$nested));
+        return Form::createForm($form->createFormFields(false, $nested),
+                                array('action'=>$action, 'submit'=>$submit, 'class'=>$class, 'nested'=>$nested));
     }
 
     /**
     * Create a label in the admin using the information in the XML file.
     */
     public function label($canModify=false, $nested=false) {
-        if (isset($this->object->info->info->form->labelAdmin->label)) {
-            $labelSections = $this->object->info->info->form->labelAdmin->label;
-            $html = '';
-            foreach ($labelSections as $label) {
-                $style = ((string)$label->attributes()->style != '') ? 'labelstyle_'.(string)$label->attributes()->style : '';
-                if (count($label) > 0) {
-                    $html .= '<div class="labelInsideWrapper '.$style.'">';
-                    foreach ($label as $labelInside) {
-                        $styleInside = ((string)$labelInside->attributes()->style != '') ? 'labelstyle_'.(string)$labelInside->attributes()->style : '';
-                        $type = (string)$labelInside->attributes()->type;
-                        $html .= $this->labelText($type, $styleInside, $labelInside, $canModify, $nested);
-                    }
-                    $html .= '</div>';                    
-                } else {
-                    $type = (string)$label->attributes()->type;
-                    $html .= $this->labelText($type, $style, $label, $canModify, $nested);
-                }
+        if (isset($this->object->info->info->form->templateItemAdmin)) {
+            $html = (string)$this->object->info->info->form->templateItemAdmin->asXML();
+            $html = str_replace('<templateItemAdmin>', '', $html);
+            $html = str_replace('</templateItemAdmin>', '', $html);
+            $attributes = Text::arrayWordsStarting('##', $html);
+            foreach ($attributes as $attribute) {
+                $attribute = str_replace('##', '', $attribute);
+                $info = $this->object->attributeInfo($attribute);
+                $infoType = (isset($info->type)) ? $info->type : '';
+                $labelAttribute = $this->object->get($attribute);
+                $html = str_replace('##'.$attribute, $labelAttribute, $html);
             }
-            $html .= '<div class="clearer"></div>';
-        } else {        
-            $html = ($canModify=='1') ? '<a href="'.$this->linkModify($nested).'">'.$this->object->getBasicInfoAdmin().'</a>' : $this->object->getBasicInfoAdmin();
+            $attributes = Text::arrayWordsStarting('#', $html);
+            foreach ($attributes as $attribute) {
+                $attribute = str_replace('#', '', $attribute);
+                $info = $this->object->attributeInfo($attribute);
+                $infoType = (isset($info->type)) ? $info->type : '';
+                switch ($infoType) {
+                    default:
+                        $labelAttribute = $this->object->get($attribute);
+                    break;
+                    case 'hidden-login':
+                    case 'hidden-user':
+                        $user = User::read($this->object->get($attribute));
+                        $labelAttribute = ($user->id()!='') ? $user->getBasicInfo() : '';
+                    break;
+                    case 'select':
+                    case 'select-varchar':
+                        $labelAttribute = $this->object->label($attribute);
+                    break;
+                    case 'checkbox':
+                        $labelAttribute = ($this->object->get($attribute)=='1') ? __('yes') : __('no');
+                    break;
+                    case 'file':
+                        if ((string)$info->mode == 'image') {
+                            $labelAttribute = $this->object->getImage($attribute, 'thumb');
+                        } else {
+                            $labelAttribute = $this->object->getFileLink($attribute);
+                        }
+                    break;
+                }
+                $html = str_replace('#'.$attribute, $labelAttribute, $html);
+            }
+            $wordsTranslate = Text::arrayWordsStarting('_', $html);
+            foreach ($wordsTranslate as $wordTranslate) {
+                $html = str_replace($wordTranslate, __(str_replace('_', '', $wordTranslate)), $html);
+            }
+        } else {
+            $html = $this->object->getBasicInfoAdmin();
         }
-        return '<div class="label">
-                    '.$html.'
-                </div>';
-    }
-
-    /**
-    * Render the label text.
-    */
-    public function labelText($type, $styleInside, $label, $canModify=false, $nested=false) {
-        $labelText = ($type=="label" || $type=="labelLink") ? $this->object->decomposeText((string)$label, true) : $this->object->decomposeText((string)$label);
-        $labelText = ($type=="date") ? Date::sqlText($labelText) : $labelText;
-        $labelText = ($type=="dateSimple") ? Date::sqlDate($labelText) : $labelText;
-        $labelText = ($type=="dayMonth") ? Date::sqlDayMonth($labelText) : $labelText;
-        $labelText = ($type=="image" || $type=="imageLink") ? $this->object->getImage((string)$label, 'thumb') : $labelText;
-        $labelText = ($type=="active") ? '<span class="activeItem activeItem_'.$this->object->decomposeText((string)$label).'"></span>' : $labelText;
-        $labelHtml = ($canModify && ($type=="link" || $type=="imageLink" || $type=="labelLink")) ? '<a href="'.$this->linkModify($nested).'">'.$labelText.'</a>' : $labelText;
-        $labelHtml = ($labelHtml == '') ? '&nbsp;' : $labelHtml;
-        return '<div class="labelInside '.$styleInside.'">
-                    '.$labelHtml.'
-                </div>';
+        $html = ($canModify=='1') ? '<a href="'.$this->linkModify($nested).'">'.$html.'</a>' : $html;
+        return '<div class="label">'.$html.'</div>';
     }
 
     /**

@@ -16,10 +16,14 @@
             <title>translations</title>
             <orderBy>code</orderBy>
             <label>#translation</label>
-            <labelAdmin>
-                <label type="link">#code</label>
-                <label style="small">#translation</label>
-            </labelAdmin>
+            <templateItemAdmin>
+                <div class="labelTable">
+                    <div class="labelCell labelCell20 accent"><strong>#code</strong></div>
+                    <div class="labelCell">#translation_en</div>
+                    <div class="labelCell">#translation_fr</div>
+                    <div class="labelCell">#translation_es</div>
+                </div>
+            </templateItemAdmin>
         </form>
     </info>
     <attributes>

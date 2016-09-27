@@ -28,7 +28,7 @@ class FormField_DefaultDate {
         $this->options['label'] = (string)$this->item->label;
         $this->options['placeholder'] = (string)$this->item->placeholder;
         $this->options['checkboxDate'] = (string)$this->item->checkboxDate;
-        $this->options['typeField'] = 'text';
+        $this->options['typeField'] = (isset($options['typeField'])) ? $options['typeField'] : 'date';
         $this->options['value'] = (isset($this->values[$this->name]) && $this->values[$this->name]!='') ? $this->values[$this->name] : date('Y-m-d h:i');
     }
     
@@ -49,6 +49,7 @@ class FormField_DefaultDate {
         $error = (isset($options['error'])) ? '<div class="error">'.$options['error'].'</div>' : '';
         $errorClass = (isset($options['error']) && $options['error']!='') ? 'errorField' : '';
         $class = (isset($options['class'])) ? $options['class'] : '';
+        $class .= (isset($options['name'])) ? ' formField-'.Text::simpleUrl($options['name']) : '';
         $layout = (isset($options['layout'])) ? $options['layout'] : '';
         $checkboxVal = ($value!='') ? "1" : "0";
         $checkbox = (isset($options['checkboxDate']) && $options['checkboxDate']=='true') ? FormField_Checkbox::create(array('name'=>'check_'.$options['name'], 'value'=>$checkboxVal, 'class'=>'checkBoxInlineDate')) : '';
@@ -61,7 +62,6 @@ class FormField_DefaultDate {
                         '.$checkbox.'
                         '.$checkboxHidden.'
                         '.FormField_Date::createDate($options).'
-                        <div class="clearer"></div>
                     </div>
                 </div>';
     }

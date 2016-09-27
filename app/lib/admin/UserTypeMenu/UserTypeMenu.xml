@@ -15,16 +15,11 @@
         </sql>
         <form>
             <title>menu</title>
+            <hiddenAdminMenu>true</hiddenAdminMenu>
             <orderBy>ord</orderBy>
             <group>idUserType</group>
             <label>#name</label>
         </form>
-        <nav>
-            <labelSections>
-                <label type="link">name</label>
-                <label>action</label>
-            </labelSections>
-        </nav>
     </info>
     <attributes>
         <attribute>
@@ -33,8 +28,7 @@
         </attribute>
         <attribute>
             <name>idUserType</name>
-            <type>select</type>
-            <refObject>UserType</refObject>
+            <type>linkid-autoincrement</type>
         </attribute>
         <attribute>
             <name>name</name>
@@ -48,17 +42,6 @@
             <label>action</label>
             <required>notEmpty</required>
             <type>text-large</type>
-        </attribute>
-        <attribute>
-            <name>type</name>
-            <label>type</label>
-            <type>select</type>
-            <values>
-                <value>typeMenu1</value>
-                <value>typeMenu2</value>
-                <value>typeMenu3</value>
-                <value>typeMenu4</value>
-            </values>
         </attribute>
     </attributes>
     <indexes>

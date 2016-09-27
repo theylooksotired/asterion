@@ -28,6 +28,7 @@
 *       textarea-large
 *       textarea-ck
 *       select
+*       select-varchar
 *       date
 *       date-complete
 *       date-hour
@@ -38,6 +39,7 @@
 *       file
 *       multiple-object
 *       multiple-checkbox
+*       multiple-autocomplete
 *       linkid-autoincrement
 *       linkid-char32
 *       linkid-varchar
@@ -101,10 +103,19 @@ class Db_ObjectType {
                     $sql .= '`'.$name.'` TEXT COLLATE utf8_unicode_ci,';
                 }
             break;
-            case 'select':
             case 'checkbox':
             case 'radio':
                 $sql .= '`'.$name.'` INT,';
+            break;
+            case 'select':
+                switch ($type) {
+                    default:
+                        $sql .= '`'.$name.'` INT,';
+                    break;
+                    case 'select-varchar':
+                        $sql .= '`'.$name.'` VARCHAR(255) NULL COLLATE utf8_unicode_ci,';
+                    break;
+                }
             break;
             case 'date':
                 $sql .= '`'.$name.'` DATETIME,';

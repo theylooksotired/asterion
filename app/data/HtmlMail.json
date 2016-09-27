@@ -8,8 +8,8 @@
 		"subject_en": "Password forgotten",
 		"subject_fr": "Mot de passe oubli&eacute;e",
 		"subject_es": "Contrase&ntilde;a olvidada",
-		"mail_en": "<p>Your temporary password is:</p><p>#TEMP_PASSWORD</p><p>&nbsp;</p><p>Click here to recover it:</p><p><a href=\"#UPDATE_PASSWORD_LINK\" target=\"_blank\">#UPDATE_PASSWORD_LINK</a></p>",
-		"mail_fr": "<p>Votre mot de passe temporaire est:</p><p>#TEMP_PASSWORD</p><p>&nbsp;</p><p>Clickez ici pour récuperer votre compte:</p><p><a href=\"#UPDATE_PASSWORD_LINK\" target=\"_blank\">#UPDATE_PASSWORD_LINK</a></p>",
-		"mail_es": "<p>Su password temporal es:</p><p>#TEMP_PASSWORD</p><p>&nbsp;</p><p>Haga click en el enlace para recuperarlo:</p><p><a href=\"#UPDATE_PASSWORD_LINK\" target=\"_blank\">#UPDATE_PASSWORD_LINK</a></p>"
+		"mail_en": "<p>Hello,</p><p>Your temporary password is:</p><p>#TEMP_PASSWORD</p><p>&nbsp;</p><p>Click here to recover it:</p><p><a href=\"#UPDATE_PASSWORD_LINK\" target=\"_blank\">#UPDATE_PASSWORD_LINK</a></p><p>Thanks,</p>",
+		"mail_fr": "<p>Bonjour,</p><p>Votre mot de passe temporaire est:</p><p>#TEMP_PASSWORD</p><p>&nbsp;</p><p>Clickez ici pour récuperer votre compte:</p><p><a href=\"#UPDATE_PASSWORD_LINK\" target=\"_blank\">#UPDATE_PASSWORD_LINK</a></p><p>Merci,</p>",
+		"mail_es": "<p>Hola,</p><p>Su password temporal es:</p><p>#TEMP_PASSWORD</p><p>&nbsp;</p><p>Haga click en el enlace para recuperarlo:</p><p><a href=\"#UPDATE_PASSWORD_LINK\" target=\"_blank\">#UPDATE_PASSWORD_LINK</a></p><p>Gracias,</p>"
 	}
 ]

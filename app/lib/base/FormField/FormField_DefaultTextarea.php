@@ -27,7 +27,7 @@ class FormField_DefaultTextarea {
         $this->options['label'] = (string)$this->item->label;
         $this->options['placeholder'] = (string)$this->item->placeholder;
         $this->options['required'] = ((string)$this->item->required!='') ? true : false;
-        $this->options['typeField'] = 'textarea';
+        $this->options['typeField'] = (isset($options['typeField'])) ? $options['typeField'] : 'textarea';
     }
 
     /**
@@ -66,6 +66,7 @@ class FormField_DefaultTextarea {
         $rows = (isset($options['rows'])) ? 'rows="'.$options['rows'].'" ' : '';
         $error = (isset($options['error'])) ? '<div class="error">'.$options['error'].'</div>' : '';
         $class = (isset($options['class'])) ? $options['class'] : '';
+        $class .= (isset($options['name'])) ? ' formField-'.Text::simpleUrl($options['name']) : '';
         $classError = (isset($options['error']) && $options['error']!='') ? 'errorField' : '';
         $placeholder = (isset($options['placeholder'])) ? 'placeholder="'.__($options['placeholder']).'"' : '';
         $required = (isset($options['required']) && $options['required']) ? 'required' : '';
@@ -77,7 +78,6 @@ class FormField_DefaultTextarea {
                                 '.$label.'
                                 '.$error.'
                                 <textarea '.$name.' '.$cols.' '.$rows.' '.$id.' '.$placeholder.' '.$required.'>'.$value.'</textarea>
-                                <div class="clearer"></div>
                             </div>
                         </div>';
             break;

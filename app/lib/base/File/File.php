@@ -201,5 +201,57 @@ class File {
         return strtolower($info[count($info)-1]);
     }
 
+    /**
+    * Scan the website and return all the active objects.
+    */
+    static public function scanDirectoryObjects() {
+        $objectNames = array();
+        $objectNames = array_merge($objectNames, File::scanDirectoryObjectsApp());
+        $objectNames = array_merge($objectNames, File::scanDirectoryObjectsBase());
+        return $objectNames;
+    }
+
+    /**
+    * Scan the website and return all the active objects from the application.
+    */
+    static public function scanDirectoryObjectsApp() {
+        return File::scanDirectoryObjectsGeneric(APP_FILE.'lib');
+    }
+
+    /**
+    * Scan the website and return all the active objects from the public website.
+    */
+    static public function scanDirectoryObjectsBase() {
+        return File::scanDirectoryObjectsGeneric(BASE_FILE.'lib');
+    }
+
+    /**
+    * Scan a directory and return all the active objects.
+    */
+    static public function scanDirectoryObjectsGeneric($directory) {
+        $objectNames = array();
+        $objectNames = array_merge($objectNames, File::scanDirectoryExtension($directory, 'xml'));
+        foreach ($objectNames as $key=>$objectName) {
+            $objectNames[$key] = basename($objectName, '.xml');
+        }
+        sort($objectNames);
+        return $objectNames;
+    }
+
+    /**
+    * Scan the website and return all the the files with some extension.
+    */
+    static public function scanDirectoryExtension($directory, $extension) {
+        $recursiveDirectory = new RecursiveDirectoryIterator($directory, RecursiveDirectoryIterator::SKIP_DOTS);
+        $recursiveIterator = new RecursiveIteratorIterator($recursiveDirectory);
+        $files = array();
+        foreach($recursiveIterator as $file) {
+            if (pathinfo($file, PATHINFO_EXTENSION) == $extension) {
+                $files[] = (string)$file;
+            }
+        }
+        return $files;
+    }
+
 }
 ?>

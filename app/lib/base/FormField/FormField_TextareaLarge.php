@@ -15,16 +15,16 @@ class FormField_TextareaLarge extends FormField_DefaultTextarea {
     */
     public function __construct($options) {
         parent::__construct($options);
-        $this->options['cols'] = 70;
-        $this->options['rows'] = 15;
+        $this->options['cols'] = '70';
+        $this->options['rows'] = '15';
     }
 
     /**
     * Render the element with an static function.
     */
     static public function create($options) {
-        $options['cols'] = 70;
-        $options['rows'] = 15;
+        $options['cols'] = '70';
+        $options['rows'] = '15';
         return FormField_DefaultTextarea::create($options);
     }
     

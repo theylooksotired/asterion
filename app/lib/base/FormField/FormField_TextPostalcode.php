@@ -15,14 +15,14 @@ class FormField_TextPostalcode extends FormField_Text {
     */
     public function __construct($options) {
         parent::__construct($options);
-        $this->options['size'] = 7;
+        $this->options['size'] = '6';
     }
 
     /**
     * Render the element with an static function.
     */
     static public function create($options) {
-        $options['size'] = 7;
+        $options['size'] = '6';
         return FormField_Default::create($options);
     }
     

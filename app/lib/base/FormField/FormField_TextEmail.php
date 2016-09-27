@@ -15,14 +15,14 @@ class FormField_TextEmail extends FormField_Text {
     */
     public function __construct($options) {
         parent::__construct($options);
-        $this->options['size'] = 30;
+        $this->options['size'] = '30';
     }
 
     /**
     * Render the element with an static function.
     */
     static public function create($options) {
-        $options['size'] = 30;
+        $options['size'] = '30';
         return FormField_Default::create($options);
     }
 

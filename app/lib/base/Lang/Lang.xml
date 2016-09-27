@@ -16,6 +16,7 @@
         </sql>
         <form>
             <title>langs</title>
+            <hiddenAdminMenu>true</hiddenAdminMenu>
             <layout>ajax</layout>
             <label>#name</label>
         </form>

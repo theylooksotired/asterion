@@ -1,0 +1,26 @@
+[
+	{
+		"name_es": "Diseño",
+		"name_en": "Design",
+		"name_fr": "Design",
+		"shortDescription_es": "Listado de artículos relacionados con el diseño web.",
+		"shortDescription_en": "List of articles related to web design.",
+		"shortDescription_fr": "Liste des articles relatifs à la conception web"
+	},
+	{
+		"name_es": "Desarrollo",
+		"name_en": "Developement",
+		"name_fr": "Développement",
+		"shortDescription_es": "Listado de artículos relacionados con el desarrollo web.",
+		"shortDescription_en": "List of articles related to web developement.",
+		"shortDescription_fr": "Liste des articles relatifs au développement web"
+	},
+	{
+		"name_es": "Móviles",
+		"name_en": "Mobile",
+		"name_fr": "Mobile",
+		"shortDescription_es": "Listado de artículos relacionados con el desarrollo para móviles.",
+		"shortDescription_en": "List of articles related to mobile design.",
+		"shortDescription_fr": "Liste des articles relatifs au développement mobile"
+	}
+]

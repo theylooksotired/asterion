@@ -16,6 +16,11 @@
             <title>pages</title>
             <label>#code</label>
             <orderBy>code</orderBy>
+            <viewPublic>true</viewPublic>
+            <templateItemAdmin>
+                <p class="accent"><strong>#title</strong></p>
+                <p class="tiny"><em>_code</em> : <span class="mainAlt">#code</span></p>
+            </templateItemAdmin>
         </form>
     </info>
     <attributes>

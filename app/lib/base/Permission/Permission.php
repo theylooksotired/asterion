@@ -11,32 +11,63 @@
 class Permission extends Db_Object {
     
     /**
-    * Function to check if the logged user has an specific permission on an object
+    * Function to check if the logged user has an specific permission on an object.
     */
     static public function getPermission($permissionCheck, $objectName) {
     	$login = User_Login::getInstance();
     	if ($login->isConnected()) {
-    		$type = UserType::read($login->get('idUserType'));
-    		$permission = Permission::readFirst(array('where'=>'objectName="'.$objectName.'" AND idUserType="'.$type->id().'" AND '.$permissionCheck.'="1"'));
+            $userType = UserType::read($login->get('idUserType'));
+            if ($userType->get('managesPermissions')=='1') {
+                return true;
+            }
+    		$permission = Permission::readFirst(array('where'=>'objectName="'.$objectName.'" AND idUserType="'.$userType->id().'" AND '.$permissionCheck.'="1"'));
     		return ($permission->id()!='');
     	}
     	return false;
     }
 
     /**
-    * Function to check all the permissions for the logged user on an object
+    * Function to check if the logged user can list items.
+    */
+    static public function canListAdmin($objectName) {
+        return Permission::getPermission('permissionListAdmin', $objectName);
+    }
+
+    /**
+    * Function to check if the logged user can list items.
+    */
+    static public function canInsert($objectName) {
+        return Permission::getPermission('permissionInsert', $objectName);
+    }
+
+    /**
+    * Function to check if the logged user can list items.
+    */
+    static public function canModify($objectName) {
+        return Permission::getPermission('permissionModify', $objectName);
+    }
+
+    /**
+    * Function to check if the logged user can list items.
+    */
+    static public function canDelete($objectName) {
+        return Permission::getPermission('permissionDelete', $objectName);
+    }
+
+    /**
+    * Function to check all the permissions for the logged user on an object.
     */
     static public function getAll($objectName) {
     	$login = User_Login::getInstance();
     	if ($login->isConnected()) {
-    		$type = UserType::read($login->get('idUserType'));
-    		if ($type->get('managesPermissions')=='1') {
+    		$userType = UserType::read($login->get('idUserType'));
+    		if ($userType->get('managesPermissions')=='1') {
     			return array('permissionListAdmin'=>1,
 							'permissionInsert'=>1,
 							'permissionModify'=>1,
 							'permissionDelete'=>1);
     		}
-    		$permission = Permission::readFirst(array('where'=>'objectName="'.$objectName.'" AND idUserType="'.$type->id().'"'));
+    		$permission = Permission::readFirst(array('where'=>'objectName="'.$objectName.'" AND idUserType="'.$userType->id().'"'));
     		return array('permissionListAdmin'=>$permission->get('permissionListAdmin'),
     							'permissionInsert'=>$permission->get('permissionInsert'),
     							'permissionModify'=>$permission->get('permissionModify'),

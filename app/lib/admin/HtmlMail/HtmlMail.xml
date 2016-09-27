@@ -17,10 +17,11 @@
             <layout>simple</layout>
             <orderBy>title</orderBy>
             <label>#title</label>
-            <labelAdmin>
-                <label type="link">#title</label>
-                <label>#description</label>
-            </labelAdmin>
+            <templateItemAdmin>
+                <p class="accent"><strong>#title</strong></p>
+                <p class="tiny"><em>_code</em> : <span class="mainAlt">#code</span></p>
+                <p class="tiny">#description</p>
+            </templateItemAdmin>
         </form>
     </info>
     <attributes>
@@ -43,7 +44,7 @@
             <name>title</name>
             <label>title</label>
             <lang>true</lang>
-            <type>text-long</type>
+            <type>text</type>
             <required>notEmpty</required>
         </attribute>
         <attribute>

@@ -15,7 +15,7 @@ class FormField_TextUnchangeable extends FormField_Text {
     */
     public function __construct($options) {
         parent::__construct($options);
-        $this->options['size'] = '95%';
+        $this->options['size'] = '30';
         if (isset($this->options['value']) && $this->options['value']!='') {
             $this->options['disabled'] = true;
         }
@@ -25,7 +25,7 @@ class FormField_TextUnchangeable extends FormField_Text {
     * Render the element with an static function.
     */
     static public function create($options) {
-        $options['size'] = '95%';
+        $options['size'] = '30';
         if (isset($options['value']) && $options['value']!='') {
             $options['disabled'] = true;
         }

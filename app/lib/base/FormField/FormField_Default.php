@@ -29,7 +29,7 @@ class FormField_Default {
         $this->options['lang'] = (string)$this->item->lang;
         $this->options['layout'] = (string)$this->item->layout;
         $this->options['required'] = ((string)$this->item->required!='') ? true : false;
-        $this->options['typeField'] = 'text';
+        $this->options['typeField'] = (isset($options['typeField'])) ? $options['typeField'] : 'text';
     }
 
     /**
@@ -68,12 +68,10 @@ class FormField_Default {
         $size = (isset($options['size'])) ? 'size="'.$options['size'].'" ' : '';
         $error = (isset($options['error'])) ? '<div class="error">'.$options['error'].'</div>' : '';
         $class = (isset($options['class'])) ? $options['class'] : '';
+        $class .= (isset($options['name'])) ? ' formField-'.Text::simpleUrl($options['name']) : '';
         $classError = (isset($options['error']) && $options['error']!='') ? 'errorField' : '';
         $placeholder = (isset($options['placeholder'])) ? 'placeholder="'.__($options['placeholder']).'"' : '';
         $required = (isset($options['required']) && $options['required']) ? 'required' : '';
-        //DELETE
-        $required = '';
-        //DELETE
         $layout = (isset($options['layout'])) ? $options['layout'] : '';
         switch ($layout) {
             default:
@@ -82,7 +80,6 @@ class FormField_Default {
                                 '.$label.'
                                 '.$error.'
                                 <input '.$typeField.' '.$name.' '.$size.' '.$value.' '.$id.' '.$disabled.' '.$placeholder.' '.$required.'/>
-                                <div class="clearer"></div>
                             </div>
                         </div>';
             break;
@@ -92,7 +89,6 @@ class FormField_Default {
                                 '.$label.'
                                 '.$error.'
                                 <input class="color" '.$typeField.' '.$name.' '.$size.' '.$value.' '.$id.' '.$disabled.' '.$placeholder.' '.$required.'/>
-                                <div class="clearer"></div>
                             </div>
                         </div>';
             break;

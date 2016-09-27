@@ -26,7 +26,7 @@ class FormField_DefaultRadio {
         $this->options['error'] = $this->errors[$this->name];
         $this->options['label'] = (string)$this->item->label;
         $this->options['placeholder'] = (string)$this->item->placeholder;
-        $this->options['typeField'] = 'text';
+        $this->options['typeField'] = (isset($options['typeField'])) ? $options['typeField'] : 'radio';
         //Load the values
         $refObject = (string)$this->item->refObject;
         if ($refObject != "") {
@@ -66,6 +66,7 @@ class FormField_DefaultRadio {
         $size = (isset($options['size'])) ? 'size="'.$options['size'].'" ' : '';
         $error = (isset($options['error'])) ? '<div class="error">'.$options['error'].'</div>' : '';
         $class = (isset($options['class'])) ? $options['class'] : '';
+        $class .= (isset($options['name'])) ? ' formField-'.Text::simpleUrl($options['name']) : '';
         $errorClass = (isset($options['error']) && $options['error']!='') ? 'errorField' : '';
         $placeholder = (isset($options['placeholder'])) ? 'placeholder="'.__($options['placeholder']).'"' : '';
         $layout = (isset($options['layout'])) ? $options['layout'] : '';
@@ -76,7 +77,6 @@ class FormField_DefaultRadio {
                 $htmlOptions .= '<div class="radioValue">
                                     <input type="radio" '.$name.' class="radioItem_'.$key.'" value="'.$key.'" '.$isSelected.'/>
                                     <label for="'.$key.'">'.__($item).'</label>
-                                    <div class="clearer"></div>
                                 </div>';
             }
         }
@@ -87,7 +87,6 @@ class FormField_DefaultRadio {
                                 '.$label.'
                                 '.$error.'
                                 '.$htmlOptions.'
-                                <div class="clearer"></div>
                             </div>
                         </div>';
             break;

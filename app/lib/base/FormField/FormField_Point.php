@@ -31,7 +31,7 @@ class FormField_Point {
         $this->options['placeholder'] = (string)$this->item->placeholder;
         $this->options['lang'] = (string)$this->item->lang;
         $this->options['layout'] = (string)$this->item->layout;
-        $this->options['typeField'] = 'text';
+        $this->options['typeField'] = (isset($options['typeField'])) ? $options['typeField'] : 'point';
     }
 
     /**
@@ -55,6 +55,7 @@ class FormField_Point {
         $error = (isset($options['error'])) ? '<div class="error">'.$options['error'].'</div>' : '';
         $errorClass = (isset($options['error']) && $options['error']!='') ? 'errorField' : '';
         $class = (isset($options['class'])) ? $options['class'] : '';
+        $class .= (isset($options['name'])) ? ' formField-'.Text::simpleUrl($options['name']) : '';
         $layout = (isset($options['layout'])) ? $options['layout'] : '';
         switch ($layout) {
             default:
@@ -65,7 +66,6 @@ class FormField_Point {
                             <input type="text" name="'.$name.'_lat" value="'.$valueLat.'" id="'.$id.'_lat" '.$disabled.'/>
                             <label><span>'.__('longitude').'</span></label>
                             <input type="text" name="'.$name.'_lng" value="'.$valueLng.'" id="'.$id.'_lng" '.$disabled.'/>
-                            <div class="clearer"></div>
                         </div>';
             break;
             case 'map':
@@ -85,7 +85,6 @@ class FormField_Point {
                                 <input type="hidden" name="'.$name.'_lat" value="'.$valueLat.'" class="inputLat" '.$disabled.'/>
                                 <input type="hidden" name="'.$name.'_lng" value="'.$valueLng.'" class="inputLng" '.$disabled.'/>
                             </div>
-                            <div class="clearer"></div>
                         </div>';
             break;
         }

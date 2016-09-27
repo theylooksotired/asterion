@@ -402,6 +402,24 @@
 		"translation_es": "Sección"
 	},
 	{
+		"code": "sections",
+		"translation_en": "Sections",
+		"translation_fr": "Sections",
+		"translation_es": "Secciones"
+	},
+	{
+		"code": "htmlSections",
+		"translation_en": "HTML Sections",
+		"translation_fr": "Sections HTML",
+		"translation_es": "Secciones HTML"
+	},
+	{
+		"code": "htmlSectionsAdmin",
+		"translation_en": "HTML Admin Sections",
+		"translation_fr": "Sections HTML Admin",
+		"translation_es": "Secciones Admin HTML"
+	},
+	{
 		"code": "tags",
 		"translation_en": "Tags",
 		"translation_fr": "Tags",
@@ -415,7 +433,7 @@
 	},
 	{
 		"code": "title",
-		"translation_en": "Name",
+		"translation_en": "Title",
 		"translation_fr": "Libellé",
 		"translation_es": "Título"
 	},
@@ -547,6 +565,12 @@
 	},
 	{
 		"code": "noItems",
+		"translation_en": "There are no items in this list.",
+		"translation_fr": "Il n'y a aucun élément dans ce liste.",
+		"translation_es": "No hay elementos en esta lista."
+	},
+	{
+		"code": "noItemsSearch",
 		"translation_en": "There are no items matching your search.",
 		"translation_fr": "Il n'y a aucun élément correspondant à votre recherche.",
 		"translation_es": "No hay resultados para su búsqueda."
@@ -624,10 +648,46 @@
 		"translation_es": "Pendiente"
 	},
 	{
+		"code": "permissions",
+		"translation_en": "Permissions",
+		"translation_fr": "Permissions",
+		"translation_es": "Permisos"
+	},
+	{
+		"code": "managesPermissions",
+		"translation_en": "Can manage permissions",
+		"translation_fr": "Peut gérer les autorisations",
+		"translation_es": "Puede administrar permisos"
+	},
+	{
 		"code": "permissionsError",
 		"translation_en": "You don't have the permissions to visit this page.",
 		"translation_fr": "Vous n'avez pas les permissions pour visiter cette page.",
 		"translation_es": "No tiene permisos para ver esta página."
+	},
+	{
+		"code": "permissionListAdmin",
+		"translation_en": "Permission to list items.",
+		"translation_fr": "Autorisation pour lister les éléments.",
+		"translation_es": "Permiso para listar elementos."
+	},
+	{
+		"code": "permissionInsert",
+		"translation_en": "Permission to insert items.",
+		"translation_fr": "Autorisation pour insérer des éléments.",
+		"translation_es": "Permiso para insertar elementos."
+	},
+	{
+		"code": "permissionModify",
+		"translation_en": "Permission to modify items.",
+		"translation_fr": "Autorisation pour modifier des éléments.",
+		"translation_es": "Permiso para modificar elementos."
+	},
+	{
+		"code": "permissionDelete",
+		"translation_en": "Permission to delete items.",
+		"translation_fr": "Autorisation pour supprimer les éléments.",
+		"translation_es": "Permiso para eliminar items."
 	},
 	{
 		"code": "print",
@@ -904,5 +964,29 @@
 		"translation_en": "Download file",
 		"translation_fr": "Télécharger le fichier",
 		"translation_es": "Descargar el archivo"
+	},
+	{
+		"code": "myAccount",
+		"translation_en": "My account",
+		"translation_fr": "Ma compte",
+		"translation_es": "Mi cuenta"
+	},
+	{
+		"code": "listTotal",
+		"translation_en": "#RESULTS items in total.",
+		"translation_fr": "#RESULTS résultats en total.",
+		"translation_es": "#RESULTS resultados en total."
+	},
+	{
+		"code": "class",
+		"translation_en": "Class",
+		"translation_fr": "Classe",
+		"translation_es": "Clase"
+	},
+	{
+		"code": "language",
+		"translation_en": "Language",
+		"translation_fr": "Langage",
+		"translation_es": "Idioma"
 	}
 ]

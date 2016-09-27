@@ -22,7 +22,7 @@ class HtmlSection extends Db_Object {
     */
     static public function show($code) {
         $html = HtmlSection::code($code);
-        return $html->showUi('Page');
+        return $html->showUi('Section');
     }
 
 }

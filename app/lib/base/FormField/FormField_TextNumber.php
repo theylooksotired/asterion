@@ -15,14 +15,14 @@ class FormField_TextNumber extends FormField_Text {
     */
     public function __construct($options) {
         parent::__construct($options);
-        $this->options['size'] = 6;
+        $this->options['size'] = '6';
     }
     
     /**
     * Render the element with an static function.
     */
     static public function create($options) {
-        $options['size'] = 6;
+        $options['size'] = '6';
         return FormField_Default::create($options);
     }
 

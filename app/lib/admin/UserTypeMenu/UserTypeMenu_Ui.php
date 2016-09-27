@@ -15,7 +15,7 @@ class UserTypeMenu_Ui extends Ui{
     */
     public function renderMenu() {
         $content = ($this->object->get('action')!='') ? '<a href="'.url($this->object->get('action'), true).'">'.$this->object->get('name').'</a>' : '<span>'.$this->object->get('name').'</span>';
-        return '<div class="menuSideItem menuSideItem-'.$this->object->get('type').'">
+        return '<div class="menuSideItem menuSideItem-'.Text::simpleUrl($this->object->get('name')).'">
                     '.$content.'
                 </div>';
     }

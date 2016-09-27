@@ -17,14 +17,13 @@ class Init {
     static public function initSite(){
         Lang::saveInitialValues();
         Params::saveInitialValues();
-        Init::saveInitialValues('LangTrans');
-        Init::saveInitialValues('UserType');
-        Init::saveInitialValues('UserTypeMenu');
-        Init::saveInitialValues('User', array('EMAIL'=>EMAIL));
-        Init::saveInitialValues('HtmlSectionAdmin');
-        Init::saveInitialValues('HtmlMailTemplate');
-        Init::saveInitialValues('HtmlMail');
-        Init::saveInitialValues('Permission');
+        if (DEBUG) {
+            $objectNames = File::scanDirectoryObjects();
+            foreach ($objectNames as $objectName) {
+                $options = ($objectName == 'User') ? array('EMAIL'=>EMAIL) : array();
+                Init::saveInitialValues($objectName, $options);
+            }
+        }
     }
 
     /**
@@ -36,6 +35,9 @@ class Init {
         $object->createTable();
         $numberItems = $object->countResults();
         $dataUrl = DATA_FILE.$className.'.json';
+        if (!file_exists($dataUrl)) {
+            $dataUrl = DATA_LOCAL_FILE.$className.'.json';
+        }
         if (file_exists($dataUrl) && $numberItems==0) {
             $items = json_decode(file_get_contents($dataUrl), true);
             foreach ($items as $item) {

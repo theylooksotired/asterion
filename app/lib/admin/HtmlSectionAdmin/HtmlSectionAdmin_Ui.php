@@ -14,7 +14,7 @@ class HtmlSectionAdmin_Ui extends Ui{
     * Render an HTML section
     */
     public function renderPublic() {
-        return '<div class="pageSimple">'.$this->object->get('section').'</div>';
+        return '<div class="pageComplete">'.$this->object->get('section').'</div>';
     }
 
 }

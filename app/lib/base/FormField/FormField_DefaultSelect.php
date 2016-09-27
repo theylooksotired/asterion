@@ -25,7 +25,7 @@ class FormField_DefaultSelect {
         $this->options['error'] = $this->errors[$this->name];
         $this->options['label'] = (string)$this->item->label;
         $this->options['placeholder'] = (string)$this->item->placeholder;
-        $this->options['typeField'] = 'text';
+        $this->options['typeField'] = (isset($options['typeField'])) ? $options['typeField'] : 'select';
         //Load the values
         $refObject = (string)$this->item->refObject;
         if ($refObject != "") {
@@ -66,6 +66,7 @@ class FormField_DefaultSelect {
         $size = (isset($options['size'])) ? 'size="'.$options['size'].'" ' : '';
         $error = (isset($options['error'])) ? '<div class="error">'.$options['error'].'</div>' : '';
         $class = (isset($options['class'])) ? $options['class'] : '';
+        $class .= (isset($options['name'])) ? ' formField-'.Text::simpleUrl($options['name']) : '';
         $errorClass = (isset($options['error']) && $options['error']!='') ? 'errorField' : '';
         $placeholder = (isset($options['placeholder'])) ? 'placeholder="'.__($options['placeholder']).'"' : '';
         $layout = (isset($options['layout'])) ? $options['layout'] : '';
@@ -86,9 +87,7 @@ class FormField_DefaultSelect {
                                     '.$checkbox.'
                                     <select '.$name.' '.$id.' '.$disabled.' '.$multiple.' '.$size.'>'.$htmlOptions.'</select>
                                     <input type="hidden" name="select_'.$nameSelect.'" value="true"/>
-                                    <div class="clearer"></div>
                                 </div>
-                                <div class="clearer"></div>
                             </div>
                         </div>';
             break;

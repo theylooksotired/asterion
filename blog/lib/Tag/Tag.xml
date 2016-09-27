@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+* @structure Tag
+*
+* @author Leano Martinet <info@asterion-cms.com>
+* @package Asterion
+* @version 3.0.1
+-->
+<object>
+    <name>Tag</name>
+    <info>
+        <sql>
+            <primary>idTag</primary>
+        </sql>
+        <form>
+            <title>tags</title>
+            <label>#name</label>
+            <hiddenAdminMenu>true</hiddenAdminMenu>
+        </form>
+    </info>
+    <attributes>
+        <attribute>
+            <name>idTag</name>
+            <type>id-autoincrement</type>
+        </attribute>
+        <attribute>
+            <name>name</name>
+            <label>name</label>
+            <required>notEmpty</required>
+            <type>text</type>
+        </attribute>
+        <attribute>
+            <name>nameUrl</name>
+            <type>hidden-url</type>
+            <refObject>name</refObject>
+        </attribute>
+    </attributes>
+    <indexes>
+        <index>
+            <name>nameUrl</name>
+            <fields>nameUrl</fields>
+        </index>
+    </indexes>
+</object>

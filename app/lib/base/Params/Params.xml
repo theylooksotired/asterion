@@ -16,10 +16,12 @@
             <title>params</title>
             <orderBy>code</orderBy>
             <label>#information</label>
-            <labelAdmin>
-                <label type="link" style="medium">#code</label>
-                <label style="regularSmall">#information_#informationExtra</label>
-            </labelAdmin>
+            <templateItemAdmin>
+                <div class="labelTable">
+                    <div class="labelCell labelCell20 accent"><strong>#code</strong></div>
+                    <div class="labelCell">#information</div>
+                </div>
+            </templateItemAdmin>
         </form>
     </info>
     <attributes>

@@ -15,14 +15,14 @@ class FormField_TextLong extends FormField_Text {
     */
     public function __construct($options) {
         parent::__construct($options);
-        $this->options['size'] = '95%';
+        $this->options['size'] = '100';
     }
 
     /**
     * Render the element with an static function.
     */
     static public function create($options) {
-        $options['size'] = '95%';
+        $options['size'] = '100';
         return FormField_Default::create($options);
     }
     

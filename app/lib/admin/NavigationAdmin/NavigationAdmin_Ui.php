@@ -23,7 +23,7 @@ class NavigationAdmin_Ui extends Ui{
         $content = (isset($this->object->content)) ? $this->object->content : '';
         switch ($layoutPage) {
             default:
-                return '<div class="contentWrapper">
+                return '<div class="contentWrapper contentWrapper-'.$this->object->type.'">
                             '.$this->header().'
                             <div class="contentIns">
                                 <div class="contentMenu">
@@ -38,7 +38,6 @@ class NavigationAdmin_Ui extends Ui{
                                             <div class="contentTopRight">
                                                 '.$menuInside.'
                                             </div>
-                                            <div class="clearer"></div>
                                         </div>
                                         '.$messageError.'
                                         '.$message.'
@@ -46,12 +45,11 @@ class NavigationAdmin_Ui extends Ui{
                                         '.$this->footer().'
                                     </div>
                                 </div>
-                                <div class="clearer"></div>
                             </div>
                         </div>';
             break;
             case 'simple':
-                return '<div class="contentWrapper">
+                return '<div class="contentWrapper contentWrapper-'.$this->object->type.'">
                             '.$this->header().'
                             <div class="contentSimple">
                                 '.$title.'
@@ -77,8 +75,8 @@ class NavigationAdmin_Ui extends Ui{
                             </div>
                         </div>
                         <div class="headerRight">
-                            '.Lang_Ui::showLangs(true).'
                             '.User_Ui::infoHtml().'
+                            '.Lang_Ui::showLangs(true).'
                         </div>
                     </div>
                 </header>';
@@ -94,27 +92,59 @@ class NavigationAdmin_Ui extends Ui{
     }
 
     /**
-    * Render the menu for the page based on the user type
+    * Render the menu for the page based on the user type.
     */
     public function renderMenu() {
-        $login = User_Login::getInstance();
-        $userType = UserType::read($login->get('idUserType'));
-        if ($userType->id()!='') {
-            $menuList = new ListObjects('UserTypeMenu', array('where'=>'idUserType="'.$userType->id().'"', 'order'=>'ord'));
-            $permissionMenuItem = '';
-            if ($userType->get('managesPermissions')=='1') {
-                $permissionMenuItem = '<div class="menuSideItem menuSideItem-2">
-                                            <a href="'.url('Permission', true).'">'.__('permissions').'</a>
-                                        </div>';
+        $this->login = User_Login::getInstance();
+        $this->userType = UserType::read($this->login->get('idUserType'));
+        if ($this->userType->id()!='') {
+            $menuItems = '';
+            $objectNames = File::scanDirectoryObjectsBase();
+            $menuItems .= $this->renderMenuObjects($objectNames, 'menuSideItemBase');
+            $objectNames = File::scanDirectoryObjectsApp();
+            $menuItems .= $this->renderMenuObjects($objectNames, 'menuSideItemApp');
+            if ($this->userType->get('managesPermissions')=='1') {
+                $menuItems .= '<div class="menuSideItem menuSideItem-permissions">
+                                    <a href="'.url('Permission', true).'">'.__('permissions').'</a>
+                                </div>';
             }
+            $menuList = new ListObjects('UserTypeMenu', array('where'=>'idUserType="'.$this->userType->id().'"', 'order'=>'ord'));
             return '<nav class="menuSide">
                         '.$menuList->showList(array('function'=>'Menu')).'
-                        '.$permissionMenuItem.'
-                        <div class="menuSideItem menuSideItem-3">
+                        '.$menuItems.'
+                        <div class="menuSideItem menuSideItem-logout">
                             <a href="'.url('User/logout', true).'">'.__('logout').'</a>
                         </div>
                     </nav>';
         }
+    }
+
+    /**
+    * Render the menu for a list of objects.
+    */
+    public function renderMenuObjects($objectNames, $class) {
+        $menuItems = '';
+        foreach ($objectNames as $objectName) {
+            $object = new $objectName();
+            $objectName = (string)$object->info->name;
+            $objectTitle = (string)$object->info->info->form->title;
+            $objectHidden = (string)$object->info->info->form->hiddenAdminMenu;
+            if ($objectHidden != 'true') {
+                if ($this->userType->get('managesPermissions')=='1') {
+                    $menuItems .= '<div class="menuSideItem menuSideItem-'.$objectName.' '.$class.'">
+                                        <a href="'.url($objectName, true).'">'.__($objectTitle).'</a>
+                                    </div>';
+                } else {
+                    $permission = Permission::readFirst(array('where'=>'objectName="'.$objectName.'" AND idUserType="'.$this->userType->id().'"'));
+                    if ($permission->get('permissionListAdmin')=='1') {
+                        $menuItems .= '<div class="menuSideItem menuSideItem-'.$objectName.' '.$class.'">
+                                            <a href="'.url($objectName, true).'">'.__($objectTitle).'</a>
+                                        </div>';
+                    }
+                }
+            }
+        }
+        return $menuItems;
     }
 
 }

@@ -224,6 +224,14 @@ class Text {
     static public function decodeText($text, $quotes = ENT_QUOTES, $charset = "utf-8") {
         return html_entity_decode($text, $quotes, $charset);
     }
+
+    /**
+    * Return an array with all the words that start with a given character.
+    */
+    static public function arrayWordsStarting($character, $string) {
+        preg_match_all('/(?<!\w)'.$character.'\w+/', $string, $matches);
+        return (isset($matches[0])) ? $matches[0] : array();
+    }
     
 }
 ?>

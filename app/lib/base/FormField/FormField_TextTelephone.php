@@ -15,14 +15,14 @@ class FormField_TextTelephone extends FormField_Text {
     */
     public function __construct($options) {
         parent::__construct($options);
-        $this->options['size'] = 10;
+        $this->options['size'] = '10';
     }
 
     /**
     * Render the element with an static function.
     */
     static public function create($options) {
-        $options['size'] = 10;
+        $options['size'] = '10';
         return FormField_Default::create($options);
     }
     

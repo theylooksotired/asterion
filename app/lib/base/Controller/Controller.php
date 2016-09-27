@@ -94,6 +94,7 @@ abstract class Controller{
     * function in the child controller.
     */
     public function controlActions(){
+        // Check if the tables are created.
         $this->mode = 'admin';
         $this->object = new $this->type();
         $this->titlePage = __((string)$this->object->info->info->form->title);
@@ -111,9 +112,6 @@ abstract class Controller{
                 * it will create the table automatically.
                 */
                 $this->checkLoginAdmin();
-                if (DEBUG) {
-                    Db::initTable($this->object->className);
-                }
                 $this->content = $this->listAdmin();
                 return $ui->render();
             break;
@@ -122,11 +120,7 @@ abstract class Controller{
                 * This is the action that shows the form to insert a record in the BackEnd.
                 */
                 $this->checkLoginAdmin();
-                $uiObjectName = $this->type.'_Ui';
-                $uiObject = new $uiObjectName($this->object);
-                $this->content = $uiObject->renderForm(array('values'=>$this->values,
-                                                            'action'=>url($this->object->className.'/insert', true),
-                                                            'class'=>'formAdmin formAdminInsert'));
+                $this->content = $this->insertView();
                 return $ui->render();
             break;
             case 'insert':
@@ -147,22 +141,14 @@ abstract class Controller{
                 }
             break;
             case 'modifyView':
+            case 'modifyViewCheck':
             case 'insertCheck':
                 /**
                 * This is the action that shows the form to check a record insertion.
                 */
                 $this->checkLoginAdmin();
-                $this->message = ($this->action=='insertCheck') ? __('savedForm') : '';
-                $this->object = $this->object->readObject($this->id);
-                $uiObjectName = $this->type.'_Ui';
-                $uiObject = new $uiObjectName($this->object);
-                $values = array_merge($this->object->valuesArray(), $this->values);
-                $this->content = $uiObject->renderForm(array_merge(
-                                                            array('values'=>$values,
-                                                                    'action'=>url($this->object->className.'/modify', true),
-                                                                    'class'=>'formAdmin formAdminModify'),
-                                                            array('submit'=>array('save'=>__('save'),
-                                                                    'saveCheck'=>__('saveCheck')))));
+                $this->message = ($this->action=='insertCheck' || $this->action=='modifyViewCheck') ? __('savedForm') : '';
+                $this->content = $this->modifyView();
                 return $ui->render();
             break;
             case 'modifyViewNested':
@@ -192,7 +178,7 @@ abstract class Controller{
                 $modify = $this->modify($nested);
                 if ($modify['success']=='1') {
                     if (isset($this->values['submit-saveCheck'])) {
-                        header('Location: '.url($this->type.'/modifyView/'.$modify['id'], true));
+                        header('Location: '.url($this->type.'/modifyViewCheck/'.$modify['id'], true));
                     } else {
                         header('Location: '.url($this->type.'/listAdmin', true));
                     }
@@ -332,7 +318,7 @@ abstract class Controller{
     }
 
     /**
-    * Render the list of the items in the administration area
+    * Render the list of the items in the administration area.
     */
     public function listAdmin() {
         if ((string)$this->object->info->info->form->group!='') {
@@ -350,7 +336,7 @@ abstract class Controller{
         $multipleChoice = (count((array)$this->object->info->info->form->multipleActions->action) > 0);
         return $this->searchForm().'
                 '.$this->multipleActionsControl().'
-                <div class="listAdmin '.$sortableListClass.'" rel="'.url($this->object->className.'/sortSave/', true).'">
+                <div class="listAdmin listAdmin'.$this->object->className.' '.$sortableListClass.'" rel="'.url($this->object->className.'/sortSave/', true).'">
                     '.$list->showListPager(array('function'=>'Admin',
                                                 'message'=>'<div class="message">'.__('noItems').'</div>'),
                                             array('userType'=>$this->login->get('type'), 'multipleChoice'=>$multipleChoice)).'
@@ -358,7 +344,7 @@ abstract class Controller{
     }
 
     /**
-    * Render the list of the items when is the case of a group
+    * Render the list of the items when is the case of a group.
     */
     public function listGroupAdmin() {
         $group = (string)$this->object->info->info->form->group;
@@ -382,7 +368,7 @@ abstract class Controller{
     }
 
     /**
-    * Check for the order field
+    * Check for the order field.
     */
     public function orderField() {
         $orderAttribute = (string)$this->object->info->info->form->orderBy;
@@ -393,7 +379,7 @@ abstract class Controller{
     }
 
     /**
-    * Render the multiple actions control
+    * Render the multiple actions control.
     */
     public function multipleActionsControl() {
         $multipleActions = (array)$this->object->info->info->form->multipleActions->action;
@@ -415,7 +401,7 @@ abstract class Controller{
     }
 
     /**
-    * Render a search form for the object
+    * Render a search form for the object.
     */
     public function searchForm() {
         $search = $this->object->infoSearch();
@@ -440,7 +426,18 @@ abstract class Controller{
     }
 
     /**
-    * Insert an element and return the proper information to render
+    * View an element to insert it.
+    */
+    public function insertView() {
+        $uiObjectName = $this->type.'_Ui';
+        $uiObject = new $uiObjectName($this->object);
+        return $uiObject->renderForm(array('values'=>$this->values,
+                                        'action'=>url($this->object->className.'/insert', true),
+                                        'class'=>'formAdmin formAdminInsert'));
+    }
+
+    /**
+    * Insert an element and return the proper information to render.
     */
     public function insert(){
         $formClass = $this->type.'_Form';
@@ -455,7 +452,7 @@ abstract class Controller{
                 $html = '<div class="message messageError">
                             '.$e->getMessage().'
                         </div>
-                        '.$form->createForm($form->createFormField(), array('action'=>url($this->object->className.'/insert', true), 'submit'=>__('save'), 'class'=>'formAdmin formAdminInsert'));
+                        '.$form->createForm($form->createFormFields(), array('action'=>url($this->object->className.'/insert', true), 'submit'=>__('save'), 'class'=>'formAdmin formAdminInsert'));
                 return array('success'=>'0', 'html'=>$html);
             }
             $multipleChoice = (count((array)$this->object->info->info->form->multipleActions) > 0) ? true : false;
@@ -463,13 +460,29 @@ abstract class Controller{
             return array('success'=>'1', 'html'=>$html, 'id'=>$object->id());
         } else {
             $form = new $formClass($this->values, $errors);
-            $html = $form->createForm($form->createFormField(), array('action'=>url($this->object->className.'/insert', true), 'submit'=>__('save'), 'class'=>'formAdmin formAdminInsert'));
+            $html = $form->createForm($form->createFormFields(), array('action'=>url($this->object->className.'/insert', true), 'submit'=>__('save'), 'class'=>'formAdmin formAdminInsert'));
             return array('success'=>'0', 'html'=>$html);
         }
     }
+
+    /**
+    * View an element to modify an item.
+    */
+    public function modifyView() {
+        $this->object = $this->object->readObject($this->id);
+        $uiObjectName = $this->type.'_Ui';
+        $uiObject = new $uiObjectName($this->object);
+        $values = array_merge($this->object->valuesArray(), $this->values);
+        return $uiObject->renderForm(array_merge(
+                                    array('values'=>$values,
+                                            'action'=>url($this->object->className.'/modify', true),
+                                            'class'=>'formAdmin formAdminModify'),
+                                    array('submit'=>array('save'=>__('save'),
+                                            'saveCheck'=>__('saveCheck')))));
+    }
     
     /**
-    * Modify an element and return the proper information to render
+    * Modify an element and return the proper information to render.
     */
     public function modify($nested=false) {
         $action = ($nested) ? 'modifyNested' : 'modify';
@@ -502,31 +515,36 @@ abstract class Controller{
     }
 
     /**
-    * Render the inside menu for certain actions
+    * Render the inside menu for certain actions.
     */
     public function menuInside($action='') {
         $items = '';
         $action = ($action!='') ? $action : $this->action;
         switch ($action) {
             case 'listAdmin':
-                $items = '<div class="menuSimpleItem menuSimpleItemInsert">
-                            <a href="'.url($this->type.'/insertView', true).'">'.__('insertNew').'</a>
-                        </div>';
+                if (Permission::canInsert($this->object->className)) {
+                    $items = '<div class="menuSimpleItem menuSimpleItemInsert">
+                                <a href="'.url($this->type.'/insertView', true).'">'.__('insertNew').'</a>
+                            </div>';
+                }
             break;
             case 'insertView':
             case 'insert':
             case 'modifyView':
-                $items = '<div class="menuSimpleItem menuSimpleItemCancel">
-                            <a href="'.url($this->type.'/listAdmin', true).'">'.__('cancel').'</a>
+            case 'modifyViewCheck':
+                $items = '<div class="menuSimpleItem menuSimpleItemList">
+                            <a href="'.url($this->type.'/listAdmin', true).'">'.__('viewList').'</a>
                         </div>';
             break;
             case 'insertCheck':
                 $items = '<div class="menuSimpleItem menuSimpleItemInsert">
                             <a href="'.url($this->type.'/insertView', true).'">'.__('insertNew').'</a>
-                        </div>
-                        <div class="menuSimpleItem menuSimpleItemList">
-                            <a href="'.url($this->type.'/listAdmin', true).'">'.__('viewList').'</a>
                         </div>';
+                if (Permission::canInsert($this->object->className)) {
+                    $items .= '<div class="menuSimpleItem menuSimpleItemList">
+                                <a href="'.url($this->type.'/listAdmin', true).'">'.__('viewList').'</a>
+                            </div>';
+                }
             break;
             case 'listBack':
                 $items = '<div class="menuSimpleItem menuSimpleItemList">
@@ -539,7 +557,7 @@ abstract class Controller{
     }
 
     /**
-    * Functions to manage the permissions
+    * Functions to manage the permissions.
     */
     public function checkLoginAdmin() {
         $this->login = User::loginAdmin();

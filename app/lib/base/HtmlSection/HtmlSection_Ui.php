@@ -10,12 +10,11 @@
 */
 class HtmlSection_Ui extends Ui{
 
-    public function __construct (HtmlSection & $object) {
-        $this->object = $object;
-    }
-
-    public function renderPage() {
-        return '<div class="pageSimple">'.$this->object->get('section').'</div>';
+	/**
+	* Render a section.
+	*/
+    public function renderSection() {
+        return '<div class="pageComplete">'.$this->object->get('section').'</div>';
     }
 
 }

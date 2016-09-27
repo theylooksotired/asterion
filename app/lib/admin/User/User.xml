@@ -18,13 +18,12 @@
             <title>users</title>
             <label>#name</label>
             <orderBy>name</orderBy>
-            <labelAdmin>
-                <label style="active" type="active">#active</label>
-                <label style="regular">
-                    <label type="link">#name</label>
-                    <label style="small">#email</label>
-                </label>
-            </labelAdmin>
+            <templateItemAdmin>
+                <div class="active active-##active">
+                    <p class="accent"><strong>#name</strong></p>
+                    <p class="tiny"><span class="mainAlt">#idUserType</span> | <span class="mainAlt">#email</span></p>
+                </div>
+            </templateItemAdmin>
         </form>
     </info>
     <attributes>

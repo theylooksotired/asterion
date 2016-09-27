@@ -104,7 +104,7 @@ class Form {
     /**
     * Create the form fields.
     */
-    public function createFormField($options=array()) {
+    public function createFormFields($options=array()) {
         $html = '';
         $options['multiple'] = (isset($options['multiple']) && $options['multiple']) ? true : false;
         $options['idMultiple'] = ($options['multiple']) ? md5(rand()*rand()*rand()) : '';
@@ -133,10 +133,14 @@ class Form {
                                 array('item'=>$item, 
                                         'values'=>$this->values, 
                                         'errors'=>$this->errors, 
+                                        'typeField'=>$type, 
                                         'object'=>$this->object));
         switch (Db_ObjectType::baseType($type)) {
             default:
                 return FormField::show($type, $options);
+            break;
+            case 'select':
+                return FormField::show('select', $options);
             break;
             case 'id':
             case 'linkid':
@@ -173,7 +177,7 @@ class Form {
                                             'value'=>$refObjectIns->basicInfoAdminArray(),
                                             'selected'=>$selected);
                         $multipleSelected = FormField_Select::create($options);
-                        return '<div class="multipleCheckboxes">
+                        return '<div class="multipleCheckboxes multipleCheckboxes-'.$name.'">
                                     <div class="multipleCheckboxesIns">
                                         '.$multipleSelected.'
                                     </div>
@@ -198,7 +202,7 @@ class Form {
                                             'size'=>'60',
                                             'value'=>$autocompleteItems);
                         $autocomplete = FormField_Text::create($options);
-                        return '<div class="autocompleteItem" rel="'.url($refObject.'/autocomplete/'.$refAttribute, true).'">
+                        return '<div class="autocompleteItem autocompleteItem-'.$name.'" rel="'.url($refObject.'/autocomplete/'.$refAttribute, true).'">
                                     <div class="autocompleteItemIns">
                                         '.$autocomplete.'
                                     </div>
@@ -222,7 +226,7 @@ class Form {
                                             'value'=>$value);
                             $multipleCheckbox .= FormField_Checkbox::create($options);
                         }
-                        return '<div class="multipleCheckboxes">
+                        return '<div class="multipleCheckboxes multipleCheckboxes-'.$name.'">
                                     '.$label.'
                                     <div class="multipleCheckboxesIns">
                                         '.$multipleCheckbox.'
@@ -239,12 +243,13 @@ class Form {
                         $label = ((string)$item->label!='') ? '<label>'.__((string)$item->label).'</label>' : '';
                         $orderNested = ($refObjectFormIns->object->hasOrd()) ? '<div class="nestedFormFieldOrder"></div>' : '';
                         $nestedFormFieldEmpty = '<div class="nestedFormFieldEmpty">
-                                                        <div class="nestedFormFieldDelete"></div>
-                                                        '.$orderNested.'
-                                                        <div class="nestedFormFieldContent">
-                                                            '.$refObjectFormIns->createFormField($multipleOptions).'
+                                                        <div class="nestedFormFieldOptions">
+                                                            <div class="nestedFormFieldDelete"></div>
+                                                            '.$orderNested.'
                                                         </div>
-                                                        <div class="clearer"></div>
+                                                        <div class="nestedFormFieldContent">
+                                                            '.$refObjectFormIns->createFormFields($multipleOptions).'
+                                                        </div>
                                                     </div>';
                         foreach ($this->object->get($name) as $itemValues) {
                             $refObjectIns = new $refObject($itemValues);
@@ -252,15 +257,17 @@ class Form {
                             $multipleOptionsIns = array('multiple'=>true, 'nameMultiple'=>$name);
                             $orderNested = ($refObjectFormIns->object->hasOrd()) ? '<div class="nestedFormFieldOrder"></div>' : '';
                             $nestedFormField .= '<div class="nestedFormFieldObject">
-                                                        <div class="nestedFormFieldDelete" rel="'.url($refObject.'/delete/'.$refObjectIns->id(), true).'"></div>
-                                                        '.$orderNested.'
+                                                        <div class="nestedFormFieldOptions">
+                                                            <div class="nestedFormFieldDelete" rel="'.url($refObject.'/delete/'.$refObjectIns->id(), true).'"></div>
+                                                            '.$orderNested.'
+                                                        </div>
                                                         <div class="nestedFormFieldContent">
-                                                            '.$refObjectFormIns->createFormField($multipleOptionsIns).'
+                                                            '.$refObjectFormIns->createFormFields($multipleOptionsIns).'
                                                         </div>
                                                     </div>';
                         }
                         $classSortable = ($refObjectFormIns->object->hasOrd()) ? 'nestedFormFieldSortable' : '';
-                        return '<div class="nestedFormField">
+                        return '<div class="nestedFormField nestedFormField-'.$name.'">
                                     '.$label.'
                                     <div class="nestedFormFieldIns '.$classSortable.'">
                                         '.$nestedFormField.'
@@ -303,7 +310,6 @@ class Form {
                 }
                 $submitButton = '<div class="submitButtons">
                                     '.$submitButton.'
-                                    <div class="clearer"></div>
                                 </div>';
             } else {
                 $submitButton = FormField::show('submit', array('name'=>$submitName,
@@ -316,7 +322,6 @@ class Form {
                     <fieldset>
                         '.$fields.'
                         '.$submitButton.'
-                        <div class="clearer"></div>
                     </fieldset>
                 </form>';
     }

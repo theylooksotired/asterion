@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+* @structure Category
+*
+* @author Leano Martinet <info@asterion-cms.com>
+* @package Asterion
+* @version 3.0.1
+-->
+<object>
+    <name>Category</name>
+    <info>
+        <sql>
+            <primary>idCategory</primary>
+            <order>true</order>
+        </sql>
+        <form>
+            <title>categories</title>
+            <orderBy>ord</orderBy>
+            <label>#name</label>
+            <templateItemAdmin>
+                <p class="accent"><strong>#name</strong></p>
+                <p class="tiny">#shortDescription</p>
+            </templateItemAdmin>
+        </form>
+    </info>
+    <attributes>
+        <attribute>
+            <name>idCategory</name>
+            <type>id-autoincrement</type>
+        </attribute>
+        <attribute>
+            <name>name</name>
+            <lang>true</lang>
+            <label>name</label>
+            <required>notEmpty</required>
+            <type>text-long</type>
+        </attribute>
+        <attribute>
+            <name>nameUrl</name>
+            <lang>true</lang>
+            <type>hidden-url</type>
+            <refObject>name</refObject>
+        </attribute>
+        <attribute>
+            <name>shortDescription</name>
+            <label>shortDescription</label>
+            <lang>true</lang>
+            <required>notEmpty</required>
+            <type>textarea</type>
+        </attribute>
+    </attributes>
+    <indexes>
+        <index>
+            <name>nameUrl</name>
+            <fields>nameUrl</fields>
+            <lang>true</lang>
+        </index>
+    </indexes>
+</object>

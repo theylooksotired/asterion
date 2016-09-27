@@ -14,12 +14,13 @@
         </sql>
         <form>
             <title>permissions</title>
+            <hiddenAdminMenu>true</hiddenAdminMenu>
         </form>        
     </info>
     <attributes>
         <attribute>
             <name>idPermission</name>
-            <type>id-varchar</type>
+            <type>id-autoincrement</type>
         </attribute>
         <attribute>
             <name>idUserType</name>

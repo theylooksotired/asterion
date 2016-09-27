@@ -15,14 +15,14 @@ class FormField_TextSmall extends FormField_Text {
     */
     public function __construct($options) {
         parent::__construct($options);
-        $this->options['size'] = 5;
+        $this->options['size'] = '5';
     }
 
     /**
     * Render the element with an static function.
     */
     static public function create($options) {
-        $options['size'] = 5;
+        $options['size'] = '5';
         return FormField_Default::create($options);
     }
     

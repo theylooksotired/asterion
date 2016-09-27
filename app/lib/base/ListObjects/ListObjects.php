@@ -195,6 +195,7 @@ class ListObjects {
         }
         return '<div class="listWrapper">
                     '.$pagerTop.'
+                    <div class="listResults">'.str_replace('#RESULTS', $this->countTotal(), __('listTotal')).'</div>
                     <div class="listContent">
                         '.$this->showList($options, $params).'
                     </div>

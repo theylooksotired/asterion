@@ -13,10 +13,10 @@
 
 /**
 * The APP_FOLDER constant defines the public folder of the application.
-* It can be used to load different versions of it.
+* It can be used to load different versions of it like test, develop or production.
 * Then, Asterion loads the proper configuration depending on that version.
 */
-define('APP_FOLDER', 'base');
+define('APP_FOLDER', 'blog');
 require_once(APP_FOLDER.'/config/config.php');
 
 try {

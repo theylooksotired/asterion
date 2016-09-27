@@ -14,17 +14,12 @@ class User_Ui extends Ui{
         $login = User_Login::getInstance();
         if ($login->isConnected()) {        
             return '<div class="infoUser">
-                        <ul>
-                            <li>
-                                <a href="'.url('User/myInformation', true).'">'.__('myInformation').' ('.$login->get('label').')</a>
-                            </li>
-                            <li>
-                                <a href="'.url('User/changePassword', true).'">'.__('changePassword').'</a>
-                            </li>
-                            <li>
-                                <a href="'.url('User/logout', true).'">'.__('logout').'</a>
-                            </li>
-                        </ul>
+                        <div class="infoUserItem infoUserMyAccount">
+                            <a href="'.url('User/myInformation', true).'">'.__('myAccount').'</a>
+                        </div>
+                        <div class="infoUserItem infoUserLogout">
+                            <a href="'.url('User/logout', true).'">'.__('logout').'</a>
+                        </div>
                     </div>';
         }
     }

@@ -15,8 +15,8 @@ class FormField_TextareaCkSimple extends FormField_DefaultTextarea {
     */
     public function __construct($options) {
         parent::__construct($options);
-        $this->options['cols'] = 70;
-        $this->options['rows'] = 6;
+        $this->options['cols'] = '70';
+        $this->options['rows'] = '6';
         $this->options['class'] = 'ckeditorAreaSimple';
     }
 
@@ -24,8 +24,8 @@ class FormField_TextareaCkSimple extends FormField_DefaultTextarea {
     * Render the element with an static function.
     */
     static public function create($options) {
-        $options['cols'] = 70;
-        $options['rows'] = 6;
+        $options['cols'] = '70';
+        $options['rows'] = '6';
         $options['class'] = 'ckeditorAreaSimple';
         return FormField_DefaultTextarea::create($options);
     }

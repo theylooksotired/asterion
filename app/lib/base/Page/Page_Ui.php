@@ -10,11 +10,11 @@
 */
 class Page_Ui extends Ui {
 
-    public function renderPage() {
-        return '<div class="pageComplete">
-                    '.html_entity_decode($this->object->get('page')).'
-                    <div class="clearer"></div>
-                </div>';
+    /**
+	* Render a entire page.
+	*/
+	public function renderPage() {
+        return '<div class="pageComplete">'.html_entity_decode($this->object->get('page')).'</div>';
     }
 
 }

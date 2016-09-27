@@ -13,16 +13,14 @@
             <primary>idHtmlSectionAdmin</primary>
         </sql>
         <form>
-            <title>sections</title>
+            <title>htmlSectionsAdmin</title>
             <orderBy>code</orderBy>
             <label>#title</label>
+            <templateItemAdmin>
+                <p class="accent"><strong>#title</strong></p>
+                <p class="tiny"><em>_code</em> : <span class="mainAlt">#code</span></p>
+            </templateItemAdmin>
         </form>
-        <nav>
-            <labelSections>
-                <label type="link">code</label>
-                <label style="small">title</label>
-            </labelSections>
-        </nav>
     </info>
     <attributes>
         <attribute>

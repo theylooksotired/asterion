@@ -11,7 +11,7 @@
 class FormField {
 
     /**
-    * A factory function to show the formfields
+    * A factory function to show the form field using an object attribute.
     */
     static public function show($type, $options) {
         $objectName = 'FormField_'.str_replace(' ', '', ucwords(str_replace('-', ' ', $type)));
@@ -19,6 +19,19 @@ class FormField {
         if (is_file($fileName)) {
             $field = new $objectName($options);
             return $field->show();
+        } else {
+            return 'The type '.$type.' is not valid';
+        }
+    }
+
+    /**
+    * A factory function to build the form field using an array of options.
+    */
+    static public function create($type, $options) {
+        $objectName = 'FormField_'.str_replace(' ', '', ucwords(str_replace('-', ' ', $type)));
+        $fileName = FRAMEWORK_FILE.'base/FormField/'.$objectName.'.php';
+        if (is_file($fileName)) {
+            return forward_static_call(array($objectName,'create'), $options); 
         } else {
             return 'The type '.$type.' is not valid';
         }

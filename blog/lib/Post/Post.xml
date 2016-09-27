@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+* @structure Post
+*
+* @author Leano Martinet <info@asterion-cms.com>
+* @package Asterion
+* @version 3.0.1
+-->
+<object>
+    <name>Post</name>
+    <info>
+        <sql>
+            <primary>idPost</primary>
+            <order>true</order>
+            <onCreate>Tag,PostTag</onCreate>
+        </sql>
+        <form>
+            <title>posts</title>
+            <orderBy>ord</orderBy>
+            <label>#title</label>
+            <templateItemAdmin>
+                <p class="image">#image</p>
+                <p class="accent"><strong>#title</strong></p>
+                <p class="tiny"><em>_language</em> : #idLang | <em>_user</em> : #idUser</p>
+                <p class="tiny">#shortDescription</p>
+            </templateItemAdmin>
+        </form>
+    </info>
+    <attributes>
+        <attribute>
+            <name>idPost</name>
+            <type>id-autoincrement</type>
+        </attribute>
+        <attribute>
+            <name>idUser</name>
+            <type>hidden-user</type>
+        </attribute>
+        <attribute>
+            <name>idLang</name>
+            <label>language</label>
+            <type>select-varchar</type>
+            <refObject>Lang</refObject>
+        </attribute>
+        <attribute>
+            <name>image</name>
+            <label>image</label>
+            <type>file</type>
+            <mode>image</mode>
+        </attribute>
+        <attribute>
+            <name>title</name>
+            <label>title</label>
+            <required>notEmpty</required>
+            <type>text-long</type>
+        </attribute>
+        <attribute>
+            <name>titleUrl</name>
+            <type>hidden-url</type>
+            <refObject>title</refObject>
+        </attribute>
+        <attribute>
+            <name>idCategory</name>
+            <label>category</label>
+            <type>select</type>
+            <refObject>Category</refObject>
+        </attribute>
+        <attribute>
+            <name>shortDescription</name>
+            <label>shortDescription</label>
+            <required>notEmpty</required>
+            <type>textarea</type>
+        </attribute>
+        <attribute>
+            <name>description</name>
+            <label>description</label>
+            <required>notEmpty</required>
+            <type>textarea</type>
+        </attribute>
+        <attribute>
+            <name>tags</name>
+            <label>tags</label>
+            <type>multiple-autocomplete</type>
+            <refObject>Tag</refObject>
+            <refAttribute>name</refAttribute>
+            <lnkObject>PostTag</lnkObject>
+        </attribute>
+    </attributes>
+    <indexes>
+        <index>
+            <name>titleUrl</name>
+            <fields>titleUrl</fields>
+        </index>
+    </indexes>
+</object>

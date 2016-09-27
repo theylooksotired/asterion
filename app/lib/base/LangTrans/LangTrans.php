@@ -14,7 +14,7 @@ class LangTrans extends Db_Object {
     * Get the translation of a phrase or a word using its code.
     */
     static public function translate($code) {
-        return isset($_ENV['lang'][$code]) ? $_ENV['lang'][$code] : $code;
+        return (isset($_ENV['lang'][$code])) ? $_ENV['lang'][$code] : $code;
     }
 
 }
