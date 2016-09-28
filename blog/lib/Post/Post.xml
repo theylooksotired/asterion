@@ -74,7 +74,7 @@
             <name>description</name>
             <label>description</label>
             <required>notEmpty</required>
-            <type>textarea</type>
+            <type>textarea-ck</type>
         </attribute>
         <attribute>
             <name>tags</name>
