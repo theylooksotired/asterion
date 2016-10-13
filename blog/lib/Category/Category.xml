@@ -12,11 +12,15 @@
         <sql>
             <primary>idCategory</primary>
             <order>true</order>
+            <onDelete>Post</onDelete>
         </sql>
         <form>
             <title>categories</title>
             <orderBy>ord</orderBy>
             <label>#name</label>
+            <viewPublic>true</viewPublic>
+            <publicUrl>_categories/#nameUrl</publicUrl>
+            <publicUrlList>_categories</publicUrlList>
             <templateItemAdmin>
                 <p class="accent"><strong>#name</strong></p>
                 <p class="tiny">#shortDescription</p>
@@ -39,7 +43,7 @@
             <name>nameUrl</name>
             <lang>true</lang>
             <type>hidden-url</type>
-            <refObject>name</refObject>
+            <refAttribute>name</refAttribute>
         </attribute>
         <attribute>
             <name>shortDescription</name>

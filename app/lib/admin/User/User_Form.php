@@ -29,6 +29,13 @@ class User_Form extends Form{
                 </div>';
     }
 
+    public function forgotSent() {
+        return '<div class="simpleForm">
+                    <div class="message">'.__('passwordSentMail').'</div>
+                    <p><a href="'.url('User/login', true).'">'.__('tryLoginAgain').'</a></p>
+                </div>';
+    }
+
     public function updatePassword() {
         $fields = $this->field('email').'
                 '.$this->field('password');
@@ -44,29 +51,36 @@ class User_Form extends Form{
                 '.$this->field('password');
         return '<div class="simpleForm">
                     <p>'.__('changePasswordMessage').'</p>
-                    '.Form::createForm($fields, array('action'=>url('User/changePassword', true), 'class'=>'formAdmin', 'submit'=>__('save'))).'
+                    '.Form::createForm($fields, array('action'=>url('User/myAccountPassword', true), 'class'=>'formAdmin', 'submit'=>__('save'))).'
                 </div>';
     }
 
-    public function isValidChangePassword($login) {
+    public function isValidChangePassword($user) {
         $errors = array();
-        $user = User::read($login->id());
-        if (md5($this->values['oldPassword']) != $user->get('password')) {
+        if (!isset($this->values['oldPassword']) || trim($this->values['oldPassword'])=='') {
             $errors['oldPassword'] = __('oldPasswordError');
+        } else {        
+            if ($user->get('passwordTemp')!='' && $this->values['oldPassword']!=$user->get('passwordTemp')) {
+                $errors['oldPassword'] = __('oldPasswordError');
+            } else {
+                if (md5($this->values['oldPassword'])!=$user->get('password')) {
+                    $errors['oldPassword'] = __('oldPasswordError');
+                }
+            }
         }
-        $error = $this->isValidField($this->object->attributeInfo('password'));
-        if (count($error)>0) {
-            $errors = array_merge($error, $errors);
-        }
+        $errors = array_merge($errors, $this->isValidField($this->object->attributeInfo('password')));
         return $errors;
     }
 
-    public function myInformation() {
-        $fields = $this->field('email').'
-                '.$this->field('name');
+    public function myAccount() {
+        $fields = $this->field('image').'
+                '.$this->field('email').'
+                '.$this->field('name').'
+                '.$this->field('telephone').'
+                '.$this->field('address');
         return '<div class="simpleForm">
-                    <p>'.__('myInformationMessage').'</p>
-                    '.Form::createForm($fields, array('action'=>url('User/myInformation', true), 'class'=>'formAdmin', 'submit'=>__('save'))).'
+                    <p>'.__('myAccountMessage').'</p>
+                    '.Form::createForm($fields, array('action'=>url('User/myAccountPersonal', true), 'class'=>'formAdmin', 'submit'=>__('save'))).'
                 </div>';
     }
 

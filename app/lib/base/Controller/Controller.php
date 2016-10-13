@@ -162,7 +162,7 @@ abstract class Controller{
                 $values = array_merge($this->object->valuesArray(), $this->values);
                 $this->content = $uiObject->renderForm(array_merge(
                                                         array('values'=>$values,
-                                                                'action'=>url($this->object->className.'/modifyNested', true),
+                                                                'action'=>url($this->type.'/modifyNested', true),
                                                                 'class'=>'formAdmin formAdminModify',
                                                                 'nested'=>true),
                                                         array()));
@@ -212,6 +212,20 @@ abstract class Controller{
                 $object = new $this->type();
                 $newOrder = (isset($this->values['newOrder'])) ? $this->values['newOrder'] : array();
                 $object->updateOrder($newOrder);
+            break;
+            case 'sortList':
+                /**
+                * This is the action that changes the order of the list.
+                */
+                $this->checkLoginAdmin();
+                $object = new $this->type();
+                $info = explode('_', $this->id);
+                if (isset($info[1]) && $object->attributeInfo($info[1])!='') {
+                    $orderType = ($info[0]=='asc') ? 'asc' : 'des';
+                    Session::set('ord_'.$this->type, $orderType.'_'.$info[1]);
+                }
+                header('Location: '.url($this->type, true));
+                exit();
             break;
             case 'addSimple':
                 /**
@@ -281,7 +295,7 @@ abstract class Controller{
                     if ($where!='') {
                         $query = 'SELECT '.(string)$this->object->info->info->sql->primary.' as idItem, 
                                 '.$concat.' as infoItem
-                                FROM '.Db::prefixTable($this->object->className).'
+                                FROM '.Db::prefixTable($this->type).'
                                 WHERE '.$where.'
                                 ORDER BY '.$name.' LIMIT 20';
                         $results = array();
@@ -328,15 +342,24 @@ abstract class Controller{
         $searchQuery = $this->object->infoSearchQuery();
         $searchValue = urldecode($this->id);
         $sortableListClass = ($this->object->hasOrd()) ? 'sortableList' : '';
+        $ordObject = explode('_', Session::get('ord_'.$this->type));
+        $ordObjectType = (isset($ordObject[0]) && $ordObject[0]=='asc') ? 'ASC' : 'DESC';
         $options['order'] = $this->orderField();
+        if (isset($ordObject[1])) {
+            $orderInfo = $this->object->attributeInfo($ordObject[1]);
+            $orderInfoItem = (is_object($orderInfo) && (string)$orderInfo->lang == "true") ? $ordObject[1].'_'.Lang::active() : $ordObject[1];
+            $options['order'] = $orderInfoItem.' '.$ordObjectType;
+        }
         $options['results'] = (int)$this->object->info->info->form->pager;
         $options['where'] = ($search!='' && $searchValue!='') ? str_replace('#SEARCH', $searchValue, $search) : '';
         $options['query'] = ($searchQuery!='' && $searchValue!='') ? str_replace('#SEARCH', $searchValue, $searchQuery) : '';
         $list = new ListObjects($this->type, $options);
         $multipleChoice = (count((array)$this->object->info->info->form->multipleActions->action) > 0);
+        $controlsTop = $this->multipleActionsControl().$this->orderControl();
+        $controlsTop = ($controlsTop != '') ? '<div class="controlsTop">'.$controlsTop.'</div>' : '';
         return $this->searchForm().'
-                '.$this->multipleActionsControl().'
-                <div class="listAdmin listAdmin'.$this->object->className.' '.$sortableListClass.'" rel="'.url($this->object->className.'/sortSave/', true).'">
+                '.$controlsTop.'
+                <div class="listAdmin listAdmin'.$this->type.' '.$sortableListClass.'" rel="'.url($this->type.'/sortSave/', true).'">
                     '.$list->showListPager(array('function'=>'Admin',
                                                 'message'=>'<div class="message">'.__('noItems').'</div>'),
                                             array('userType'=>$this->login->get('type'), 'multipleChoice'=>$multipleChoice)).'
@@ -355,16 +378,18 @@ abstract class Controller{
             $list = new ListObjects($this->type, array('where'=>$group.'="'.$key.'"',
                                                         'function'=>'Admin',
                                                         'order'=>$this->orderField()));
-            $listItems .= '<div class="sublistAdmin">
-                                <h2>'.$item.'</h2>
-                                <div class="listAdmin '.$sortableListClass.'" rel="'.url($this->object->className.'/sortSave/', true).'">
-                                    '.$list->showList(array('function'=>'Admin',
-                                                            'message'=>'<div class="message">'.__('noItems').'</div>'),
-                                                        array('userType'=>$this->login->get('type'))).'
+            $listItems .= '<div class="lineAdminBlock">
+                                <div class="lineAdminTitle">'.$item.'</div>
+                                <div class="lineAdminItems">
+                                    <div class="listAdmin '.$sortableListClass.'" rel="'.url($this->type.'/sortSave/', true).'">
+                                        '.$list->showList(array('function'=>'Admin',
+                                                                'message'=>'<div class="message">'.__('noItems').'</div>'),
+                                                            array('userType'=>$this->login->get('type'))).'
+                                    </div>
                                 </div>
                             </div>';
         }
-        return $listItems;
+        return '<div class="lineAdminBlockWrapper">'.$listItems.'</div>';
     }
 
     /**
@@ -373,8 +398,33 @@ abstract class Controller{
     public function orderField() {
         $orderAttribute = (string)$this->object->info->info->form->orderBy;
         if ($orderAttribute!='') {
+            $orderAttribute = explode(',', $orderAttribute);
+            $orderAttribute = explode(' ', $orderAttribute[0]);
+            $orderAttribute = $orderAttribute[0];
             $orderInfo = $this->object->attributeInfo($orderAttribute);
             return (is_object($orderInfo) && (string)$orderInfo->lang == "true") ? $orderAttribute.'_'.Lang::active() : $orderAttribute;
+        }
+    }
+
+    /**
+    * Render the order control.
+    */
+    public function orderControl() {
+        $orderField = (string)$this->object->info->info->form->orderBy;
+        $orderItems = explode(',', $orderField);
+        if (count($orderItems)>1 && $orderField != '') {
+            $options = array();
+            $selectedItem = Session::get('ord_'.$this->type);
+            foreach ($orderItems as $orderItem) {
+                $infoOrderItem = explode(' ', trim($orderItem));
+                $options['asc_'.$infoOrderItem[0]] = __($infoOrderItem[0]);
+                $options['des_'.$infoOrderItem[0]] = __($infoOrderItem[0]).' ('.__('reverse').')';
+            }
+            return '<div class="orderActions" rel="'.url($this->type.'/sortList/', true).'">
+                        <div class="orderActionsIns">
+                            '.FormField::create('select', array('label'=>__('orderBy'), 'name'=>'orderList', 'value'=>$options, 'selected'=>$selectedItem)).'
+                        </div>
+                    </div>';
         }
     }
 
@@ -386,7 +436,7 @@ abstract class Controller{
         if (count($multipleActions) > 0) {
             $multipleActionsOptions = '';
             foreach ($multipleActions as $multipleAction) {
-                $linkMultiple = url($this->object->className.'/multiple-'.$multipleAction, true);
+                $linkMultiple = url($this->type.'/multiple-'.$multipleAction, true);
                 $multipleActionsOptions .= '<div class="multipleAction multipleOption" rel="'.$linkMultiple.'">
                                                 '.__($multipleAction.'Selected').'
                                             </div>';    
@@ -412,7 +462,7 @@ abstract class Controller{
             $searchInfo = '';
             if ($this->id!='') {
                 $searchInfo = '<div class="button buttonBack">
-                                    <a href="'.url($this->object->className.'/listAdmin', true).'">'.__('viewAllItems').'</a>
+                                    <a href="'.url($this->type.'/listAdmin', true).'">'.__('viewAllItems').'</a>
                                 </div>
                                 <h2>'.__('resultsFor').': "'.$searchValue.'"'.'</h2>';
             }
@@ -432,7 +482,7 @@ abstract class Controller{
         $uiObjectName = $this->type.'_Ui';
         $uiObject = new $uiObjectName($this->object);
         return $uiObject->renderForm(array('values'=>$this->values,
-                                        'action'=>url($this->object->className.'/insert', true),
+                                        'action'=>url($this->type.'/insert', true),
                                         'class'=>'formAdmin formAdminInsert'));
     }
 
@@ -452,7 +502,7 @@ abstract class Controller{
                 $html = '<div class="message messageError">
                             '.$e->getMessage().'
                         </div>
-                        '.$form->createForm($form->createFormFields(), array('action'=>url($this->object->className.'/insert', true), 'submit'=>__('save'), 'class'=>'formAdmin formAdminInsert'));
+                        '.$form->createForm($form->createFormFields(), array('action'=>url($this->type.'/insert', true), 'submit'=>__('save'), 'class'=>'formAdmin formAdminInsert'));
                 return array('success'=>'0', 'html'=>$html);
             }
             $multipleChoice = (count((array)$this->object->info->info->form->multipleActions) > 0) ? true : false;
@@ -460,7 +510,7 @@ abstract class Controller{
             return array('success'=>'1', 'html'=>$html, 'id'=>$object->id());
         } else {
             $form = new $formClass($this->values, $errors);
-            $html = $form->createForm($form->createFormFields(), array('action'=>url($this->object->className.'/insert', true), 'submit'=>__('save'), 'class'=>'formAdmin formAdminInsert'));
+            $html = $form->createForm($form->createFormFields(), array('action'=>url($this->type.'/insert', true), 'submit'=>__('save'), 'class'=>'formAdmin formAdminInsert'));
             return array('success'=>'0', 'html'=>$html);
         }
     }
@@ -475,7 +525,7 @@ abstract class Controller{
         $values = array_merge($this->object->valuesArray(), $this->values);
         return $uiObject->renderForm(array_merge(
                                     array('values'=>$values,
-                                            'action'=>url($this->object->className.'/modify', true),
+                                            'action'=>url($this->type.'/modify', true),
                                             'class'=>'formAdmin formAdminModify'),
                                     array('submit'=>array('save'=>__('save'),
                                             'saveCheck'=>__('saveCheck')))));
@@ -487,7 +537,9 @@ abstract class Controller{
     public function modify($nested=false) {
         $action = ($nested) ? 'modifyNested' : 'modify';
         if (isset($this->values[$this->object->primary])) {
-            $this->object = $this->object->readObject($this->values[$this->object->primary]);
+            $primary = $this->object->primary;
+            $idItem = (isset($this->values[$primary.'_oldId'])) ? $this->values[$primary.'_oldId'] : $this->values[$primary];
+            $this->object = $this->object->readObject($idItem);
         }
         $formClass = $this->type.'_Form';
         $form = new $formClass($this->object->values, array(), $this->object);
@@ -499,9 +551,9 @@ abstract class Controller{
                 $object->modify($this->values);
             } catch (Exception $e) {
                 $html = '<div class="message messageError">
-                            '.$e->getMessage().'
+                            '.str_replace('<pre>', '', $e->getMessage()).'
                         </div>
-                        '.Form::createForm($form->createFormField(false, $nested), array('action'=>url($this->type.'/'.$action.'/'.$this->id, true), 'submit'=>__('save'), 'class'=>'formAdmin', 'nested'=>$nested));
+                        '.Form::createForm($form->createFormFields(false, $nested), array('action'=>url($this->type.'/'.$action.'/'.$this->id, true), 'submit'=>__('save'), 'class'=>'formAdmin formAdminModify', 'nested'=>$nested));
                 return array('success'=>'0', 'html'=>$html);
             }
             $multipleChoice = (count((array)$this->object->info->info->form->multipleActions) > 0) ? true : false;
@@ -509,7 +561,7 @@ abstract class Controller{
             return array('success'=>'1', 'id'=>$object->id(), 'html'=>$html);
         } else {
             $form = new $formClass($this->values, $errors);
-            $html = Form::createForm($form->createFormField(false, $nested), array('action'=>url($this->type.'/'.$action.'/'.$this->id, true), 'submit'=>__('save'), 'class'=>'formAdmin', 'nested'=>$nested));
+            $html = Form::createForm($form->createFormFields(false, $nested), array('action'=>url($this->type.'/'.$action.'/'.$this->id, true), 'submit'=>__('save'), 'class'=>'formAdmin formAdminModify', 'nested'=>$nested));
             return array('success'=>'0', 'html'=>$html);
         }
     }
@@ -522,7 +574,7 @@ abstract class Controller{
         $action = ($action!='') ? $action : $this->action;
         switch ($action) {
             case 'listAdmin':
-                if (Permission::canInsert($this->object->className)) {
+                if (Permission::canInsert($this->type)) {
                     $items = '<div class="menuSimpleItem menuSimpleItemInsert">
                                 <a href="'.url($this->type.'/insertView', true).'">'.__('insertNew').'</a>
                             </div>';
@@ -540,7 +592,7 @@ abstract class Controller{
                 $items = '<div class="menuSimpleItem menuSimpleItemInsert">
                             <a href="'.url($this->type.'/insertView', true).'">'.__('insertNew').'</a>
                         </div>';
-                if (Permission::canInsert($this->object->className)) {
+                if (Permission::canInsert($this->type)) {
                     $items .= '<div class="menuSimpleItem menuSimpleItemList">
                                 <a href="'.url($this->type.'/listAdmin', true).'">'.__('viewList').'</a>
                             </div>';

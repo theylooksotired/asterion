@@ -113,8 +113,8 @@ class Ui {
         $canOrder = ($canOrder!='') ? '<div class="lineAdminCell lineAdminOrder">'.$canOrder.'</div>' : '';
         return '<div class="lineAdmin'.$this->object->className.' lineAdminLayout'.ucwords($layout).' lineAdmin '.$class.'" '.$relOrd.'>
                     <div class="lineAdminWrapper">
-                        '.$canOrder.'
                         '.$multipleChoice.'
+                        '.$canOrder.'
                         <div class="lineAdminCell lineAdminLabel">
                             '.$label.'
                         </div>
@@ -196,6 +196,9 @@ class Ui {
                     default:
                         $labelAttribute = $this->object->get($attribute);
                     break;
+                    case 'textarea-code':
+                        $labelAttribute = htmlentities($this->object->get($attribute));
+                    break;
                     case 'hidden-login':
                     case 'hidden-user':
                         $user = User::read($this->object->get($attribute));
@@ -207,6 +210,9 @@ class Ui {
                     break;
                     case 'checkbox':
                         $labelAttribute = ($this->object->get($attribute)=='1') ? __('yes') : __('no');
+                    break;
+                    case 'date-text':
+                        $labelAttribute = Date::sqlText($this->object->get($attribute));
                     break;
                     case 'file':
                         if ((string)$info->mode == 'image') {

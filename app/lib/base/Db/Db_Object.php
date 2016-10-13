@@ -12,7 +12,7 @@
 class Db_Object extends Db_Sql {
 
     /**
-    * Construct the object
+    * Construct the object.
     */
     public function __construct($values=array()) {
         $values = (is_array($values)) ? $values : array();
@@ -22,7 +22,7 @@ class Db_Object extends Db_Sql {
     }
     
     /**
-    * Reload the object
+    * Reload the object.
     */
     public function reloadObject() {
         $values = $this->readObjectValues($this->id());
@@ -30,7 +30,7 @@ class Db_Object extends Db_Sql {
     }
 
     /**
-    * Synchronize the values of an object
+    * Synchronize the values of an object.
     */
     public function syncValues($newValues=array()) {
         if (isset($newValues[$this->primary]) && $newValues[$this->primary]=='') {
@@ -65,7 +65,7 @@ class Db_Object extends Db_Sql {
     }
 
     /**
-    * Load all the multiple values of the object
+    * Load all the multiple values of the object.
     */
     public function loadMultipleValuesAll() {
         if ($this->loadedMultiple != true) {
@@ -80,7 +80,7 @@ class Db_Object extends Db_Sql {
     }
 
     /**
-    * Load the multiple values of a certain attribute
+    * Load the multiple values of a certain attribute.
     */
     public function loadMultipleValues($item) {
         $name = (string)$item->name;
@@ -122,14 +122,14 @@ class Db_Object extends Db_Sql {
     }
 
     /**
-    * Get the id of an object, defined in the XML final as "primary"
+    * Get the id of an object, defined in the XML final as "primary".
     */
     public function id() {
         return (isset($this->values[$this->primary])) ? $this->values[$this->primary] : '';
     }
 
     /**
-    * Gets the basic info of an object, normally this function should be overwritten for each object
+    * Gets the basic info of an object, normally this function should be overwritten for each object.
     */
     public function getBasicInfo() {
         $label = (string)$this->info->info->form->label;
@@ -141,7 +141,7 @@ class Db_Object extends Db_Sql {
     }
 
     /**
-    * Function to decompose a text for the labels
+    * Function to decompose a text for the labels.
     */
     public function decomposeText($label) {
         $info = explode('_', $label);
@@ -161,77 +161,102 @@ class Db_Object extends Db_Sql {
     }
 
     /**
-    * Gets the basic info of an object, used in the admin level
+    * Gets the basic info of an object, used in the admin level.
     */
     public function getBasicInfoAdmin() {
         return $this->getBasicInfo();
     }
 
     /**
-    * Gets the basic info of an object, used for the autocompletion inputs
+    * Gets the basic info of an object, used for the autocompletion inputs.
     */
     public function getBasicInfoAutocomplete() {
         return $this->getBasicInfo();
     }
 
     /**
-    * Returns all the attributes information in the XML file
+    * Returns all the attributes information in the XML file.
     */
     public function getAttributes() {
         return $this->info->attributes->attribute;
     }
 
     /**
-    * Gets the public url of an object based on the "idnav" and "base" values on the XML file, this function is usually overwritten for special urls in objects
+    * Gets the public url of an object based on the "publicUrl" value on the XML file.
     */
     public function url() {
-        $idNav = (string)$this->info->info->nav->idnav;
-        $base = (string)$this->info->info->nav->base;
-        $nav = '';
-        $idNavInfo = explode('_', $idNav);
-        foreach ($idNavInfo as $idNavItem) {
-            $nav .= $this->get($idNavItem).'_';
+        $publicUrl = (string)$this->info->info->form->publicUrl;
+        $attributes = Text::arrayWordsStarting('#', $publicUrl);
+        foreach ($attributes as $attribute) {
+            $publicUrl = str_replace($attribute, $this->get(str_replace('#', '', $attribute)), $publicUrl);
         }
-        return url($base.'/'.substr($nav, 0, -1));
+        $translations = Text::arrayWordsStarting('_', $publicUrl);
+        foreach ($translations as $translation) {
+            $publicUrl = str_replace($translation, Text::simpleUrl(__(str_replace('_', '', $translation))), $publicUrl);
+        }
+        return url($publicUrl);
     }
 
     /**
-    * Gets the url to modify an object in an admin level
+    * Gets the public url of a list of objects based on the "publicUrlList" value on the XML file.
+    */
+    public function urlList() {
+        $publicUrlList = (string)$this->info->info->form->publicUrlList;
+        $attributes = Text::arrayWordsStarting('#', $publicUrlList);
+        foreach ($attributes as $attribute) {
+            $publicUrlList = str_replace($attribute, $this->get(str_replace('#', '', $attribute)), $publicUrlList);
+        }
+        $translations = Text::arrayWordsStarting('_', $publicUrlList);
+        foreach ($translations as $translation) {
+            $publicUrlList = str_replace($translation, Text::simpleUrl(__(str_replace('_', '', $translation))), $publicUrlList);
+        }
+        return url($publicUrlList);
+    }
+
+    /**
+    * Gets the url to modify an object in an admin level.
     */
     public function urlAdmin() {
         return url($this->className.'/modifyView/'.$this->id(), true);
     }
 
     /**
-    * Gets the html basic link of an object
+    * Gets the html basic link of an object.
     */
     public function link() {
-        return '<a href="'.$this->url().'" title="'.$this->getBasicInfo().'">'.$this->getBasicInfo().'</a>';
+        return '<a href="'.$this->url().'">'.$this->getBasicInfo().'</a>';
     }
 
     /**
-    * Gets the html basic link of an object
+    * Gets the html basic link of an object that opens in a new window.
     */
     public function linkNew() {
-        return '<a href="'.$this->url().'" target="_blank" title="'.$this->getBasicInfo().'">'.$this->getBasicInfo().'</a>';
+        return '<a href="'.$this->url().'" target="_blank">'.$this->getBasicInfo().'</a>';
     }
 
     /**
-    * Gets the html basic link of an object in an admin level
+    * Gets the html link of list of objects.
+    */
+    public function linkList() {
+        return '<a href="'.$this->urlList().'">'.$this->title.'</a>';
+    }
+
+    /**
+    * Gets the html basic link of an object in an admin level.
     */
     public function linkAdmin() {
         return '<a href="'.$this->urlAdmin().'">'.$this->urlAdmin().'</a>';
     }
 
     /**
-    * Returns the values of the object
+    * Returns the values of the object.
     */
     public function valuesArray() {
         return (is_array($this->values)) ? $this->values : array();
     }
 
     /**
-    * Gets all the values of the object
+    * Gets all the values of the object.
     */
     public function getValues($attribute, $admin=false) {
         $info = $this->attributeInfo($attribute);
@@ -252,7 +277,7 @@ class Db_Object extends Db_Sql {
     }
 
     /**
-    * Returns an array with the basic information of a list of objects using the ids as keys
+    * Returns an array with the basic information of a list of objects using the ids as keys.
     */
     public function basicInfoArray($options=array()) {
         $options = ($this->orderBy() != "") ? array_merge(array('order'=>$this->orderBy()), $options) : $options;
@@ -265,7 +290,7 @@ class Db_Object extends Db_Sql {
     }
 
     /**
-    * Returns an array with the basic information of a list of objects using the ids as keys, in an admin level
+    * Returns an array with the basic information of a list of objects using the ids as keys, in an admin level.
     */
     public function basicInfoAdminArray($options=array()) {
         $orderAttribute = $this->orderBy();
@@ -284,7 +309,7 @@ class Db_Object extends Db_Sql {
     }
 
     /**
-    * Gets the information on the search properties of the object
+    * Gets the information on the search properties of the object.
     */
     public function infoSearch() {
         return (string)$this->info->info->form->search;
@@ -298,7 +323,7 @@ class Db_Object extends Db_Sql {
     }
     
     /**
-    * Gets the value of an attribute
+    * Gets the value of an attribute.
     */
     public function get($name) {
         $nameLang = $name.'_'.Lang::active();
@@ -308,7 +333,7 @@ class Db_Object extends Db_Sql {
     }
 
     /**
-    * Gets the attribute information in the XML file
+    * Gets the attribute information in the XML file.
     */
     public function attributeInfo($attribute) {
         $match = $this->info->xpath("/object/attributes/attribute//name[.='".$attribute."']/..");
@@ -316,7 +341,7 @@ class Db_Object extends Db_Sql {
     }
 
     /**
-    * Returns all the attribute names
+    * Returns all the attribute names.
     */
     public function attributeNames() {
         $list = array($this->primary, 'ord', 'created', 'modified');
@@ -327,7 +352,7 @@ class Db_Object extends Db_Sql {
     }
     
     /**
-    * Gets the label of an attribute, it works for attributes as selects of multiple objects
+    * Gets the label of an attribute, it works for attributes as selects of multiple objects.
     */
     public function label($attribute, $admin=false) {
         $info = $this->attributeInfo($attribute);
@@ -350,7 +375,7 @@ class Db_Object extends Db_Sql {
     }
 
     /**
-    * Gets the link to the file that the attribute points
+    * Gets the link to the file that the attribute points.
     */
     public function getFileLink($attributeName) {
         $file = $this->getFileUrl($attributeName);
@@ -358,7 +383,7 @@ class Db_Object extends Db_Sql {
     }
 
     /**
-    * Gets the url to the file that the attribute points
+    * Gets the url to the file that the attribute points.
     */
     public function getFileUrl($attributeName) {
         $file = STOCK_URL.$this->className.'Files/'.$this->get($attributeName);
@@ -366,7 +391,7 @@ class Db_Object extends Db_Sql {
     }
 
     /**
-    * Gets the base to the file that the attribute points
+    * Gets the base to the file that the attribute points.
     */
     public function getFile($attributeName) {
         $file = STOCK_FILE.$this->className.'Files/'.$this->get($attributeName);
@@ -374,7 +399,7 @@ class Db_Object extends Db_Sql {
     }
     
     /**
-    * Gets the HTML image that the attribute points
+    * Gets the HTML image that the attribute points.
     */
     public function getImage($attributeName, $version='', $alternative='') {
         $imageUrl = $this->getImageUrl($attributeName, $version);
@@ -386,7 +411,7 @@ class Db_Object extends Db_Sql {
     }
 
     /**
-    * Gets the url of an image that the attribute points
+    * Gets the url of an image that the attribute points.
     */
     public function getImageUrl($attributeName, $version='') {
         $version = ($version != '') ? '_'.strtolower($version) : '';
@@ -397,21 +422,21 @@ class Db_Object extends Db_Sql {
     }
 
     /**
-    * Reload the object
+    * Reload the object.
     */
     public function orderBy() {
         return (string)$this->info->info->form->orderBy;
     }
 
     /**
-    * Sets the id of an object
+    * Sets the id of an object.
     */
     public function setId($id) {
         $this->values[$this->primary] = $id;
     }
 
     /**
-    * Sets a value to an attribute of an object
+    * Sets a value to an attribute of an object.
     */
     public function set($name, $value='') {
         if (is_array($name)) {
@@ -445,7 +470,7 @@ class Db_Object extends Db_Sql {
     }
 
     /**
-    * Checks if the object has an auto-incremented id
+    * Checks if the object has an auto-incremented id.
     */
     public function hasIdAutoIncrement() {
         if (!is_object($this->attributeInfo($this->primary))) {

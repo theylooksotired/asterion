@@ -1,0 +1,31 @@
+.menu {
+    padding: 0;
+    margin: 0;
+    background: darken($colorAccent, 20%);
+    .menuIns {
+        display: table;
+        width: $sizeDesktop;
+        margin: auto;
+        table-layout: fixed;
+        .menuItem {
+            display: table-cell;
+            margin: 0;
+            vertical-align: middle;
+            a {
+                padding: 10px 10px 5px 10px;
+                display: block;
+                color: $white;
+                font-weight: normal;
+                text-transform: uppercase;
+                font-size: $fontSizeSmall;
+                text-align: center;
+                border-bottom: 5px solid darken($colorAccent, 20%);
+                &:hover {
+                    background: rgba($colorAccentAlt, 0.7);
+                    border-bottom: 5px solid lighten($colorAccentAlt, 10%);
+                    color: $white;
+                }
+            }
+        }
+    }
+}

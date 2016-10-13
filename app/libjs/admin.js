@@ -60,12 +60,12 @@ function ajaxAdmin() {
 
     //MULTIPLE ACTIONS
     $('.multipleActionCheckAll input').click(function(){
-        $('.checkboxAdmin input').prop('checked', $(this).prop('checked'));
+        $('.lineAdminCheckbox input').prop('checked', $(this).prop('checked'));
     });
     $('.multipleOption').click(function(event){
         event.stopImmediatePropagation();
         var postValues = [];
-        $('.checkboxAdmin input').each(function(index, ele){
+        $('.lineAdminCheckbox input').each(function(index, ele){
             if ($(ele).prop('checked')==true) {
                 postValues.push($(ele).attr('name'));
             }
@@ -96,14 +96,16 @@ function ajaxAdmin() {
     $('.nestedFormFieldSortable').each(function(index, ele){
         $(ele).sortable({
             handle:'.nestedFormFieldOrder',
-            start: function(evt, ui) {
-                $(ui).css('height', '100');
-            },
             update: function() {
-                $(ele).css('height', 'auto');
                 updateFieldOrd();
             }
         });
+    });
+
+    //CHANGE ORDER
+    $('.orderActions select').change(function(evt){
+        var url = $(this).parents('.orderActions').attr('rel') + $(this).val();
+        window.location = url;
     });
 
     //AUTOCOMPLETE
@@ -188,6 +190,25 @@ function ajaxAdmin() {
     }
     activateAnnotations();
     
+    //ACCORDION
+    var accordionSelectSetup = function(ele) {
+        var eleSelect = $(ele).find('.accordionTrigger select').first();
+        var eleSwitchValue = $(ele).find('.accordionTrigger').first().attr('rel');
+        var eleContent = $(ele).find('.accordionContent').first();
+        if (eleSelect.val() == eleSwitchValue) {
+            eleContent.show();
+        } else {
+            eleContent.hide();
+        }
+    }
+    $('.accordionSelect').each(function(index, ele){
+        accordionSelectSetup($(ele));
+        $(ele).on('change', function(evt){
+            evt.stopImmediatePropagation();
+            accordionSelectSetup($(ele));
+        });
+    });
+
     $('.orderModifyTrigger').click(function(evt){
         evt.stopImmediatePropagation();
         evt.preventDefault();

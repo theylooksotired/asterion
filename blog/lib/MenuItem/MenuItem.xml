@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+* @structure MenuItem
+*
+* @author Leano Martinet <info@asterion-cms.com>
+* @package Asterion
+* @version 3.0.1
+-->
+<object>
+    <name>MenuItem</name>
+    <info>
+        <sql>
+            <primary>idMenuItem</primary>
+            <order>true</order>
+        </sql>
+        <form>
+            <title>menuItem</title>
+            <hiddenAdminMenu>true</hiddenAdminMenu>
+            <orderBy>ord</orderBy>
+            <label>#label</label>
+            <templateItemAdmin>
+                <p class="accent"><strong>#label</strong></p>
+            </templateItemAdmin>
+        </form>
+    </info>
+    <attributes>
+        <attribute>
+            <name>idMenuItem</name>
+            <type>id-autoincrement</type>
+        </attribute>
+        <attribute>
+            <name>idMenu</name>
+            <type>linkid-autoincrement</type>
+        </attribute>
+        <attribute>
+            <name>link</name>
+            <label>link</label>
+            <type>select-link</type>
+        </attribute>
+        <attribute>
+            <name>label</name>
+            <lang>true</lang>
+            <label>label</label>
+            <type>text</type>
+        </attribute>
+        <attribute>
+            <name>externalLink</name>
+            <label>externalLink</label>
+            <lang>true</lang>
+            <type>text-long</type>
+        </attribute>
+        <attribute>
+            <name>idSubMenu</name>
+            <label>subMenu</label>
+            <type>select</type>
+            <refObject>Menu</refObject>
+            <firstSelect>true</firstSelect>
+        </attribute>
+    </attributes>
+</object>

@@ -2,7 +2,7 @@
 /**
 * @class Post
 *
-* This class represents a simple HTML section on a website.
+* This class represents a post or article.
 *
 * @author Leano Martinet <info@asterion-cms.com>
 * @package Asterion

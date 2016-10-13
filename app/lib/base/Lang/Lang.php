@@ -17,15 +17,15 @@ class Lang extends Db_Object {
     */
     static public function init() {
         if (isset($_GET['lang'])) {
-            $configLangs = Lang::configLangs();
-            if (count($configLangs)>1) {
+            $langs = Lang::configLangs();
+            if (count($langs)>1) {
                 $lang = Lang::read($_GET['lang']);
                 if ($lang->id()=='') {
                     $lang = Lang::readFirst(array('order'=>'ord'));
                 }
                 Session::set('lang', $lang->id());
             } else {
-                Session::set('lang', $configLangs[0]);
+                Session::set('lang', $langs[0]);
             }
             $query = 'SELECT code, translation_'.Session::get('lang').' as translation
                             FROM '.Db::prefixTable('LangTrans');
@@ -62,7 +62,7 @@ class Lang extends Db_Object {
     * Fill the laguange code and labels into ENV variables.
     */
     static public function fillInfo() {
-        $query = 'SELECT * FROM '.Db::prefixTable('Lang');
+        $query = 'SELECT * FROM '.Db::prefixTable('Lang').' ORDER BY ord';
         $langIds = array();
         $result = Db::returnAll($query);
         foreach ($result as $item) {
@@ -107,10 +107,12 @@ class Lang extends Db_Object {
     static public function saveInitialValues() {
         $lang = new Lang();
         $lang->createTable();
-        foreach (Lang::configLangs() as $code) {
-            $lang = Lang::read($code);
-            if ($lang->id()=='') {
-                $lang->insert(array('idLang'=>$code, 'name'=>Lang::langCode($code)));
+        if ($lang->countResults()==0) {
+            foreach (Lang::configLangs() as $code) {
+                $lang = Lang::read($code);
+                if ($lang->id()=='') {
+                    $lang->insert(array('idLang'=>$code, 'name'=>Lang::langCode($code)), array('initial'=>true));
+                }
             }
         }
     }
@@ -130,6 +132,74 @@ class Lang extends Db_Object {
     */
     static public function configLangs() {
         return explode(':',LANGS);
+    }
+
+    /**
+    * Overwrite the insert function and check all the objects.
+    */
+    public function insert($values, $options=array()) {
+        parent::insert($values, $options);
+        if ($this->id()!='' && !isset($options['initial'])) {
+            $this->updateObjects('insert', $values);
+            Init::saveLangTrans($this->id());
+        }
+    }
+
+    /**
+    * Overwrite the modify function and check all the objects.
+    */
+    public function modify($values, $options=array()) {
+        $values['oldId'] = Text::simpleUrl($values['idLang_oldId'], '');
+        $values['newId'] = Text::simpleUrl($values['idLang'], '');
+        parent::modify($values, $options);
+        if ($this->id()!='' && $values['oldId']!='' && $values['newId']!='' && $values['oldId']!=$values['newId']) {
+            $this->updateObjects('modify', $values);
+        }
+    }
+
+    /**
+    * Overwrite the delete function and check all the objects.
+    */
+    public function delete() {
+        parent::delete();
+        if ($this->id()!='') {
+            $this->updateObjects('delete', array());
+        }
+    }
+
+    /**
+    * Modify all the objects that have translatable attributes.
+    */
+    public function updateObjects($mode, $values) {
+        $objectNames = File::scanDirectoryObjects();
+        foreach ($objectNames as $objectName) {
+            $object = new $objectName();
+            $attributes = $object->getAttributes();
+            foreach ($attributes as $attribute) {
+                $attributeName = (string)$attribute->name;
+                if ((string)$attribute->lang=='true') {
+                    switch ($mode) {
+                        case 'insert':
+                            $query = 'ALTER TABLE '.Db::prefixTable($objectName).'
+                                        ADD '.$attributeName.'_'.$values['idLang'].'
+                                        VARCHAR(255) COLLATE utf8_unicode_ci';
+                            Db::execute($query);
+                        break;
+                        case 'modify':
+                            $query = 'ALTER TABLE '.Db::prefixTable($objectName).'
+                                        CHANGE '.$attributeName.'_'.$values['oldId'].' '.$attributeName.'_'.$values['newId'].'
+                                        VARCHAR(255) COLLATE utf8_unicode_ci';
+                            Db::execute($query);
+                        break;
+                        case 'delete':
+                            $query = 'ALTER TABLE '.Db::prefixTable($objectName).'
+                                        DROP '.$attributeName.'_'.$this->id();
+                            Db::execute($query);
+                        break;
+                    }
+                }
+            }
+        }
     }
     
 }

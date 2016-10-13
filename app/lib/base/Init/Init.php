@@ -54,5 +54,30 @@ class Init {
         }
     }
 
+    /**
+    * Save the LangTrans items for a new language.
+    */
+    static public function saveLangTrans($lang) {
+        $className = 'LangTrans';
+        $object = new $className;
+        $object->createTable();
+        $dataUrl = DATA_FILE.$className.'.json';
+        if (!file_exists($dataUrl)) {
+            $dataUrl = DATA_LOCAL_FILE.$className.'.json';
+        }
+        if (file_exists($dataUrl)) {
+            $items = json_decode(file_get_contents($dataUrl), true);
+            $itemTranslation = 'translation_'.$lang;
+            foreach ($items as $item) {
+                if (isset($item[$itemTranslation])) {
+                    $query = 'UPDATE '.Db::prefixTable('LangTrans').'
+                                SET '.$itemTranslation.'="'.$item[$itemTranslation].'"
+                                WHERE code="'.$item['code'].'"';
+                    Db::execute($query);
+                }
+            }
+        }
+    }
+
 }
 ?>

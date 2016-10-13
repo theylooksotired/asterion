@@ -21,6 +21,7 @@ class FormField_DefaultTextarea {
         $this->errors = isset($options['errors']) ? $options['errors'] : array();
         $this->options = array();
         $nameMultiple = (isset($options['nameMultiple']) && isset($options['idMultiple']) && $options['nameMultiple']!='' && $options['idMultiple']);
+        $this->options['nameSimple'] = $this->name;
         $this->options['name'] = ($nameMultiple) ? $options['nameMultiple'].'['.$options['idMultiple'].']['.$this->name.']' : $this->name;
         $this->options['value'] = $this->values[$this->name];
         $this->options['error'] = $this->errors[$this->name];
@@ -44,7 +45,7 @@ class FormField_DefaultTextarea {
                 $this->options['value'] = $this->values[$this->options['name']];
                 $fields .= FormField_DefaultTextarea::create($this->options);
             }
-            return $fields;
+            return '<div class="formFieldLangs">'.$fields.'</div>';
         } else {
             return FormField_DefaultTextarea::create($this->options);
         }

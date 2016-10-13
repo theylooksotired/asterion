@@ -2,7 +2,7 @@
 /**
 * @class Tag
 *
-* This class represents a simple HTML section on a website.
+* This class represents a tag.
 *
 * @author Leano Martinet <info@asterion-cms.com>
 * @package Asterion

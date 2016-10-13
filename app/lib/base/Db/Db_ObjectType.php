@@ -8,6 +8,7 @@
 *       id-char32
 *       id-varchar
 *       text
+*       text-code
 *       text-small
 *       text-large
 *       text-postalcode
@@ -27,8 +28,10 @@
 *       textarea-small
 *       textarea-large
 *       textarea-ck
+*       textarea-code
 *       select
 *       select-varchar
+*       select-link
 *       date
 *       date-complete
 *       date-hour
@@ -113,6 +116,7 @@ class Db_ObjectType {
                         $sql .= '`'.$name.'` INT,';
                     break;
                     case 'select-varchar':
+                    case 'select-link':
                         $sql .= '`'.$name.'` VARCHAR(255) NULL COLLATE utf8_unicode_ci,';
                     break;
                 }

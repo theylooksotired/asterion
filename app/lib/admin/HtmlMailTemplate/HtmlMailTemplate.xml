@@ -26,8 +26,8 @@
         <attribute>
             <name>code</name>
             <label>code</label>
-            <required>notEmpty</required>
-            <type>text-unchangeable</type>
+            <type>text-code</type>
+            <required>unique</required>
         </attribute>
         <attribute>
             <name>idsAvailable</name>

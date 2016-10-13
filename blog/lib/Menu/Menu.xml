@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+* @structure Menu
+*
+* @author Leano Martinet <info@asterion-cms.com>
+* @package Asterion
+* @version 3.0.1
+-->
+<object>
+    <name>Menu</name>
+    <info>
+        <sql>
+            <primary>idMenu</primary>
+            <onCreate>MenuItem</onCreate>
+            <onDelete>MenuItem</onDelete>
+        </sql>
+        <form>
+            <title>menu</title>
+            <orderBy>name</orderBy>
+            <label>#name</label>
+            <templateItemAdmin>
+                <p class="accent"><strong>#name</strong></p>
+                <p class="tiny"><em>_code</em> : <span class="mainAlt">#code</span></p>
+            </templateItemAdmin>
+        </form>
+    </info>
+    <attributes>
+        <attribute>
+            <name>idMenu</name>
+            <type>id-autoincrement</type>
+        </attribute>
+        <attribute>
+            <name>code</name>
+            <label>code</label>
+            <type>text-code</type>
+            <required>unique</required>
+        </attribute>
+        <attribute>
+            <name>name</name>
+            <lang>true</lang>
+            <label>name</label>
+            <required>notEmpty</required>
+            <type>text</type>
+        </attribute>
+        <attribute>
+            <name>idMenuItem</name>
+            <label>items</label>
+            <type>multiple-object</type>
+            <refObject>MenuItem</refObject>
+            <lnkAttribute>idMenu</lnkAttribute>
+        </attribute>
+    </attributes>
+    <indexes>
+        <index>
+            <name>code</name>
+            <fields>code</fields>
+        </index>
+    </indexes>
+</object>

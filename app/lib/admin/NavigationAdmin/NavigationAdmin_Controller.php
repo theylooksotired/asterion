@@ -19,6 +19,10 @@ class NavigationAdmin_Controller extends Controller{
         switch ($this->action) {
             default:
                 $this->login = User::loginAdmin();
+                if ($this->login->user()->get('passwordTemp')!='') {
+                    $linkMyInformation = '<a href="'.url('User/myAccount', true).'">'.__('here').'</a>';
+                    $this->messageAlert = str_replace('#HERE', $linkMyInformation, __('changeYourTemporaryPassword'));
+                }
                 $this->content = '<div class="pageIntro">'.HtmlSectionAdmin::show('intro').'</div>';
                 return $ui->render();
             break;

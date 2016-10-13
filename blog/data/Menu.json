@@ -1,0 +1,74 @@
+[
+	{
+		"idMenu": "1",
+		"code": "main",
+		"name_es": "Menu principal",
+		"name_en": "Main menu",
+		"name_fr": "Menu principal",
+		"idMenuItem": [
+							{
+								"ord": "1",
+								"link": "homePage"
+							},
+							{
+								"ord": "2",
+								"link": "item_Page_1"
+							},
+							{
+								"ord": "3",
+								"link": "item_Page_2"
+							},
+							{
+								"ord": "4",
+								"link": "public_Category",
+								"idSubMenu": "3"
+							},
+							{
+								"ord": "5",
+								"link": "item_Page_3"
+							},
+							{
+								"ord": "6",
+								"link": "item_Page_4"
+							}
+						]
+	},
+	{
+		"idMenu": "2",
+		"code": "footer",
+		"name_es": "Menu del pie de pagina",
+		"name_en": "Footer menu",
+		"name_fr": "Menu du pied de page",
+		"idMenuItem": [
+							{
+								"ord": "1",
+								"link": "item_Page_1"
+							},
+							{
+								"ord": "2",
+								"link": "item_Page_2"
+							},
+							{
+								"ord": "3",
+								"link": "item_Page_3"
+							},
+							{
+								"ord": "4",
+								"link": "item_Page_4"
+							}
+						]
+	},
+	{
+		"idMenu": "3",
+		"code": "categories",
+		"name_es": "Menu de categorias",
+		"name_en": "Categories menu",
+		"name_fr": "Menu des categories",
+		"idMenuItem": [
+							{
+								"ord": "1",
+								"link": "list_Category"
+							}
+						]
+	}
+]

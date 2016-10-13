@@ -19,9 +19,23 @@ class Params extends Db_Object {
         $items = array();
         $result = Db::returnAll($query);
         foreach ($result as $item) {
-            $items[$item['code']] = $item['information'];
+            $code = $item['code'];
+            $items[$code] = $item['information'];
+            if (strpos($code, 'email-')!==false || strpos($code, 'metainfo-')!==false || strpos($code, 'linksocial-')!==false) {
+                $code = str_replace('email-', '', $code);
+                $code = str_replace('metainfo-', '', $code);
+                $code = str_replace('linksocial-', '', $code);
+                $items[$code] = $item['information'];
+            }
         }
         $_ENV['params'] = $items;
+    }
+
+    /**
+    * Get the list of parameters.
+    */
+    static public function paramsList(){
+        return $_ENV['params'];
     }
 
     /**
@@ -46,11 +60,11 @@ class Params extends Db_Object {
             $itemsUrl = DATA_FILE.'Params.json';
             $items = json_decode(file_get_contents($itemsUrl), true);
             foreach (Lang::langs() as $lang) {
-                $items[] = array('code'=>'titlePage_'.$lang, 'information'=>TITLE);
-                $items[] = array('code'=>'metaDescription_'.$lang, 'information'=>TITLE.'...');
-                $items[] = array('code'=>'metaKeywords_'.$lang, 'information'=>TITLE.'...');
+                $items[] = array('code'=>'metainfo-titlePage_'.$lang, 'name'=>'Title Page - '.Lang::getLabel($lang), 'information'=>TITLE);
+                $items[] = array('code'=>'metainfo-metaDescription_'.$lang, 'name'=>'Meta Description - '.Lang::getLabel($lang), 'information'=>TITLE.'...');
+                $items[] = array('code'=>'metainfo-metaKeywords_'.$lang, 'name'=>'Meta Keywords - '.Lang::getLabel($lang), 'information'=>TITLE.'...');
             }
-            $items[] = array('code'=>'email', 'information'=>EMAIL);
+            $items[] = array('code'=>'email', 'name'=>'Email', 'information'=>EMAIL);
             foreach ($items as $item) {
                 $itemSave = new Params();
                 $itemSave->insert($item);

@@ -33,7 +33,7 @@
         position: absolute;
         top: $top;
         left: $left;
-        @include icon($content)
+        @include icon($content);
     }
 }
 

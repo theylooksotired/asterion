@@ -190,6 +190,12 @@
             vertical-align: top;
         }
     }
+    .lineAdminCheckbox {
+        input {
+            display: block;
+            margin: 0 10px 0 0;
+        }
+    }
     .lineAdminLabel {
         width: 100%;
     }
@@ -286,7 +292,7 @@
         .image {
             float: left;
             width: 80px;
-            margin: 0 10px 0 0;
+            margin: 0 15px 0 0;
             display: block;
             img {
                 width: 100%;
@@ -391,6 +397,22 @@
     }
 }
 
+.lineAdminBlock {
+    padding-bottom: 30px;
+    margin-bottom: 30px;
+    border-bottom: 1px solid rgba($colorText, 0.3);
+    &:last-child {
+        padding-bottom: 0;
+        margin-bottom: 0;
+        border-bottom: 0;
+    }
+    .lineAdminTitle {
+        font-size: $fontSizeBig;
+        color: $colorAccent;
+        padding-bottom: 15px;
+    }
+}
+
 .message {
     font-size: $fontSizeSmall;
     padding: 20px;
@@ -399,7 +421,19 @@
     color: $white;
     background: $colorMessage;
     font-weight: bold;
+    white-space: normal;
+    @include borderRadius(3px);
+    a {
+        color: $white;
+        text-decoration: underline;
+        &:hover {
+            opacity: 0.7;
+        }
+    }
 }
 .messageError {
-    background: $colorMessageError;    
+    background: $colorMessageError;
+}
+.messageAlert {
+    background: $colorMessageAlert;
 }

@@ -18,6 +18,12 @@
 		"translation_es": "Abril"
 	},
 	{
+		"code": "label",
+		"translation_en": "Label",
+		"translation_fr": "Libelle",
+		"translation_es": "Etiqueta"
+	},
+	{
 		"code": "august",
 		"translation_en": "August",
 		"translation_fr": "Août",
@@ -36,22 +42,28 @@
 		"translation_es": "Cancelar"
 	},
 	{
+		"code": "here",
+		"translation_en": "here",
+		"translation_fr": "ici",
+		"translation_es": "aquí"
+	},
+	{
 		"code": "changePassword",
 		"translation_en": "Change my Password",
 		"translation_fr": "Changer mon mot de passe",
 		"translation_es": "Cambiar mi contraseña"
 	},
 	{
-		"code": "changePasswordError",
-		"translation_en": "Please check the following errors.",
-		"translation_fr": "Merci de vérifier les erreurs suivantes.",
-		"translation_es": "Por favor revise los siguientes errores"
+		"code": "changeYourTemporaryPassword",
+		"translation_en": "You have recently recovered your password. Please update it #HERE",
+		"translation_fr": "Vous avez récemment récupéré votre mot de passe. S'il vous plaît mettre à jour #HERE",
+		"translation_es": "Usted ha recuperado su contraseña recientemente. Por favor actualizela #HERE"
 	},
 	{
-		"code": "changePasswordMessage",
-		"translation_en": "Here you can change your password.",
-		"translation_fr": "Ici vous pouvez changer votre mot de passe.",
-		"translation_es": "A continuacion puede modificar su contraseña."
+		"code": "changePasswordError",
+		"translation_en": "The password cannot be changed, please try again.",
+		"translation_fr": "Le mot de pas n'a pas été sauvegardé, veuillez essayer à nouveau.",
+		"translation_es": "La contraseña no ha sido cambiada, por favor intente nuevamente."
 	},
 	{
 		"code": "changePasswordSuccess",
@@ -102,9 +114,45 @@
 		"translation_es": "La lista esta vacía"
 	},
 	{
+		"code": "linkCode",
+		"translation_en": "Code for the link",
+		"translation_fr": "Lien pour le code",
+		"translation_es": "Codigo para el enlace"
+	},
+	{
+		"code": "internalLink",
+		"translation_en": "Internal link",
+		"translation_fr": "Lien interne",
+		"translation_es": "Enlace interno"
+	},
+	{
+		"code": "externalLink",
+		"translation_en": "External link",
+		"translation_fr": "Lien externe",
+		"translation_es": "Enlace externo"
+	},
+	{
+		"code": "externalLinkLabel",
+		"translation_en": "External link or label",
+		"translation_fr": "Lien externe ou libelle",
+		"translation_es": "Enlace externo o etiqueta"
+	},
+	{
+		"code": "homePage",
+		"translation_en": "Home",
+		"translation_fr": "Accueil",
+		"translation_es": "Inicio"
+	},
+	{
+		"code": "list",
+		"translation_en": "List",
+		"translation_fr": "Liste",
+		"translation_es": "Lista"
+	},
+	{
 		"code": "errorConnection",
 		"translation_en": "Your email and/or password are not correct. Please try again.",
-		"translation_fr": "Votre e-mail et / ou mot de passe ne sont pas correctes . Merci de ré-essayez.",
+		"translation_fr": "Votre e-mail et / ou mot de passe ne sont pas correctes. Veuillez réessayer.",
 		"translation_es": "Si email y/o contraseña no son correctos. Intente nuevamente."
 	},
 	{
@@ -130,6 +178,12 @@
 		"translation_en": "There are errors in the form.",
 		"translation_fr": "Il y a des erreurs dans le formulaire.",
 		"translation_es": "Existen errores en el formulario."
+	},
+	{
+		"code": "errorExisting",
+		"translation_en": "This value is already in use.",
+		"translation_fr": "Cette valeur est déjà en cours d'utilisation.",
+		"translation_es": "Este valor ya esta en uso."
 	},
 	{
 		"code": "exit",
@@ -253,8 +307,8 @@
 	},
 	{
 		"code": "deleteSelected",
-		"translation_en": "Delete Selected",
-		"translation_fr": "Supprimer la Sélection",
+		"translation_en": "Delete selected items",
+		"translation_fr": "Supprimer la sélection",
 		"translation_es": "Eiminar los seleccionados"
 	},
 	{
@@ -324,6 +378,12 @@
 		"translation_es": "Menu"
 	},
 	{
+		"code": "subMenu",
+		"translation_en": "Sub-menu",
+		"translation_fr": "Sous-menu",
+		"translation_es": "Sub-menu"
+	},
+	{
 		"code": "message",
 		"translation_en": "Message",
 		"translation_fr": "Message",
@@ -384,6 +444,24 @@
 		"translation_es": "Parámetros"
 	},
 	{
+		"code": "metainfo",
+		"translation_en": "Meta information",
+		"translation_fr": "Information meta",
+		"translation_es": "Información meta"
+	},
+	{
+		"code": "misc",
+		"translation_en": "Miscellany",
+		"translation_fr": "Miscellanées",
+		"translation_es": "Miscelánea"
+	},
+	{
+		"code": "linksocial",
+		"translation_en": "Links to social networks",
+		"translation_fr": "Liens aux réseaux sociales",
+		"translation_es": "Enlaces a las redes sociales"
+	},
+	{
 		"code": "password",
 		"translation_en": "Password",
 		"translation_fr": "Mot de passe",
@@ -430,6 +508,12 @@
 		"translation_en": "Telephone",
 		"translation_fr": "Téléphone",
 		"translation_es": "Teléfono"
+	},
+	{
+		"code": "address",
+		"translation_en": "Address",
+		"translation_fr": "Adresse",
+		"translation_es": "Dirección"
 	},
 	{
 		"code": "title",
@@ -540,16 +624,16 @@
 		"translation_es": "Informacion"
 	},
 	{
-		"code": "myInformation",
-		"translation_en": "My Information",
-		"translation_fr": "Mes informations",
-		"translation_es": "Mis datos"
+		"code": "myAccountMessage",
+		"translation_en": "Use this form to update your information.",
+		"translation_fr": "Utilisez ce formulaire pour mettre à jour vos informations.",
+		"translation_es": "Use este formulario para modificar sus datos."
 	},
 	{
-		"code": "myInformationMessage",
-		"translation_en": "Here you can update your information.",
-		"translation_fr": "Ici vous pouvez mettre à jour vos informations.",
-		"translation_es": "Aqui puede modificar sus datos."
+		"code": "changePasswordMessage",
+		"translation_en": "Use this form to change your password.",
+		"translation_fr": "Utilisez ce formulaire pour mettre à jour votre mot de passe.",
+		"translation_es": "Use este formulario para modificar su contraseña."
 	},
 	{
 		"code": "newPassword",
@@ -562,6 +646,24 @@
 		"translation_en": "Next",
 		"translation_fr": "Suivant",
 		"translation_es": "Siguiente"
+	},
+	{
+		"code": "item",
+		"translation_en": "Item",
+		"translation_fr": "Item",
+		"translation_es": "Item"
+	},
+	{
+		"code": "items",
+		"translation_en": "Items",
+		"translation_fr": "Items",
+		"translation_es": "Items"
+	},
+	{
+		"code": "listItems",
+		"translation_en": "List items",
+		"translation_fr": "Liste des éléments",
+		"translation_es": "Lista de elementos"
 	},
 	{
 		"code": "noItems",
@@ -582,6 +684,12 @@
 		"translation_es": "Este campo no puede estar vacío"
 	},
 	{
+		"code": "mainPage",
+		"translation_en": "Main page",
+		"translation_fr": "Page principale",
+		"translation_es": "Pagina principal"
+	},
+	{
 		"code": "november",
 		"translation_en": "November",
 		"translation_fr": "Novembre",
@@ -595,9 +703,9 @@
 	},
 	{
 		"code": "oldPassword",
-		"translation_en": "Old password",
-		"translation_fr": "Ancien mot de passe",
-		"translation_es": "Contraseña antigua"
+		"translation_en": "Old or temporary password",
+		"translation_fr": "Temporarie ou ancien mot de passe",
+		"translation_es": "Contraseña antigua o temporal"
 	},
 	{
 		"code": "oldPasswordError",
@@ -639,7 +747,7 @@
 		"code": "passwordSentMail",
 		"translation_en": "We have sent an email with your temporary password.",
 		"translation_fr": "Nous avons envoyé un e-mail avec votre mot de passe temporaire.",
-		"translation_es": "Hemos enviado un email con su cotraseña temporal."
+		"translation_es": "Hemos enviado un email con su contraseña temporal."
 	},
 	{
 		"code": "pending",
@@ -722,7 +830,7 @@
 	{
 		"code": "savedForm",
 		"translation_en": "The record has been saved, please check if everything is right.",
-		"translation_fr": "L'enregistrement a été sauvegardé, veuillez vérifier si tout est correct .",
+		"translation_fr": "L'enregistrement a été sauvegardé, veuillez vérifier si tout est correct.",
 		"translation_es": "Este registro ha sido guardado, por favor revise si todo está en orden."
 	},
 	{
@@ -853,9 +961,9 @@
 	},
 	{
 		"code": "updatePasswordError",
-		"translation_en": "Your email and/or password are not correct. Please try again.",
-		"translation_fr": "Votre e-mail et / ou mot de passe ne sont pas correctes . Merci de ré-essayez.",
-		"translation_es": "Si email y/o contraseña no son correctos. Intente nuevamente."
+		"translation_en": "Your email or password are not correct. Please try again.",
+		"translation_fr": "Votre e-mail ou mot de passe ne sont pas correctes. Veuillez réessayer.",
+		"translation_es": "Si email o contraseña no son correctos. Intente nuevamente."
 	},
 	{
 		"code": "idsAvailable",
@@ -988,5 +1096,53 @@
 		"translation_en": "Language",
 		"translation_fr": "Langage",
 		"translation_es": "Idioma"
+	},
+	{
+		"code": "published",
+		"translation_en": "Published",
+		"translation_fr": "Publié",
+		"translation_es": "Publicado"
+	},
+	{
+		"code": "reverse",
+		"translation_en": "Reverse",
+		"translation_fr": "Inverse",
+		"translation_es": "Reverso"
+	},
+	{
+		"code": "orderBy",
+		"translation_en": "Order by",
+		"translation_fr": "Trier par",
+		"translation_es": "Ordenar por"
+	},
+	{
+		"code": "value",
+		"translation_en": "Value",
+		"translation_fr": "Valeur",
+		"translation_es": "Valor"
+	},
+	{
+		"code": "titlePage",
+		"translation_en": "Page title",
+		"translation_fr": "Titre de la page",
+		"translation_es": "Título de la página"
+	},
+	{
+		"code": "metaDescription",
+		"translation_en": "Meta description",
+		"translation_fr": "Description meta",
+		"translation_es": "Descripción meta"
+	},
+	{
+		"code": "metaKeywords",
+		"translation_en": "Meta keywords",
+		"translation_fr": "Mots-clés meta",
+		"translation_es": "Palabras clave meta"
+	},
+	{
+		"code": "selectValue",
+		"translation_en": "- Select a value -",
+		"translation_fr": "- Sélectionner une valeur -",
+		"translation_es": "- Seleccione un valor -"
 	}
 ]

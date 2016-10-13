@@ -20,10 +20,10 @@ class Lang_Ui extends Ui{
             $html .= '<div class="lang lang_'.$lang['idLang'].'">';
             $name = ($simple) ? $lang['idLang'] : $lang['name'];
             if ($lang['idLang'] == $langActive) {
-                $html .= '<span>'.$name.'</span> ';
+                $html .= '<span title="'.$lang['name'].'">'.$name.'</span> ';
             } else {
                 $linkLang = Url::urlLang($lang['idLang']);
-                $html .= '<a href="'.$linkLang.'">'.$name.'</a> ';
+                $html .= '<a href="'.$linkLang.'" title="'.$lang['name'].'">'.$name.'</a> ';
             }
             $html .= '</div>';
         }

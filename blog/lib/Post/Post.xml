@@ -11,19 +11,30 @@
     <info>
         <sql>
             <primary>idPost</primary>
-            <order>true</order>
             <onCreate>Tag,PostTag</onCreate>
+            <onDelete>PostTag</onDelete>
         </sql>
         <form>
             <title>posts</title>
-            <orderBy>ord</orderBy>
+            <orderBy>publishDate DESC, title, published</orderBy>
             <label>#title</label>
+            <pager>10</pager>
+            <viewPublic>true</viewPublic>
+            <publicUrl>_posts/#titleUrl</publicUrl>
+            <publicUrlList>_posts</publicUrlList>
             <templateItemAdmin>
-                <p class="image">#image</p>
-                <p class="accent"><strong>#title</strong></p>
-                <p class="tiny"><em>_language</em> : #idLang | <em>_user</em> : #idUser</p>
-                <p class="tiny">#shortDescription</p>
+                <div class="active active-##active">
+                    <p class="image">#image</p>
+                    <p class="accent"><strong>#title</strong></p>
+                    <p class="tiny"><span class="accent">#publishDate</span> | #idLang | #idUser</p>
+                    <p class="tiny">#shortDescription</p>
+                </div>
             </templateItemAdmin>
+            <multipleActions>
+                <action>delete</action>
+                <action>activate</action>
+                <action>deactivate</action>
+            </multipleActions>
         </form>
     </info>
     <attributes>
@@ -56,13 +67,18 @@
         <attribute>
             <name>titleUrl</name>
             <type>hidden-url</type>
-            <refObject>title</refObject>
+            <refAttribute>title</refAttribute>
         </attribute>
         <attribute>
             <name>idCategory</name>
             <label>category</label>
             <type>select</type>
             <refObject>Category</refObject>
+        </attribute>
+        <attribute>
+            <name>publishDate</name>
+            <label>publishDate</label>
+            <type>date-text</type>
         </attribute>
         <attribute>
             <name>shortDescription</name>
@@ -83,6 +99,11 @@
             <refObject>Tag</refObject>
             <refAttribute>name</refAttribute>
             <lnkObject>PostTag</lnkObject>
+        </attribute>
+        <attribute>
+            <name>active</name>
+            <label>active</label>
+            <type>checkbox</type>
         </attribute>
     </attributes>
     <indexes>

@@ -52,6 +52,7 @@
                 }
             }
         }
+        &.menuSideItem-Lang,
         &.menuSideItem-LangTrans {
             a {
                 &:before {
@@ -67,7 +68,8 @@
                 }
             }
         }
-        &.menuSideItem-permissions {
+        &.menuSideItem-permissions,
+        &.menuSideItem-langs {
             a {
                 background: darken($colorAccent, 10%);
                 &:before {
@@ -75,6 +77,13 @@
                 }
                 &:hover {
                     background: darken($colorAccent, 15%);
+                }
+            }
+        }
+        &.menuSideItem-langs {
+            a {
+                &:before {
+                    content: $icon-bubbles;
                 }
             }
         }

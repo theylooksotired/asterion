@@ -24,14 +24,24 @@ class Navigation_Controller extends Controller{
     public function controlActions(){
         switch ($this->action) {
             default:
+                $page = Page::code($this->action);
+                if ($page->id()!='') {
+                    $this->titlePage = $page->getBasicInfo();
+                    $this->content = $page->showUi('Complete');
+                    return $this->ui->render();
+                } else {
+                    header('Location: '.url());
+                    exit();
+                }
+            break;
+            case 'intro':
+                $this->content = 'Here goes the content';
+                return $this->ui->render();
+            break;
             case 'error':
                 header("HTTP/1.0 404 Not Found");
                 $this->titlePage = 'Error 404';
                 $this->content = 'Error 404';
-                return $this->ui->render();
-            break;
-            case 'intro':
-                $this->content = 'Here goes the content';
                 return $this->ui->render();
             break;
         }

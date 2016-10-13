@@ -30,8 +30,8 @@
         <attribute>
             <name>code</name>
             <label>code</label>
-            <required>notEmpty</required>
-            <type>text</type>
+            <type>text-code</type>
+            <required>unique</required>
         </attribute>
         <attribute>
             <name>title</name>
@@ -44,7 +44,7 @@
             <name>titleUrl</name>
             <lang>true</lang>
             <type>hidden-url</type>
-            <refObject>title</refObject>
+            <refAttribute>title</refAttribute>
         </attribute>
         <attribute>
             <name>section</name>

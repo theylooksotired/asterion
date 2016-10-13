@@ -15,7 +15,7 @@ class User_Ui extends Ui{
         if ($login->isConnected()) {        
             return '<div class="infoUser">
                         <div class="infoUserItem infoUserMyAccount">
-                            <a href="'.url('User/myInformation', true).'">'.__('myAccount').'</a>
+                            <a href="'.url('User/myAccount', true).'">'.__('myAccount').'</a>
                         </div>
                         <div class="infoUserItem infoUserLogout">
                             <a href="'.url('User/logout', true).'">'.__('logout').'</a>

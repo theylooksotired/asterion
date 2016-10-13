@@ -15,7 +15,7 @@
 * The TITLE constant defines the title of the page.
 * After the installation it is preferable to use the "title" parameter.
 */
-define('TITLE', 'Base Site');
+define('TITLE', 'Blog Asterion');
 
 /**
 * The following constants define the paths to the different
@@ -96,7 +96,7 @@ define('DB_PASSWORD', 'lucyinthesky');
 define('DB_PORT', '3306');
 define('DB_NAME', 'asterion');
 define('DB_TYPE', 'mysql');
-define('DB_PREFIX', 'ast_');
+define('DB_PREFIX', 'blog_');
 define("PDO_DSN","mysql:host=".DB_SERVER.";port=".DB_PORT.";dbname=".DB_NAME);
 
 /**

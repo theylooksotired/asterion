@@ -20,8 +20,10 @@
             <orderBy>name</orderBy>
             <templateItemAdmin>
                 <div class="active active-##active">
+                    <p class="image">#image</p>
                     <p class="accent"><strong>#name</strong></p>
-                    <p class="tiny"><span class="mainAlt">#idUserType</span> | <span class="mainAlt">#email</span></p>
+                    <p class="tiny">_type : <span class="mainAlt">#idUserType</span></p>
+                    <p class="tiny">_email : <span class="mainAlt">#email</span></p>
                 </div>
             </templateItemAdmin>
         </form>
@@ -32,6 +34,18 @@
             <type>id-autoincrement</type>
         </attribute>
         <attribute>
+            <name>idUserType</name>
+            <label>userType</label>
+            <type>select</type>
+            <refObject>UserType</refObject>
+        </attribute>
+        <attribute>
+            <name>image</name>
+            <label>image</label>
+            <type>file</type>
+            <mode>image</mode>
+        </attribute>
+        <attribute>
             <name>name</name>
             <label>name</label>
             <required>notEmpty</required>
@@ -40,7 +54,7 @@
         <attribute>
             <name>email</name>
             <label>email</label>
-            <required>email</required>
+            <required>unique-email</required>
             <type>text-email</type>
         </attribute>
         <attribute>
@@ -53,10 +67,14 @@
             <type>hidden</type>
         </attribute>
         <attribute>
-            <name>idUserType</name>
-            <label>userType</label>
-            <type>select</type>
-            <refObject>UserType</refObject>
+            <name>telephone</name>
+            <label>telephone</label>
+            <type>text-telephone</type>
+        </attribute>
+        <attribute>
+            <name>address</name>
+            <label>address</label>
+            <type>textarea</type>
         </attribute>
         <attribute>
             <name>active</name>

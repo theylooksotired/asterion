@@ -33,28 +33,39 @@ class User_Login {
     }
     
     /**
-    * Get the id of the logged user
+    * Get the id of the logged user.
     */
     public function id() {
         return $this->get('idUser');
     }
 
     /**
-    * Universal getter
+    * Universal getter.
     */
     public function get($value) {
         return (isset($this->info[$value])) ? $this->info[$value] : '';
     }
+
+    /**
+    * Get the user.
+    */
+    public function user() {
+        if (isset($this->user)) {
+            return $this->user;
+        }
+        $this->user = User::read($this->id());
+        return $this->user;
+    }
     
     /**
-    * Update the session array
+    * Update the session array.
     */
     private function sessionAdjust($info=array()) {
         Session::set('infoUser', $info);
     }
 
     /**
-    * Check if the user is connected
+    * Check if the user is connected.
     */
     public function isConnected() {
         return (isset($this->info['idUser']) && $this->info['idUser']!='') ? true : false;
@@ -67,7 +78,7 @@ class User_Login {
     public function checklogin($options) {
         $email = (isset($options['email'])) ? $options['email'] : '';
         $password = (isset($options['password'])) ? $options['password'] : '';
-        $user = User::readFirst(array('where'=>'email="'.$email.'" AND password="'.md5($password).'" AND active="1"'));
+        $user = User::readFirst(array('where'=>'email="'.$email.'" AND (password="'.md5($password).'" OR passwordTemp="'.$password.'") AND active="1"'));
         if ($user->id()!='') {
             $this->autoLogin($user);
             $this->sessionAdjust($this->info);
@@ -78,7 +89,7 @@ class User_Login {
     }
 
     /**
-    * Automatically login a user
+    * Automatically login a user.
     */
     public function autoLogin($user) {
         $type = UserType::read($user->get('idUserType'));
@@ -91,7 +102,7 @@ class User_Login {
     }
 
     /**
-    * Eliminate session values and logout a user
+    * Eliminate session values and logout a user.
     */
     public function logout() {
         $this->info = array();

@@ -2,7 +2,7 @@
 /**
 * @class Category
 *
-* This class represents a simple HTML section on a website.
+* This class represents a category for posts or articles.
 *
 * @author Leano Martinet <info@asterion-cms.com>
 * @package Asterion

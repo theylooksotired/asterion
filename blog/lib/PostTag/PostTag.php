@@ -2,7 +2,7 @@
 /**
 * @class PostTag
 *
-* This class represents a simple HTML section on a website.
+* This class makes the relation between the Post and Tag objects.
 *
 * @author Leano Martinet <info@asterion-cms.com>
 * @package Asterion

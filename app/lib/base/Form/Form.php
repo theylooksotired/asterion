@@ -140,7 +140,14 @@ class Form {
                 return FormField::show($type, $options);
             break;
             case 'select':
-                return FormField::show('select', $options);
+                switch ($type) {
+                    default:
+                        return FormField::show('select', $options);
+                    break;
+                    case 'select-link':
+                        return FormField::show('selectLink', $options);
+                    break;
+                }
             break;
             case 'id':
             case 'linkid':
@@ -153,6 +160,10 @@ class Form {
                         $login = User_Login::getInstance();
                         $options['values'][$name] = $login->id();
                         return FormField::show('hidden', $options);
+                    break;
+                    case 'id-varchar':
+                        return FormField::show('textSmall', $options).'
+                                '.FormField::create('hidden', array('name'=>$name.'_oldId', 'value'=>$this->object->id()));
                     break;
                 }
             break;
@@ -256,7 +267,7 @@ class Form {
                             $refObjectFormIns = new $refObjectForm($itemValues, array(), $refObjectIns);
                             $multipleOptionsIns = array('multiple'=>true, 'nameMultiple'=>$name);
                             $orderNested = ($refObjectFormIns->object->hasOrd()) ? '<div class="nestedFormFieldOrder"></div>' : '';
-                            $nestedFormField .= '<div class="nestedFormFieldObject">
+                            $nestedFormField .= '<div class="nestedFormFieldObject" rel="'.$refObjectIns->id().'">
                                                         <div class="nestedFormFieldOptions">
                                                             <div class="nestedFormFieldDelete" rel="'.url($refObject.'/delete/'.$refObjectIns->id(), true).'"></div>
                                                             '.$orderNested.'
@@ -286,8 +297,8 @@ class Form {
     /**
     * Return a form field.
     */
-    public function field($attribute) {
-        return $this->createFormField($this->object->attributeInfo($attribute));
+    public function field($attribute, $options=array()) {
+        return $this->createFormField($this->object->attributeInfo($attribute), $options);
     }
 
     /**
@@ -343,10 +354,11 @@ class Form {
     /**
     * Checks if an item is valid.
     */
-    public function isValidField($item) {
+    public function isValidField($item, $required='') {
         $error = array();
         $name = (string)$item->name;
-        switch ((string)$item->required) {
+        $required = ($required=='') ? (string)$item->required : $required;
+        switch ($required) {
             case 'notEmpty':
                 if ((string)$item->lang == 'true') {
                     foreach (Lang::langs() as $lang) {
@@ -369,9 +381,7 @@ class Form {
                 }
             break;
             case 'email':
-                if (!isset($this->values[$name]) || strlen(trim($this->values[$name])) == 0) {
-                    $error[$name] = __('notEmpty');
-                }
+                $error = array_merge($error, $this->isValidField($item, 'notEmpty'));
                 if (!filter_var($this->values[$name], FILTER_VALIDATE_EMAIL)) {
                     $error[$name] = __('errorMail');
                 }
@@ -387,6 +397,28 @@ class Form {
                         $error[$name] = __('errorPasswordAlpha');
                     }
                 }
+            break;
+            case 'unique':
+                $error = array_merge($error, $this->isValidField($item, 'notEmpty'));
+                if ($this->object->id()) {
+                    if ((string)$item->lang == 'true') {
+                        foreach (Lang::langs() as $lang) {
+                            $existingObject = $this->object->readFirst(array('where'=>$this->object->primary.'!="'.$this->object->id().'" AND '.$name.'_'.$lang.'="'.$this->values[$name.'_'.$lang].'"'));
+                            if ($existingObject->id()!='') {
+                                $error[$name.'_'.$lang] = __('errorExisting');
+                            }
+                        }
+                    } else {
+                        $existingObject = $this->object->readFirst(array('where'=>$this->object->primary.'!="'.$this->object->id().'" AND '.$name.'="'.$this->values[$name].'"'));
+                        if ($existingObject->id()!='') {
+                            $error[$name] = __('errorExisting');
+                        }
+                    }
+                }
+            break;
+            case 'unique-email':
+                $error = array_merge($error, $this->isValidField($item, 'email'));
+                $error = array_merge($error, $this->isValidField($item, 'unique'));
             break;
         }
         return $error;

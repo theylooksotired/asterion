@@ -16,21 +16,21 @@
         </sql>
         <form>
             <title>langs</title>
-            <hiddenAdminMenu>true</hiddenAdminMenu>
-            <layout>ajax</layout>
             <label>#name</label>
+            <orderBy>ord</orderBy>
+            <hiddenAdminMenu>true</hiddenAdminMenu>
+            <templateItemAdmin>
+                <p class="accent"><strong>#name</strong></p>
+                <p class="tiny"><em>_code</em> : <span class="mainAlt">#idLang</span></p>
+            </templateItemAdmin>
         </form>
-        <nav>
-            <labelSections>
-                <label type="link" style="tiny">idLang</label>
-                <label type="link" style="medium">name</label>
-            </labelSections>
-        </nav>
     </info>
     <attributes>
         <attribute>
             <name>idLang</name>
             <type>id-varchar</type>
+            <label>code</label>
+            <required>unique</required>
         </attribute>
         <attribute>
             <name>name</name>

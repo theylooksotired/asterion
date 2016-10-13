@@ -17,10 +17,9 @@
             <orderBy>code</orderBy>
             <label>#information</label>
             <templateItemAdmin>
-                <div class="labelTable">
-                    <div class="labelCell labelCell20 accent"><strong>#code</strong></div>
-                    <div class="labelCell">#information</div>
-                </div>
+                <p class="accent"><strong>#name</strong></p>
+                <p class="tiny"><em>_code</em> : <span class="mainAlt">#code</span></p>
+                <p class="tiny"><em>_value</em> : <span class="mainAlt">#information</span></p>
             </templateItemAdmin>
         </form>
     </info>
@@ -32,13 +31,19 @@
         <attribute>
             <label>code</label>
             <name>code</name>
-            <type>text-unchangeable</type>
+            <type>text-code</type>
+            <required>unique</required>
+        </attribute>
+        <attribute>
+            <name>name</name>
+            <label>name</label>
+            <type>text</type>
             <required>notEmpty</required>
         </attribute>
         <attribute>
             <label>information</label>
             <name>information</name>
-            <type>textarea</type>
+            <type>textarea-code</type>
             <required></required>
         </attribute>
     </attributes>

@@ -18,6 +18,7 @@ class Db_Sql {
         $this->tableName = Db::prefixTable($this->className);
         $this->info = XML::readClass($this->className);
         $this->primary = (string)$this->info->info->sql->primary;
+        $this->title = __((string)$this->info->info->form->title);
         $ord = (isset($values['ord'])) ? $values['ord'] : '';
         $created = (isset($values['created'])) ? $values['created'] : '';
         $modified = (isset($values['modified'])) ? $values['modified'] : '';
@@ -165,7 +166,7 @@ class Db_Sql {
     /**
     * Insert values to an object, checks if it already exists to modify it instead.
     */
-    public function insert($values, $options=array()){
+    public function insert($values, $options=array()) {
         if (count($values)>0) {
             $values = $this->formatMultipleValues($values);
             if (isset($values[$this->primary])) {
@@ -218,7 +219,7 @@ class Db_Sql {
     /**
     * Update the values of an object.
     */
-    public function modify($values, $options=array()){
+    public function modify($values, $options=array()) {
         if (count($values)>0 && $this->id()!='') {
             $values = $this->formatMultipleValues($values);
             $queryModified = '';
@@ -229,11 +230,13 @@ class Db_Sql {
             $complete = (isset($options['complete'])) ? $options['complete'] : true;
             $createSet = $this->createSet($values, $complete);
             if ($createSet['query']!='') {
+                $primary = $this->primary;
+                $idItem = (isset($values[$primary.'_oldId'])) ? $values[$primary.'_oldId'] : $this->id();
                 $query = 'UPDATE '.$this->tableName.'
                             SET 
                             '.$queryModified.'
                             '.$createSet['query'].'
-                            WHERE '.$this->primary.'="'.$this->id().'"';
+                            WHERE '.$this->primary.'="'.$idItem.'"';
                 Db::execute($query, $createSet['setValues']);
             }
             $this->uploadFiles($values);
@@ -454,25 +457,29 @@ class Db_Sql {
             $query = 'DROP TABLE IF EXISTS `'.DB_PREFIX.$this->className.'`';
             Db::execute($query);
         }
-        $query = 'CREATE TABLE IF NOT EXISTS `'.DB_PREFIX.$this->className.'` (';
-        $query .= ($this->info->info->sql->order == 'true') ? '`ord` int(10) unsigned DEFAULT NULL,' : '';
-        $query .= ($this->info->info->sql->created == 'true') ? '`created` DATETIME DEFAULT NULL,' : '';
-        $query .= ($this->info->info->sql->modified == 'true') ? '`modified` DATETIME DEFAULT NULL,' : '';
-        $queryFields = '';
-        foreach($this->getAttributes() as $item) {
-            $queryFields .= Db_ObjectType::createTableSql($item);
-        }
-        $engine = ((string)$this->info->info->sql->engine != '') ? (string)$this->info->info->sql->engine : 'MyISAM';
-        $query .= substr($queryFields, 0, -1).') ENGINE='.$engine.' COLLATE utf8_unicode_ci;';
-        Db::execute($query);
-        $this->createTableIndexes();
-        // Create related tables
-        if ((string)$this->info->info->sql->onCreate!='') {
-            $relatedTables = explode(',',(string)$this->info->info->sql->onCreate);
-            foreach ($relatedTables as $relatedTable) {
-                $relatedTable = trim($relatedTable);
-                $object = new $relatedTable();
-                $object->createTable($rewrite);
+        $existsQuery = 'SHOW TABLES LIKE "'.DB_PREFIX.$this->className.'"';
+        $exists = Db::returnAll($existsQuery);
+        if (count($exists)==0) {
+            $query = 'CREATE TABLE `'.DB_PREFIX.$this->className.'` (';
+            $query .= ($this->info->info->sql->order == 'true') ? '`ord` int(10) unsigned DEFAULT NULL,' : '';
+            $query .= ($this->info->info->sql->created == 'true') ? '`created` DATETIME DEFAULT NULL,' : '';
+            $query .= ($this->info->info->sql->modified == 'true') ? '`modified` DATETIME DEFAULT NULL,' : '';
+            $queryFields = '';
+            foreach($this->getAttributes() as $item) {
+                $queryFields .= Db_ObjectType::createTableSql($item);
+            }
+            $engine = ((string)$this->info->info->sql->engine != '') ? (string)$this->info->info->sql->engine : 'MyISAM';
+            $query .= substr($queryFields, 0, -1).') ENGINE='.$engine.' COLLATE utf8_unicode_ci;';
+            Db::execute($query);
+            $this->createTableIndexes();
+            // Create related tables
+            if ((string)$this->info->info->sql->onCreate!='') {
+                $relatedTables = explode(',',(string)$this->info->info->sql->onCreate);
+                foreach ($relatedTables as $relatedTable) {
+                    $relatedTable = trim($relatedTable);
+                    $object = new $relatedTable();
+                    $object->createTable($rewrite);
+                }
             }
         }
     }
@@ -541,14 +548,14 @@ class Db_Sql {
                     if ($this->id()=='' && (!isset($values[$name]) || $values[$name]=='')) {
                         $idMd5 = md5(microtime()*rand()*rand());
                         $setValues[$name] = $idMd5;
-                        $query .=    '`'.$name.'` = :'.$name.', ';
+                        $query .= '`'.$name.'` = :'.$name.', ';
                         $this->setId($idMd5);
                     }
                 break;
                 case 'id-varchar':
                     if (isset($values[$name])) {
-                        $setValues[$name] = $values[$name];
-                        $query .=    '`'.$name.'` = :'.$name.', ';
+                        $setValues[$name] = Text::simpleUrl($values[$name], '');
+                        $query .= '`'.$name.'` = :'.$name.', ';
                         $this->setId($setValues[$name]);
                     }
                 break;
@@ -556,12 +563,12 @@ class Db_Sql {
                     if (isset($values[$name])) {
                         $password = md5($values[$name]);            
                         $setValues[$name] = $password;
-                        $query .=    '`'.$name.'` = :'.$name.', ';
+                        $query .= '`'.$name.'` = :'.$name.', ';
                     }
                     if (isset($values[$name.'_new']) && $values[$name.'_new']!='') {
                         $password = md5($values[$name.'_new']);            
                         $setValues[$name] = $password;
-                        $query .=    '`'.$name.'` = :'.$name.'", ';
+                        $query .= '`'.$name.'` = :'.$name.'", ';
                     }
                 break;
                 case 'hidden-url':
@@ -571,19 +578,22 @@ class Db_Sql {
                             $nameLang = $name.'_'.$lang;
                             if (isset($values[$textUrl])) {
                                 $setValues[$nameLang] = Text::simple($values[$textUrl]);
-                                $query .=    '`'.$nameLang.'` = :'.$nameLang.', ';
+                                $query .= '`'.$nameLang.'` = :'.$nameLang.', ';
                             }
                         }
                     } else {
                         $textUrl = (string)$item->refAttribute;
                         if (isset($values[$textUrl])) {
                             $setValues[$name] = Text::simple($values[$textUrl]);
-                            $query .=    '`'.$name.'` = :'.$name.', ';
+                            $query .= '`'.$name.'` = :'.$name.', ';
                         }
                     }
                 break;
                 case 'hidden-user':
-                    if (!isset($values[$name]) || $values[$name]=='') {
+                    if (isset($values[$name.'_force'])) {
+                        $setValues[$name] = $values[$name.'_force'];
+                        $query .= $name.' = :'.$name.', ';
+                    } elseif (!isset($values[$name]) || $values[$name]=='') {
                         $userLogged = User_Login::getInstance();
                         $setValues[$name] = $userLogged->id();
                         $query .= $name.' = :'.$name.', ';
@@ -593,6 +603,9 @@ class Db_Sql {
                     $pointLat = (isset($values[$name.'_lat'])) ? floatval($values[$name.'_lat']) : 0;
                     $pointLng = (isset($values[$name.'_lng'])) ? floatval($values[$name.'_lng']) : 0;
                     $query .= (isset($values[$name.'_lat']) && isset($values[$name.'_lng'])) ? '`'.$name.'`=POINT('.$pointLat.', '.$pointLng.'), ' : '';
+                break;
+                case 'text-code':
+                    $query .= (isset($values[$name]) && $values[$name]!="") ? '`'.$name.'`="'.Text::simpleUrl($values[$name]).'", ' : '';
                 break;
                 case 'text-double':
                     $query .= (isset($values[$name]) && $values[$name]!="") ? '`'.$name.'`="'.floatval($values[$name]).'", ' : '';

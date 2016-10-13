@@ -17,6 +17,7 @@ class FormField_Password extends FormField_Default {
         parent::__construct($options);
         $this->options['size'] = 50;
         $this->options['typeField'] = 'password';
+        $this->options['autocomplete'] = 'off';
     }
 
     /**
@@ -25,6 +26,7 @@ class FormField_Password extends FormField_Default {
     static public function create($options) {
         $options['size'] = 50;
         $options['typeField'] = 'password';
+        $options['autocomplete'] = 'off';
         return FormField_Default::create($options);
     }
     

@@ -21,6 +21,7 @@ class FormField_Default {
         $this->errors = isset($options['errors']) ? $options['errors'] : array();
         $this->options = array();
         $nameMultiple = (isset($options['nameMultiple']) && isset($options['idMultiple']) && $options['nameMultiple']!='' && $options['idMultiple']!='');
+        $this->options['nameSimple'] = $this->name;
         $this->options['name'] = ($nameMultiple) ? $options['nameMultiple'].'['.$options['idMultiple'].']['.$this->name.']' : $this->name;
         $this->options['value'] = $this->values[$this->name];
         $this->options['error'] = $this->errors[$this->name];
@@ -44,10 +45,10 @@ class FormField_Default {
                 $this->options['name'] = str_replace($this->name, $nameLang, $optionsName);
                 $this->options['labelLang'] = Lang::getLabel($lang);
                 $this->options['value'] = $this->values[$nameLang];
-                $this->options['class'] = 'formField_'.$nameLang;
+                $this->options['class'] = 'formField_'.$nameLang.' formField_'.$this->name;
                 $fields .= FormField_Default::create($this->options);
             }
-            return $fields;
+            return '<div class="formFieldLangs">'.$fields.'</div>';
         } else {
             return FormField_Default::create($this->options);
         }
@@ -73,13 +74,14 @@ class FormField_Default {
         $placeholder = (isset($options['placeholder'])) ? 'placeholder="'.__($options['placeholder']).'"' : '';
         $required = (isset($options['required']) && $options['required']) ? 'required' : '';
         $layout = (isset($options['layout'])) ? $options['layout'] : '';
+        $autocomplete = (isset($options['autocomplete'])) ? 'autocomplete="'.$options['autocomplete'].'" ' : '';
         switch ($layout) {
             default:
                 return '<div class="'.$type.' formField '.$class.' '.$classError.'">
                             <div class="formFieldIns">
                                 '.$label.'
                                 '.$error.'
-                                <input '.$typeField.' '.$name.' '.$size.' '.$value.' '.$id.' '.$disabled.' '.$placeholder.' '.$required.'/>
+                                <input '.$typeField.' '.$name.' '.$size.' '.$value.' '.$id.' '.$disabled.' '.$placeholder.' '.$required.' '.$autocomplete.'/>
                             </div>
                         </div>';
             break;
@@ -88,12 +90,12 @@ class FormField_Default {
                             <div class="formFieldIns">
                                 '.$label.'
                                 '.$error.'
-                                <input class="color" '.$typeField.' '.$name.' '.$size.' '.$value.' '.$id.' '.$disabled.' '.$placeholder.' '.$required.'/>
+                                <input class="color" '.$typeField.' '.$name.' '.$size.' '.$value.' '.$id.' '.$disabled.' '.$placeholder.' '.$required.' '.$autocomplete.'/>
                             </div>
                         </div>';
             break;
             case 'simple':
-                return '<input '.$typeField.' '.$name.' '.$size.' '.$value.' '.$id.' '.$disabled.' '.$placeholder.' class="'.$class.'"/>';
+                return '<input '.$typeField.' '.$name.' '.$size.' '.$value.' '.$id.' '.$disabled.' '.$placeholder.' '.$autocomplete.' class="'.$class.'"/>';
             break;
         }
     }

@@ -18,6 +18,7 @@ class NavigationAdmin_Ui extends Ui{
         $layoutPage = (isset($this->object->layoutPage)) ? $this->object->layoutPage : '';
         $title = (isset($this->object->titlePage) && $this->object->titlePage!='') ? '<h1>'.$this->object->titlePage.'</h1>' : '';
         $message = (isset($this->object->message) && $this->object->message!='') ? '<div class="message">'.$this->object->message.'</div>' : '';
+        $messageAlert = (isset($this->object->messageAlert) && $this->object->messageAlert!='') ? '<div class="message messageAlert">'.$this->object->messageAlert.'</div>' : '';
         $messageError = (isset($this->object->messageError) && $this->object->messageError!='') ? '<div class="message messageError">'.$this->object->messageError.'</div>' : '';
         $menuInside = (isset($this->object->menuInside)) ? $this->object->menuInside : '';
         $content = (isset($this->object->content)) ? $this->object->content : '';
@@ -40,6 +41,7 @@ class NavigationAdmin_Ui extends Ui{
                                             </div>
                                         </div>
                                         '.$messageError.'
+                                        '.$messageAlert.'
                                         '.$message.'
                                         '.$content.'
                                         '.$this->footer().'
@@ -54,6 +56,7 @@ class NavigationAdmin_Ui extends Ui{
                             <div class="contentSimple">
                                 '.$title.'
                                 '.$messageError.'
+                                '.$messageAlert.'
                                 '.$message.'
                                 '.$content.'
                                 '.$this->footer().'
@@ -104,7 +107,10 @@ class NavigationAdmin_Ui extends Ui{
             $objectNames = File::scanDirectoryObjectsApp();
             $menuItems .= $this->renderMenuObjects($objectNames, 'menuSideItemApp');
             if ($this->userType->get('managesPermissions')=='1') {
-                $menuItems .= '<div class="menuSideItem menuSideItem-permissions">
+                $menuItems .= '<div class="menuSideItem menuSideItem-langs">
+                                    <a href="'.url('Lang', true).'">'.__('langs').'</a>
+                                </div>
+                                <div class="menuSideItem menuSideItem-permissions">
                                     <a href="'.url('Permission', true).'">'.__('permissions').'</a>
                                 </div>';
             }

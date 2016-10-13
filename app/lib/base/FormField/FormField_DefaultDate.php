@@ -22,6 +22,7 @@ class FormField_DefaultDate {
         $this->options = array();
         $nameMultiple = (isset($options['nameMultiple']) && isset($options['idMultiple']) && $options['nameMultiple']!='' && $options['idMultiple']);
         $this->options['nameMultiple'] = $nameMultiple;
+        $this->options['nameSimple'] = $this->name;
         $this->options['name'] = $this->name;
         $this->options['name'] = ($nameMultiple) ? $options['nameMultiple'].'['.$options['idMultiple'].']['.$this->options['name'].']' : $this->options['name'];
         $this->options['error'] = $this->errors[$this->name];

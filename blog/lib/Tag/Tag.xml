@@ -11,6 +11,7 @@
     <info>
         <sql>
             <primary>idTag</primary>
+            <onDelete>PostTag</onDelete>
         </sql>
         <form>
             <title>tags</title>
@@ -32,7 +33,7 @@
         <attribute>
             <name>nameUrl</name>
             <type>hidden-url</type>
-            <refObject>name</refObject>
+            <refAttribute>name</refAttribute>
         </attribute>
     </attributes>
     <indexes>

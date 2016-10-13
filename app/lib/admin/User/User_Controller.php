@@ -11,7 +11,7 @@
 class User_Controller extends Controller {
 
     public function controlActions(){
-        $ui = new NavigationAdmin_Ui($this);
+        $this->ui = new NavigationAdmin_Ui($this);
         switch ($this->action) {
             case 'login':
                 $this->mode = 'admin';
@@ -31,7 +31,7 @@ class User_Controller extends Controller {
                     $form = new User_Form();
                     $this->content = $form->loginAdmin();
                 }
-                return $ui->render();
+                return $this->ui->render();
             break;
             case 'logout':
                 $login = User_Login::getInstance();
@@ -42,101 +42,78 @@ class User_Controller extends Controller {
                 $this->mode = 'admin';
                 $this->layoutPage = 'simple';
                 $this->titlePage = __('passwordForgot');
+                $form = new User_Form();
                 if (isset($this->values['email'])) {
                     $user = User::readFirst(array('where'=>'email="'.$this->values['email'].'" AND active="1"'));
                     if ($user->id()!='') {
                         $tempPassword = substr(md5(rand()*rand()), 0, 10);
-                        $user->modify(array('passwordTemp'=>$tempPassword));
-                        $updatePasswordLink = url('User/updatePassword', true);
+                        $user->modifySimple('passwordTemp', $tempPassword);
+                        $updatePasswordLink = url('User/login', true);
                         HtmlMail::send($user->get('email'), 'passwordForgot', array('TEMP_PASSWORD'=>$tempPassword, 'UPDATE_PASSWORD_LINK'=>$updatePasswordLink));
-                        $this->message = __('passwordSentMail');
+                        $this->content = $form->forgotSent();
                     } else {
                         $this->messageError = __('mailDoesntExist');
-                        $form = new User_Form();
                         $this->content = $form->forgot();
                     }
                 } else {
                     $form = new User_Form();
                     $this->content = $form->forgot();
                 }
-                return $ui->render();
+                return $this->ui->render();
             break;
-            case 'updatePassword':
+            case 'myAccount':
+                $this->login = User::loginAdmin();
                 $this->mode = 'admin';
-                $this->titlePage = __('updatePassword');
-                $this->layoutPage = 'simple';
-                if (isset($this->values['email'])) {
-                    $passwordTemp = (isset($this->values['password'])) ? $this->values['password'] : '';
-                    $user = User::readFirst(array('where'=>'email="'.$this->values['email'].'" AND passwordTemp="'.$passwordTemp.'" AND passwordTemp IS NOT NULL AND passwordTemp!="" AND active="1"'));
-                    if ($user->id()!='') {
-                        $user->modify(array('password'=>$user->get('passwordTemp'), 'passwordTemp'=>''));
-                        $login = User_Login::getInstance();
-                        $login->autoLogin($user);
-                        header('Location: '.url('', true));
-                    } else {
-                        $this->messageError = __('updatePasswordError');
-                        $form = new User_Form();
-                        $this->content = $form->updatePassword();
-                    }
-                } else {
-                    $form = new User_Form();
-                    $this->content = $form->updatePassword();
-                }
-                return $ui->render();
+                $this->titlePage = __('myAccount');
+                $form = User_Form::newObject($this->login->user());
+                $this->message = ($this->id == 'successPersonal') ? __('savedForm') : '';
+                $this->message = ($this->id == 'successPassword') ? __('changePasswordSuccess') : $this->message;
+                $this->messageError = ($this->id == 'errorPersonal') ? __('errorsForm') : '';
+                $this->messageError = ($this->id == 'errorPassword') ? __('changePasswordError') : $this->messageError;
+                $this->content = '<div class="myAccount">
+                                        <div class="myAccountPersonal">
+                                            '.$form->myAccount().'
+                                        </div>
+                                        <div class="myAccountPassword">
+                                            '.$form->changePassword().'
+                                        </div>
+                                    </div>';
+                return $this->ui->render();
             break;
-            case 'changePassword':
-                $this->mode = 'admin';
-                $this->titlePage = __('changePassword');
-                $login = User_Login::getInstance();
-                if ($login->isConnected()) {
-                    if (count($this->values) > 0) {
-                        $form = new User_Form($this->values);
-                        $errors = $form->isValidChangePassword($login);
-                        if (count($errors) > 0) {
-                            $form = new User_Form(array(), $errors);
-                            $this->messageError = __('changePasswordError');
-                            $this->content = $form->changePassword();
-                        } else {
-                            $user = User::read($login->id());
-                            $user->modify($this->values, array('complete'=>false));
-                            $this->message = __('changePasswordSuccess');
-                        }
+            case 'myAccountPersonal':
+                $this->login = User::loginAdmin();
+                if (count($this->values) > 0) {
+                    $this->values['idUser'] = $this->login->id();
+                    $form = new User_Form($this->values);
+                    $errors = $form->isValidMyInformation($this->values);
+                    if (count($errors) > 0) {
+                        header('Location: '.url('User/myAccount/errorPersonal', true));
                     } else {
-                        $form = new User_Form();
-                        $this->content = $form->changePassword();
+                        $this->login->user()->modify($this->values, array('complete'=>false));
+                        header('Location: '.url('User/myAccount/successPersonal', true));
                     }
-                    return $ui->render();
-                } else {
-                    header('Location: '.ADMIN_URL);
+                    exit();
                 }
+                header('Location: '.url('User/myAccount', true));
+                exit();
             break;
-            case 'myInformation':
-                $this->mode = 'admin';
-                $this->titlePage = __('myInformation');
-                $login = User_Login::getInstance();
-                if ($login->isConnected()) {
-                    $user = User::read($login->id());
-                    if (count($this->values) > 0) {
-                        $form = new User_Form($this->values);
-                        $errors = $form->isValidMyInformation($this->values);
-                        if (count($errors) > 0) {
-                            $form = new User_Form($this->values, $errors);
-                            $this->messageError = __('errorsForm');
-                            $this->content = $form->myInformation();
-                        } else {
-                            $user->modify($this->values, array('complete'=>false));
-                            $form = User_Form::newObject($user);
-                            $this->message = __('savedForm');
-                            $this->content = $form->myInformation();
-                        }
+            case 'myAccountPassword':
+                $this->login = User::loginAdmin();
+                if (count($this->values) > 0) {
+                    $this->values['idUser'] = $this->login->id();
+                    $form = new User_Form($this->values);
+                    $errors = $form->isValidChangePassword($this->login->user());
+                    if (count($errors) > 0) {
+                        header('Location: '.url('User/myAccount/errorPassword', true));
                     } else {
-                        $form = User_Form::newObject($user);
-                        $this->content = $form->myInformation();                        
+                        $this->login->user()->modify($this->values, array('complete'=>false));
+                        $this->login->user()->modifySimple('passwordTemp', '');
+                        header('Location: '.url('User/myAccount/successPassword', true));
                     }
-                    return $ui->render();
-                } else {
-                    header('Location: '.ADMIN_URL);
+                    exit();
                 }
+                header('Location: '.url('User/myAccount', true));
+                exit();
             break;
         }
         return parent::controlActions();

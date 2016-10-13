@@ -20,15 +20,19 @@ class FormField_DefaultSelect {
         $this->errors = isset($options['errors']) ? $options['errors'] : array();
         $this->options = array();
         $nameMultiple = (isset($options['nameMultiple']) && isset($options['idMultiple']) && $options['nameMultiple']!='' && $options['idMultiple']);
+        $this->options['nameSimple'] = $this->name;
         $this->options['name'] = $this->name;
         $this->options['name'] = ($nameMultiple) ? $options['nameMultiple'].'['.$options['idMultiple'].']['.$this->options['name'].']' : $this->options['name'];
         $this->options['error'] = $this->errors[$this->name];
         $this->options['label'] = (string)$this->item->label;
         $this->options['placeholder'] = (string)$this->item->placeholder;
+        $this->options['firstSelect'] = (string)$this->item->firstSelect;
         $this->options['typeField'] = (isset($options['typeField'])) ? $options['typeField'] : 'select';
         //Load the values
         $refObject = (string)$this->item->refObject;
-        if ($refObject != "") {
+        if (isset($options['value'])) {
+            $this->options['value'] = $options['value'];
+        } elseif ($refObject != "") {
             $refObjectIns = new $refObject();
             $this->options['value'] = $refObjectIns->basicInfoAdminArray();
         } else {
@@ -71,29 +75,41 @@ class FormField_DefaultSelect {
         $placeholder = (isset($options['placeholder'])) ? 'placeholder="'.__($options['placeholder']).'"' : '';
         $layout = (isset($options['layout'])) ? $options['layout'] : '';
         $htmlOptions = '';
-        if (is_array($value)) {
-            foreach ($value as $key=>$item) {
-                $isSelected = ($key==$selected || (is_array($selected) && in_array($key, $selected))) ? 'selected="selected"' : '';
-                $htmlOptions .= '<option value="'.$key.'" '.$isSelected.'>'.__($item).'</option>';
+        if (is_array($value) && count($value)>0) {
+            if (isset($options['firstSelect']) && $options['firstSelect']=='true') {
+                $htmlOptions .= '<option value="">'.__('selectValue').'</option>';
             }
-        }
-        switch ($layout) {
-            default:
-                return '<div class="select formField '.$class.' '.$classCheckbox.' '.$errorClass.'">
-                            <div class="formFieldIns">
-                                '.$label.'
-                                '.$error.'
-                                <div class="selectIns">
-                                    '.$checkbox.'
-                                    <select '.$name.' '.$id.' '.$disabled.' '.$multiple.' '.$size.'>'.$htmlOptions.'</select>
-                                    <input type="hidden" name="select_'.$nameSelect.'" value="true"/>
+            foreach ($value as $key=>$item) {
+                if (is_array($item)) {
+                    $itemsOptions = '';
+                    foreach ($item['items'] as $keyIns=>$itemIns) {
+                        $isSelected = ($keyIns==$selected || (is_array($selected) && in_array($keyIns, $selected))) ? 'selected="selected"' : '';
+                        $itemsOptions .= '<option value="'.$keyIns.'" '.$isSelected.'>'.__($itemIns).'</option>';
+                    }
+                    $htmlOptions .= '<optgroup label="'.$item['label'].'">'.$itemsOptions.'</optgroup>';
+                } else {                
+                    $isSelected = ($key==$selected || (is_array($selected) && in_array($key, $selected))) ? 'selected="selected"' : '';
+                    $htmlOptions .= '<option value="'.$key.'" '.$isSelected.'>'.__($item).'</option>';
+                }
+            }
+            switch ($layout) {
+                default:
+                    return '<div class="select formField '.$class.' '.$classCheckbox.' '.$errorClass.'">
+                                <div class="formFieldIns">
+                                    '.$label.'
+                                    '.$error.'
+                                    <div class="selectIns">
+                                        '.$checkbox.'
+                                        <select '.$name.' '.$id.' '.$disabled.' '.$multiple.' '.$size.'>'.$htmlOptions.'</select>
+                                        <input type="hidden" name="select_'.$nameSelect.'" value="true"/>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>';
-            break;
-            case 'simple':
-                return $checkbox.'<select '.$name.' '.$id.' '.$disabled.' '.$multiple.' '.$size.'>'.$htmlOptions.'</select>';
-            break;
+                            </div>';
+                break;
+                case 'simple':
+                    return $checkbox.'<select '.$name.' '.$id.' '.$disabled.' '.$multiple.' '.$size.'>'.$htmlOptions.'</select>';
+                break;
+            }
         }
     }
     

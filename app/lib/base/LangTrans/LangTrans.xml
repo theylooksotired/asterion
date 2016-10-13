@@ -34,8 +34,8 @@
         <attribute>
             <label>code</label>
             <name>code</name>
-            <type>text-unchangeable</type>
-            <required>notEmpty</required>
+            <type>text</type>
+            <required>unique</required>
         </attribute>
         <attribute>
             <label>translation</label>

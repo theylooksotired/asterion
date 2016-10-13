@@ -51,6 +51,9 @@
     .textarea-long textarea {
         width: 80%;
     }
+    .dateText input {
+        width: 200px;
+    }
     .formField .checkboxIns {
         @include clearer();
         label {
@@ -386,28 +389,76 @@
     }
 }
 
-//Multiple actions
-.multipleActions {
+//Controls top
+.controlsTop {
+    padding: 5px 10px;
     margin-bottom: 10px;
     background: $colorTextAlt;
     @include borderRadius(3px);
-    .multipleAction {
-        padding: 5px 10px;
+    @include clearer();
+    .multipleActions {
+        width: 65%;
         float: left;
-        border-right: 1px solid $colorTextAlt;
-        color: colorMainAlt;
+    }
+    .orderActions {
+        width: 35%;
+        float: right;
+    }
+}
+
+//Orders control
+.orderActions {
+    .select {
+        @include clearer();
+        label {
+            width: 38%;
+            float: left;
+            text-align: right;
+            font-size: $fontSizeTiny;
+            padding: 5px 2% 0 0;
+        }
+        select {
+            width: 60%;
+            float: right;
+            font-size: $fontSizeTiny;
+            background: lighten($colorTextAlt, 3%);
+            border: 0;
+            padding: 3px;
+            color: $colorText;
+            font-size: $fontSizeTiny;
+            @include borderRadius(3px);
+            @include borderBox();
+        }
+    }
+}
+
+//Multiple actions
+.multipleActions {
+    @include clearer();
+    .multipleAction {
+        padding: 3px 10px;
+        margin: 0 5px;
+        display: inline-block;
+        background: darken($colorTextAlt, 10%);
         font-size: $fontSizeTiny;
+        line-height: $fontSizeNormal;
         cursor: pointer;
+        @include borderRadius(3px);
         &:hover {
             color: $white;
             background: $colorMain;
-            border-right: 1px solid $colorMain;
         }
         &.multipleActionCheckAll {
-            padding-bottom: 0px;
-            &:hover {
-                background: $colorTextAlt;
-                border-right: 1px solid $colorTextAlt;
+            background: transparent !important;
+            margin: 0;
+            padding: 0;
+            .formField {
+                padding: 0;
+                margin: 0 10px 0 0;
+                input {
+                    padding: 0;
+                    margin: 0;
+                }
             }
         }
     }
@@ -569,6 +620,48 @@
             select,
             textarea {
                 max-width: 100%;
+            }
+        }
+    }
+}
+
+//Form My Information
+.myAccount {
+    @include clearer();
+    .myAccountPersonal {
+        width: 48%;
+        float: left;
+    }
+    .myAccountPassword {
+        width: 48%;
+        float: right;
+    }
+    .simpleForm {
+        padding: 20px;
+        background: lighten($colorTextAlt, 3%);
+        @include borderRadius(3px);
+        .formField {
+            input,
+            select,
+            textarea {
+                width: 100%;
+            }
+        }
+    }
+}
+
+//Form Menu
+.contentWrapper-Menu,
+.contentWrapper-LangTrans {
+    .formFieldLangs {
+        display: table;
+        table-layout: fixed;
+        width: 100%;
+        .formField {
+            display: table-cell;
+            padding: 0 20px 10px 0;
+            input {
+                width: 100%;
             }
         }
     }
