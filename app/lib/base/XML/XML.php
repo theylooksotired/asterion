@@ -74,9 +74,9 @@ class XML {
     * Format a XML RSS file.
     */
     static public function formatRss($content, $options=array()) {
-        $title = (isset($options['title'])) ? $options['title'] : Params::param('titlePage');
+        $title = (isset($options['title'])) ? $options['title'] : Params::param('metainfo-titlePage');
         $link = (isset($options['link'])) ? $options['link'] : LOCAL_URL;
-        $description = (isset($options['description'])) ? $options['description'] : Params::param('metaDescription');
+        $description = (isset($options['description'])) ? $options['description'] : Params::param('metainfo-metaDescription');
         return '<?xml version="1.0" encoding="ISO-8859-1"?>
                     <rss version="2.0">
                     <channel>
@@ -85,12 +85,12 @@ class XML {
                         <description>'.$description.'</description>
                         <language>'.Lang::active().'</language> 
                         <lastBuildDate>'.date('l jS \of F Y h:i:s A').'</lastBuildDate> 
-                        <administrator>'.Params::param('titlePage').'</administrator>
+                        <administrator>'.Params::param('metainfo-titlePage').'</administrator>
                         <image>
-                            <title>'.Params::param('titlePage').'</title>
+                            <title>'.Params::param('metainfo-titlePage').'</title>
                             <url>'.LOGO.'</url>
                             <link>'.LOCAL_URL.'</link>
-                            <description>'.Params::param('metaDescription').'</description>
+                            <description>'.Params::param('metainfo-metaDescription').'</description>
                         </image>
                         '.$content.'
                     </channel>

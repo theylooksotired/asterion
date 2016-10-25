@@ -1,6 +1,6 @@
 <?php
 /**
-* @class CategoryController
+* @class CategoryForm
 *
 * This class manages the forms for the Category objects.
 *

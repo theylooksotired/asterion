@@ -45,15 +45,15 @@
 }
 
 @mixin simpleShadow() {
-    moz-box-shadow: 0px 0px 10px #DDD;
-    -webkit-box-shadow: 0px 0px 10px #DDD;
-    box-shadow: 0px 0px 10px #DDD;
+    moz-box-shadow: 0px 0px 10px rgba($black, 0.3);
+    -webkit-box-shadow: 0px 0px 10px rgba($black, 0.3);
+    box-shadow: 0px 0px 10px rgba($black, 0.3);
 }
 
 @mixin darkShadow() {
-    moz-box-shadow: 0px 0px 5px #CCC;
-    -webkit-box-shadow: 0px 0px 5px #CCC;
-    box-shadow: 0px 0px 5px #CCC;
+    moz-box-shadow: 0px 0px 5px rgba($black, 0.5);
+    -webkit-box-shadow: 0px 0px 5px rgba($black, 0.5);
+    box-shadow: 0px 0px 5px rgba($black, 0.5);
 }
 
 @mixin hideText() {

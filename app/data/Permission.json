@@ -31,7 +31,7 @@
 	},
 	{
 		"idUserType": "2",
-		"objectName": "User",
+		"objectName": "Banner",
 		"permissionListAdmin": "1",
 		"permissionInsert": "1",
 		"permissionModify": "1",

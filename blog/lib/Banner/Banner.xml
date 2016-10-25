@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+* @structure Banner
+*
+* @author Leano Martinet <info@asterion-cms.com>
+* @package Asterion
+* @version 3.0.1
+-->
+<object>
+    <name>Banner</name>
+    <info>
+        <sql>
+            <primary>idBanner</primary>
+            <created>true</created>
+            <modified>true</modified>
+            <order>true</order>
+        </sql>
+        <form>
+            <title>banners</title>
+            <label>#title</label>
+            <group>idLang</group>
+            <templateItemAdmin>
+                <div class="active active-##active">
+                    <p class="image">#image</p>
+                    <p class="accent"><strong>#title</strong></p>
+                    <p class="tiny">#idLang | #idUser</p>
+                    <div class="tiny">#description</div>
+                </div>
+            </templateItemAdmin>
+        </form>
+    </info>
+    <attributes>
+        <attribute>
+            <name>idBanner</name>
+            <type>id-autoincrement</type>
+        </attribute>
+        <attribute>
+            <name>idUser</name>
+            <type>hidden-user</type>
+        </attribute>
+        <attribute>
+            <name>idLang</name>
+            <label>language</label>
+            <type>select-varchar</type>
+            <refObject>Lang</refObject>
+        </attribute>
+        <attribute>
+            <name>image</name>
+            <label>image</label>
+            <type>file</type>
+            <mode>image</mode>
+        </attribute>
+        <attribute>
+            <name>title</name>
+            <label>title</label>
+            <required>notEmpty</required>
+            <type>text-long</type>
+        </attribute>
+        <attribute>
+            <name>titleUrl</name>
+            <type>hidden-url</type>
+            <refAttribute>title</refAttribute>
+        </attribute>
+        <attribute>
+            <name>link</name>
+            <label>link</label>
+            <firstSelect>selectValueLink</firstSelect>
+            <type>select-link-simple</type>
+        </attribute>
+        <attribute>
+            <name>description</name>
+            <label>description</label>
+            <required>notEmpty</required>
+            <type>textarea-ck</type>
+        </attribute>
+        <attribute>
+            <name>active</name>
+            <label>active</label>
+            <type>checkbox</type>
+        </attribute>
+    </attributes>
+    <indexes>
+        <index>
+            <name>titleUrl</name>
+            <fields>titleUrl</fields>
+        </index>
+    </indexes>
+</object>

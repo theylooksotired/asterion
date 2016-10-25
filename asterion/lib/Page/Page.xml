@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+* @structure Page
+*
+* @author Leano Martinet <info@asterion-cms.com>
+* @package Asterion
+* @version 3.0.1
+-->
+<object>
+    <name>Page</name>
+    <info>
+        <sql>
+            <primary>idPage</primary>
+        </sql>
+        <form>
+            <title>pages</title>
+            <orderBy>title DESC, code</orderBy>
+            <label>#title</label>
+            <viewPublic>true</viewPublic>
+            <publicUrl>#linkCode</publicUrl>
+            <templateItemAdmin>
+                <p class="accent"><strong>#title</strong></p>
+                <p class="tiny"><em>_code</em> : <span class="mainAlt">#code</span></p>
+            </templateItemAdmin>
+        </form>
+    </info>
+    <attributes>
+        <attribute>
+            <name>idPage</name>
+            <type>id-autoincrement</type>
+        </attribute>
+        <attribute>
+            <name>code</name>
+            <label>code</label>
+            <type>text-code</type>
+            <required>unique</required>
+        </attribute>
+        <attribute>
+            <name>title</name>
+            <lang>true</lang>
+            <label>title</label>
+            <required>notEmpty</required>
+            <type>text-large</type>
+        </attribute>
+        <attribute>
+            <name>titleUrl</name>
+            <lang>true</lang>
+            <type>hidden-url</type>
+            <refAttribute>title</refAttribute>
+        </attribute>
+        <attribute>
+            <name>linkCode</name>
+            <lang>true</lang>
+            <label>linkCode</label>
+            <type>text</type>
+            <required>notEmpty</required>
+        </attribute>
+        <attribute>
+            <name>metaDescription</name>
+            <label>metaDescription</label>
+            <lang>true</lang>
+            <type>textarea</type>
+        </attribute>
+        <attribute>
+            <name>metaKeywords</name>
+            <label>metaKeywords</label>
+            <lang>true</lang>
+            <type>textarea</type>
+        </attribute>
+        <attribute>
+            <name>page</name>
+            <label>page</label>
+            <lang>true</lang>
+            <type>textarea-ck</type>
+        </attribute>
+    </attributes>
+    <indexes>
+        <index>
+            <name>code</name>
+            <fields>code</fields>
+        </index>
+        <index>
+            <name>titleUrl</name>
+            <lang>true</lang>
+            <fields>titleUrl</fields>
+        </index>
+    </indexes>
+</object>

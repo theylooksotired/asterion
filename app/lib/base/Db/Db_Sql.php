@@ -605,7 +605,7 @@ class Db_Sql {
                     $query .= (isset($values[$name.'_lat']) && isset($values[$name.'_lng'])) ? '`'.$name.'`=POINT('.$pointLat.', '.$pointLng.'), ' : '';
                 break;
                 case 'text-code':
-                    $query .= (isset($values[$name]) && $values[$name]!="") ? '`'.$name.'`="'.Text::simpleUrl($values[$name]).'", ' : '';
+                    $query .= (isset($values[$name]) && $values[$name]!="") ? '`'.$name.'`="'.Text::simpleCode($values[$name]).'", ' : '';
                 break;
                 case 'text-double':
                     $query .= (isset($values[$name]) && $values[$name]!="") ? '`'.$name.'`="'.floatval($values[$name]).'", ' : '';

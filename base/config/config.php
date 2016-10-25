@@ -15,7 +15,7 @@
 * The TITLE constant defines the title of the page.
 * After the installation it is preferable to use the "title" parameter.
 */
-define('TITLE', 'Base Site');
+define('TITLE', 'Base site');
 
 /**
 * The following constants define the paths to the different
@@ -31,8 +31,10 @@ define('BASE_URL', LOCAL_URL.APP_FOLDER.'/');
 define('BASE_FILE', LOCAL_FILE.APP_FOLDER.'/');
 define('APP_URL', LOCAL_URL.'app/');
 define('APP_FILE', LOCAL_FILE.'app/');
-define('DATA_URL', LOCAL_URL.'app/data/');
-define('DATA_FILE', LOCAL_FILE.'app/data/');
+define('DATA_URL', APP_URL.'data/');
+define('DATA_FILE', APP_FILE.'data/');
+define('DATA_LOCAL_URL', BASE_URL.'data/');
+define('DATA_LOCAL_FILE', BASE_FILE.'data/');
 
 /**
 * The DEBUG constant defines if we are in debug mode or not.
@@ -94,7 +96,7 @@ define('DB_PASSWORD', 'lucyinthesky');
 define('DB_PORT', '3306');
 define('DB_NAME', 'asterion');
 define('DB_TYPE', 'mysql');
-define('DB_PREFIX', 'ast_');
+define('DB_PREFIX', 'base_');
 define("PDO_DSN","mysql:host=".DB_SERVER.";port=".DB_PORT.";dbname=".DB_NAME);
 
 /**

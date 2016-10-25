@@ -47,17 +47,15 @@ class Ui {
     public function renderEmail() {
         $content = '';
         foreach($this->object->info->attributes->attribute as $item) {
+            $label = (string)$item->label;
             $name = (string)$item->name;
-            $label = (string)$item->form->label;
-            switch((string)$item->form->type) {
-                default:
+            $type = (string)$item->type;
+            switch (Db_ObjectType::baseType($type)) {
+                case 'text':
                     $content .= '<strong>'.__($label).'</strong>: '.$this->object->get($name).'<br/>';
                 break;
                 case 'textarea':
                     $content .= '<strong>'.__($label).'</strong>: '.nl2br($this->object->get($name)).'<br/>';
-                break;
-                case 'textareaCK':
-                    $content .= '<strong>'.__($label).'</strong>: '.html_entity_decode($this->object->get($name)).'<br/>';
                 break;
                 case 'select':
                 case 'radio':
@@ -70,19 +68,6 @@ class Ui {
                 case 'checkbox':
                     $value = ($this->object->get($name)==1) ? __('yes') : __('no');
                     $content .= '<strong>'.__($label).'</strong>: '.$value.'<br/>';
-                break;
-                case 'file':
-                    if ((string)$item->form->fileType == 'image') {
-                        $link = $this->object->getImageUrl($name);
-                    } else {
-                        $link = $this->object->getFileUrl($name);
-                    }
-                    if ($link!='') {
-                        $content .= '<strong>'.__($label).'</strong>: <a href="'.$link.'" target="_blank">'.$link.'</a><br/>';
-                    }
-                break;
-                case 'hidden':
-                case 'password':
                 break;
             }
         }

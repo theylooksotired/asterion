@@ -1,23 +1,31 @@
 $white: #FFF;
-$black: #FFF;
+$black: #000;
 
-$colorText: #333;
-$colorTextAlt: #EFEFEF;
+$colorText: #012530;
+$colorTextAlt: #FFD6A0;
 
-$colorMain: #44759D;
+$colorMain: #213042;
 $colorMainAlt: darken($colorMain, 10%);
-$colorAccent: #108696;
+$colorAccent: #435c7a;
 $colorAccentAlt: #4DD95D;
 
 $colorActive: #29C74D;
 $colorNotActive: #818181;
 
 $colorMessage: #38B0A6;
+$colorMessageAlert: #FFB823;
 $colorMessageError: #FF3030;
 
 $colorError: #FD3535;
 $colorAccept: #15BA45;
 $colorNeutral: #666;
+
+$colorFacebook: #3b5998;
+$colorTwitter: #4099FF;
+$colorYoutube: #e52d27;
+$colorLinkedin: #4875B4;
+$colorVimeo: #162221;
+$colorInstagram: #517fa4;
 
 $fontFamily: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
 $fontFamilyIcons: "icons";
@@ -37,6 +45,10 @@ $fontSizeTiny: 0.8rem;
 $fontSizeBig: 1.4rem;
 $fontSizeLarge: 1.8rem;
 $fontSizeHuge: 2rem;
+
+$zIndex: 1000;
+$zIndexHigh: 1001;
+$zIndexHighest: 1002;
 
 @font-face {
   font-family: 'icons';

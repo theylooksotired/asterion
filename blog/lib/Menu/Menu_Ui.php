@@ -68,7 +68,9 @@ class Menu_Ui extends Ui{
 			}
 			$html .= ($info[0]!='list') ? '<div class="menuItem menuItem-'.$info[0].'">'.$link.$subMenuHtml.'</div>' : $link.$subMenuHtml;
 		}
-        return ($subMenu) ? $html : '<nav class="menu menu-'.$this->object->get('code').'">'.$html.'</nav>';
+        return ($subMenu) ? $html : '<nav class="menu menu-'.$this->object->get('code').'">
+        								<div class="menuIns">'.$html.'</div>
+        							</nav>';
     }
 
 }

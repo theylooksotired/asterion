@@ -34,7 +34,7 @@ abstract class Controller{
     * By default it uses the title defined in the Parameters.
     */
     public function getTitle() {
-        return (isset($this->titlePage)) ? $this->titlePage.' - '.Params::param('titlePage') : Params::param('titlePage');
+        return (isset($this->titlePage)) ? $this->titlePage.' - '.Params::param('metainfo-titlePage') : Params::param('metainfo-titlePage');
     }   
 
     /**
@@ -50,7 +50,7 @@ abstract class Controller{
     * By default it uses the meta-description defined in the Parameters.
     */
     public function getMetaDescription() {
-        return (isset($this->metaDescription) && $this->metaDescription!='') ? $this->metaDescription : Params::param('metaDescription');
+        return (isset($this->metaDescription) && $this->metaDescription!='') ? $this->metaDescription : Params::param('metainfo-metaDescription');
     }
 
     /**
@@ -58,7 +58,7 @@ abstract class Controller{
     * By default it uses the keywords defined in the Parameters.
     */
     public function getMetaKeywords() {
-        return (isset($this->metaKeywords)) ? $this->metaKeywords : Params::param('metaKeywords');
+        return (isset($this->metaKeywords)) ? $this->metaKeywords : Params::param('metainfo-metaKeywords');
     }
 
     /**
@@ -74,7 +74,7 @@ abstract class Controller{
     * A common use is the canonical URL of the current page.
     */
     public function getMetaUrl() {
-        return (isset($this->metaUrl) && $this->metaUrl!='') ? $this->metaUrl : '';
+        return (isset($this->metaUrl) && $this->metaUrl!='') ? $this->metaUrl : url('');
     }
 
     /**

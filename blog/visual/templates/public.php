@@ -14,16 +14,20 @@
     <?php echo Params::param('googleWebmasters');?>
 
     <link rel="shortcut icon" href="<?php echo BASE_URL;?>visual/img/favicon.ico"/>
+    <link rel="canonical" href="<?php echo $metaUrl;?>" />
 
     <title><?php echo $title;?></title>
 
     <link href="<?php echo BASE_URL;?>visual/css/stylesheets/public.css" rel="stylesheet" type="text/css" />
 
+    <script type="text/javascript" src="<?php echo APP_URL; ?>libjs/jquery/jquery-1.10.2.min.js"></script>
     <script type="text/javascript" src="<?php echo BASE_URL; ?>libjs/public.js"></script>
 
+    <!--
     <?php echo Params::param('googleAnalytics');?>
 
     <?php echo $header;?>
+    -->
 
 </head>
 <body>

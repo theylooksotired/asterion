@@ -70,10 +70,10 @@ class FormField_File {
         $valueFile = (isset($options['value'])) ? $options['value'] : '';
         $disabled = (isset($options['disabled']) && $options['disabled']!=false) ? 'disabled="disabled"' : '';
         $size = (isset($options['size'])) ? 'size="'.$options['size'].'" ' : '';
-        $error = (isset($options['error'])) ? '<div class="error">'.$options['error'].'</div>' : '';
+        $error = (isset($options['error']) && $options['error']!='') ? '<div class="error">'.$options['error'].'</div>' : '';
         $class = (isset($options['class'])) ? $options['class'] : '';
         $class .= (isset($options['name'])) ? ' formField-'.Text::simpleUrl($options['name']) : '';
-        $classError = (isset($options['error']) && $options['error']!='') ? 'errorField' : '';
+        $classError = (isset($options['error']) && $options['error']!='') ? 'error' : '';
         $placeholder = (isset($options['placeholder'])) ? 'placeholder="'.__($options['placeholder']).'"' : '';
         $required = (isset($options['required']) && $options['required']) ? 'required' : '';
         $layout = (isset($options['layout'])) ? $options['layout'] : '';

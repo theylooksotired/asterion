@@ -11,6 +11,8 @@
     <info>
         <sql>
             <primary>idPost</primary>
+            <created>true</created>
+            <modified>true</modified>
             <onCreate>Tag,PostTag</onCreate>
             <onDelete>PostTag</onDelete>
         </sql>
@@ -20,8 +22,8 @@
             <label>#title</label>
             <pager>10</pager>
             <viewPublic>true</viewPublic>
-            <publicUrl>_posts/#titleUrl</publicUrl>
-            <publicUrlList>_posts</publicUrlList>
+            <publicUrl>@posts / #titleUrl</publicUrl>
+            <publicUrlList>@posts</publicUrlList>
             <templateItemAdmin>
                 <div class="active active-##active">
                     <p class="image">#image</p>
@@ -104,6 +106,10 @@
             <name>active</name>
             <label>active</label>
             <type>checkbox</type>
+        </attribute>
+        <attribute>
+            <name>views</name>
+            <type>hidden</type>
         </attribute>
     </attributes>
     <indexes>

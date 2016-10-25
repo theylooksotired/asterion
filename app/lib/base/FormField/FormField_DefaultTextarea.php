@@ -65,16 +65,16 @@ class FormField_DefaultTextarea {
         $disabled = (isset($options['disabled']) && $options['disabled']!=false) ? 'disabled="disabled"' : '';
         $cols = (isset($options['cols'])) ? 'cols="'.$options['cols'].'" ' : '';
         $rows = (isset($options['rows'])) ? 'rows="'.$options['rows'].'" ' : '';
-        $error = (isset($options['error'])) ? '<div class="error">'.$options['error'].'</div>' : '';
+        $error = (isset($options['error']) && $options['error']!='') ? '<div class="error">'.$options['error'].'</div>' : '';
         $class = (isset($options['class'])) ? $options['class'] : '';
         $class .= (isset($options['name'])) ? ' formField-'.Text::simpleUrl($options['name']) : '';
-        $classError = (isset($options['error']) && $options['error']!='') ? 'errorField' : '';
+        $classError = (isset($options['error']) && $options['error']!='') ? 'error' : '';
         $placeholder = (isset($options['placeholder'])) ? 'placeholder="'.__($options['placeholder']).'"' : '';
         $required = (isset($options['required']) && $options['required']) ? 'required' : '';
         $layout = (isset($options['layout'])) ? $options['layout'] : '';
         switch ($layout) {
             default:
-                return '<div class="'.$type.' formField '.$class.' '.$classError.'">
+                return '<div class="'.$type.' formField '.$class.' '.$required.' '.$classError.'">
                             <div class="formFieldIns">
                                 '.$label.'
                                 '.$error.'

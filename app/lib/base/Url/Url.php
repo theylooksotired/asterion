@@ -46,52 +46,23 @@ class Url {
     static public function initLang() {
         $url = (isset($_GET['url'])) ? $_GET['url'] : '';
         $info = explode('/', $url);
-        $pagerString = PAGER_URL_STRING;
         if (isset($info[0]) && $info[0]==ADMIN_URL_STRING) {
             //If the url points to the admin area
             $_GET['mode'] = 'admin';
             $_GET['lang'] = (isset($info[1])) ? $info[1] : '';
             $_GET['type'] = (isset($info[2]) && $info[2]!='') ? $info[2] : 'NavigationAdmin';
-            if (isset($info[3]) && $info[3]==$pagerString) {
-                $_GET['page'] = (isset($info[4])) ? $info[4] : '';
-            } else {
-                $_GET['action'] = (isset($info[3])) ? $info[3] : '';
-                if (isset($info[4]) && $info[4]==$pagerString) {
-                    $_GET['page'] = (isset($info[5])) ? $info[5] : '';
-                } else {
-                    $_GET['id'] = (isset($info[4])) ? $info[4] : '';
-                    if (isset($info[5]) && $info[5]==$pagerString) {
-                        $_GET['page'] = (isset($info[6])) ? $info[6] : '';
-                    } else {
-                        $_GET['extraId'] = (isset($info[5])) ? $info[5] : '';
-                        if (isset($info[6]) && $info[6]==$pagerString) {
-                            $_GET['page'] = (isset($info[7])) ? $info[7] : '';
-                        } else {
-                            $_GET['addId'] = (isset($info[6])) ? $info[6] : '';
-                        }
-                    }
-                }
-            }
+            $_GET['action'] = (isset($info[3])) ? $info[3] : '';
+            $_GET['id'] = (isset($info[4])) ? $info[4] : '';
+            $_GET['extraId'] = (isset($info[5])) ? $info[5] : '';
+            $_GET['addId'] = (isset($info[6])) ? $info[6] : '';
         } else {
             //If the url points to the public area
             $_GET['lang'] = (isset($info[0])) ? $info[0] : '';
             $_GET['type'] = 'Navigation';
             $_GET['action'] = (isset($info[1])) ? $info[1] : '';
-            if (isset($info[2]) && $info[2]==$pagerString) {
-                $_GET['page'] = (isset($info[3])) ? $info[3] : '';
-            } else {
-                $_GET['id'] = (isset($info[2])) ? $info[2] : '';
-                if (isset($info[3]) && $info[3]==$pagerString) {
-                    $_GET['page'] = (isset($info[4])) ? $info[4] : '';
-                } else {
-                    $_GET['extraId'] = (isset($info[3])) ? $info[3] : '';
-                    if (isset($info[4]) && $info[4]==$pagerString) {
-                        $_GET['page'] = (isset($info[5])) ? $info[5] : '';
-                    } else {
-                        $_GET['addId'] = (isset($info[4])) ? $info[4] : '';
-                    }
-                }
-            }
+            $_GET['id'] = (isset($info[2])) ? $info[2] : '';
+            $_GET['extraId'] = (isset($info[3])) ? $info[3] : '';
+            $_GET['addId'] = (isset($info[4])) ? $info[4] : '';
         }
         $_GET['action'] = (isset($_GET['action']) && $_GET['action']!='') ? $_GET['action'] : 'intro';
     }
@@ -105,50 +76,21 @@ class Url {
         }
         $url = (isset($_GET['url'])) ? $_GET['url'] : '';
         $info = explode('/', $url);
-        $pagerString = (Params::param('pagerString')!='') ? Params::param('pager-string') : PAGER_URL_STRING;
         if (isset($info[0]) && $info[0]==ADMIN_URL_STRING) {
             //If the url points to the admin area
             $_GET['mode'] = 'admin';
             $_GET['type'] = (isset($info[1]) && $info[1]!='') ? $info[1] : 'NavigationAdmin';
-            if (isset($info[2]) && $info[2]==$pagerString) {
-                $_GET['page'] = (isset($info[3])) ? $info[3] : '';
-            } else {
-                $_GET['action'] = (isset($info[2])) ? $info[2] : '';
-                if (isset($info[3]) && $info[3]==$pagerString) {
-                    $_GET['page'] = (isset($info[4])) ? $info[4] : '';
-                } else {
-                    $_GET['id'] = (isset($info[3])) ? $info[3] : '';
-                    if (isset($info[4]) && $info[4]==$pagerString) {
-                        $_GET['page'] = (isset($info[5])) ? $info[5] : '';
-                    } else {
-                        $_GET['extraId'] = (isset($info[4])) ? $info[4] : '';
-                        if (isset($info[5]) && $info[5]==$pagerString) {
-                            $_GET['page'] = (isset($info[6])) ? $info[6] : '';
-                        } else {
-                            $_GET['addId'] = (isset($info[5])) ? $info[5] : '';
-                        }
-                    }
-                }
-            }
+            $_GET['action'] = (isset($info[2])) ? $info[2] : '';
+            $_GET['id'] = (isset($info[3])) ? $info[3] : '';
+            $_GET['extraId'] = (isset($info[4])) ? $info[4] : '';
+            $_GET['addId'] = (isset($info[5])) ? $info[5] : '';
         } else {
             //If the url points to the public area
             $_GET['type'] = 'Navigation';
             $_GET['action'] = (isset($info[0])) ? $info[0] : '';
-            if (isset($info[1]) && $info[1]==$pagerString) {
-                $_GET['page'] = (isset($info[2])) ? $info[2] : '';
-            } else {
-                $_GET['id'] = (isset($info[1])) ? $info[1] : '';
-                if (isset($info[2]) && $info[2]==$pagerString) {
-                    $_GET[$pagerString] = (isset($info[3])) ? $info[3] : '';
-                } else {
-                    $_GET['extraId'] = (isset($info[2])) ? $info[2] : '';
-                    if (isset($info[3]) && $info[3]==$pagerString) {
-                        $_GET['page'] = (isset($info[4])) ? $info[4] : '';
-                    } else {
-                        $_GET['addId'] = (isset($info[3])) ? $info[3] : '';
-                    }
-                }
-            }
+            $_GET['id'] = (isset($info[1])) ? $info[1] : '';
+            $_GET['extraId'] = (isset($info[2])) ? $info[2] : '';
+            $_GET['addId'] = (isset($info[3])) ? $info[3] : '';
         }
         $_GET['lang'] = LANGS;
         $_GET['action'] = (isset($_GET['action']) && $_GET['action']!='') ? $_GET['action'] : 'intro';
@@ -173,24 +115,8 @@ class Url {
     */
     static public function urlPage($page) {
         $url = (isset($_GET['url'])) ? $_GET['url'] : '';
-        $infoInfo = explode('/', $url);
-        $info = array();
-        foreach ($infoInfo as $infoEle) {
-            if ($infoEle!='') {
-                $info[] = $infoEle;
-            }
-        }
-        $key = array_search(PAGER_URL_STRING, $info);
-        if ($key!==false) {
-            if (isset($info[$key+1])) {
-                $info[$key+1] = $page;
-            } else {
-                array_push($info, $page);
-            }
-        } else {
-            array_push($info, PAGER_URL_STRING, $page);
-        }
-        return LOCAL_URL.implode('/', $info);
+        $pageUrl = (__('pageUrl')!='pageUrl') ? __('pageUrl') : PAGER_URL_STRING;
+        return LOCAL_URL.$url.'?'.$pageUrl.'='.$page;
     }
 
     /**

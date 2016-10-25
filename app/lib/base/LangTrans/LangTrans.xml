@@ -34,7 +34,7 @@
         <attribute>
             <label>code</label>
             <name>code</name>
-            <type>text</type>
+            <type>text-code</type>
             <required>unique</required>
         </attribute>
         <attribute>

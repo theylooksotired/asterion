@@ -13,8 +13,8 @@
 ##
 # The following lines send the "Not Found" pages to a proper URL
 ##
-ErrorDocument 403 /error403
-ErrorDocument 404 /error404
+ErrorDocument 403 /error
+ErrorDocument 404 /error
 
 ##
 # Rewrite conditions to parse all of the requested URLs

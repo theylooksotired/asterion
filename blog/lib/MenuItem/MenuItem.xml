@@ -36,6 +36,7 @@
             <name>link</name>
             <label>link</label>
             <type>select-link</type>
+            <externalLink>true</externalLink>
         </attribute>
         <attribute>
             <name>label</name>
@@ -54,7 +55,7 @@
             <label>subMenu</label>
             <type>select</type>
             <refObject>Menu</refObject>
-            <firstSelect>true</firstSelect>
+            <firstSelect>selectValue</firstSelect>
         </attribute>
     </attributes>
 </object>

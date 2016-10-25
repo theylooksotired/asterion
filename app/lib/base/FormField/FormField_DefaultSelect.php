@@ -68,16 +68,16 @@ class FormField_DefaultSelect {
         $checkbox = (isset($options['checkbox']) && $options['checkbox']!=false) ? FormField_Checkbox::create(array('name'=>$options['name'].'_checkbox', 'value'=>$checkboxValue, 'class'=>'checkBoxInline')) : '';
         $classCheckbox = (isset($options['checkbox']) && $options['checkbox']!=false) ? 'selectCheckbox' : '';
         $size = (isset($options['size'])) ? 'size="'.$options['size'].'" ' : '';
-        $error = (isset($options['error'])) ? '<div class="error">'.$options['error'].'</div>' : '';
+        $error = (isset($options['error']) && $options['error']!='') ? '<div class="error">'.$options['error'].'</div>' : '';
         $class = (isset($options['class'])) ? $options['class'] : '';
         $class .= (isset($options['name'])) ? ' formField-'.Text::simpleUrl($options['name']) : '';
-        $errorClass = (isset($options['error']) && $options['error']!='') ? 'errorField' : '';
+        $errorClass = (isset($options['error']) && $options['error']!='') ? 'error' : '';
         $placeholder = (isset($options['placeholder'])) ? 'placeholder="'.__($options['placeholder']).'"' : '';
         $layout = (isset($options['layout'])) ? $options['layout'] : '';
         $htmlOptions = '';
         if (is_array($value) && count($value)>0) {
-            if (isset($options['firstSelect']) && $options['firstSelect']=='true') {
-                $htmlOptions .= '<option value="">'.__('selectValue').'</option>';
+            if (isset($options['firstSelect']) && $options['firstSelect']!='') {
+                $htmlOptions .= '<option value="">'.__($options['firstSelect']).'</option>';
             }
             foreach ($value as $key=>$item) {
                 if (is_array($item)) {

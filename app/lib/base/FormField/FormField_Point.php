@@ -53,8 +53,8 @@ class FormField_Point {
         $valueLng = (isset($options['valueLng'])) ? $options['valueLng'] : '';
         $name = (isset($options['name'])) ? $options['name'] : '';
         $disabled = (isset($options['disabled'])) ? 'disabled="disabled"' : '';
-        $error = (isset($options['error'])) ? '<div class="error">'.$options['error'].'</div>' : '';
-        $errorClass = (isset($options['error']) && $options['error']!='') ? 'errorField' : '';
+        $error = (isset($options['error']) && $options['error']!='') ? '<div class="error">'.$options['error'].'</div>' : '';
+        $errorClass = (isset($options['error']) && $options['error']!='') ? 'error' : '';
         $class = (isset($options['class'])) ? $options['class'] : '';
         $class .= (isset($options['name'])) ? ' formField-'.Text::simpleUrl($options['name']) : '';
         $layout = (isset($options['layout'])) ? $options['layout'] : '';

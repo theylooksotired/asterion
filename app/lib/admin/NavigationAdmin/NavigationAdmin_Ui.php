@@ -74,7 +74,7 @@ class NavigationAdmin_Ui extends Ui{
                     <div class="headerIns">
                         <div class="headerLeft">
                             <div class="logo">
-                                <a href="'.url('', true).'">'.Params::param('titlePage').'</a>
+                                <a href="'.url('', true).'">'.Params::param('metainfo-titlePage').'</a>
                             </div>
                         </div>
                         <div class="headerRight">

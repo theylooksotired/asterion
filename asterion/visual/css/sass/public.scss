@@ -1,0 +1,136 @@
+@import "compass/reset";
+
+@import "_variables.scss";
+@import "_common.scss";
+@import "_mixins.scss";
+
+@import "_public_header.scss";
+@import "_public_menu.scss";
+@import "_public_footer.scss";
+@import "_public_sidebar.scss";
+
+html,
+body {
+    background-color: rgba($colorText, 0.02);
+    background-image: url('../../img/background.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: top center;
+    background-attachment: fixed;
+}
+
+.shareIcons {
+    display: inline-block;
+    text-align: right;
+    padding: 0 0 10px 0;
+    .shareIcon {
+        display: inline-block;
+        padding: 0 0 0 10px;
+        a {
+            display: inline-block;
+            width: 35px;
+            height: 35px;
+            overflow: hidden;
+            text-indent: -5000px;
+            text-align: left;
+            background: $colorText;
+            opacity: 0.7;
+            @include animate();
+            @include borderRadius(35px);
+            @include iconBeforeAbsolute($icon-facebook, $paddingLeft: 0, $top: 0, $left: 0);
+            &:before {
+                text-indent: 0;
+                text-align: center;
+                width: 35px;
+                line-height: 35px;
+                color: $white;
+                font-weight: normal;
+            }
+            &:hover {
+                opacity: 1;
+                background: lighten($colorText, 10%);
+                @include simpleShadow();
+            }
+        }
+        &.shareIcon-facebook a {
+            background: $colorFacebook;
+            &:before {
+                content: $icon-facebook;
+            }
+        }
+        &.shareIcon-twitter a {
+            background: $colorTwitter;
+            &:before {
+                content: $icon-twitter;
+            }
+        }
+        &.shareIcon-youtube a {
+            background: $colorYoutube;
+            &:before {
+                content: $icon-youtube;
+            }
+        }
+        &.shareIcon-linkedin a {
+            background: $colorLinkedin;
+            &:before {
+                content: $icon-linkedin;
+            }
+        }
+        &.shareIcon-vimeo a {
+            background: $colorVimeo;
+            &:before {
+                content: $icon-vimeo;
+            }
+        }
+        &.shareIcon-instagram a {
+            background: $colorInstagram;
+            &:before {
+                content: $icon-instagram;
+            }
+        }
+    }
+}
+
+.content {
+    padding: 150px 0 0 0;
+}
+.contentWrapper {
+}
+
+.pageBlock {
+    min-height: 500px;
+    &.pageBlockIntro {
+        text-align: center;
+        color: $white;
+        background: url(../../img/logoAltMedium.png) no-repeat top center;
+        padding: 140px 0 0 0;
+        h1 {
+            font-size: $fontSizeBig;
+            font-style: italic;
+            padding: 0 0 40px 0;
+            text-shadow: 1px 1px $black;
+        }
+        .introButtons {
+            padding: 100px 0 0 0;
+            a {
+                display: inline-block;
+                padding: 10px 25px;
+                margin: 0 10px;
+                background: $white;
+                font-weight: normal;
+                font-size: $fontSizeBig;
+                border: 2px solid rgba($white, 0.5);
+                @include borderRadius(4px);
+                @include simpleShadow();
+                &.introButtonDownload {
+                    background: $colorAccentAlt;
+                }
+                &:hover {
+                    background: lighten($colorMain, 10%);
+                    color: $white;
+                }
+            }
+        }
+    }
+}
+

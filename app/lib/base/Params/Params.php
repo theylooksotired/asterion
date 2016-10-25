@@ -42,8 +42,8 @@ class Params extends Db_Object {
     * Get a parameter. The script also searches for the active language.
     */
     static public function param($code){
-        if (isset($_ENV['params'][$code.'_'.Lang::active()])) {
-            return $_ENV['params'][$code.'_'.Lang::active()];
+        if (isset($_ENV['params'][$code.'-'.Lang::active()])) {
+            return $_ENV['params'][$code.'-'.Lang::active()];
         } else {
             return (isset($_ENV['params'][$code])) ? $_ENV['params'][$code] : '';
         }
@@ -57,17 +57,24 @@ class Params extends Db_Object {
         $params->createTable();
         $params = Params::countResults();
         if ($params == 0) {
-            $itemsUrl = DATA_FILE.'Params.json';
+            $itemsUrl = DATA_LOCAL_FILE.'Params.json';
+            if (!file_exists($itemsUrl)) {
+                $itemsUrl = DATA_FILE.'Params.json';
+            }
             $items = json_decode(file_get_contents($itemsUrl), true);
             foreach (Lang::langs() as $lang) {
-                $items[] = array('code'=>'metainfo-titlePage_'.$lang, 'name'=>'Title Page - '.Lang::getLabel($lang), 'information'=>TITLE);
-                $items[] = array('code'=>'metainfo-metaDescription_'.$lang, 'name'=>'Meta Description - '.Lang::getLabel($lang), 'information'=>TITLE.'...');
-                $items[] = array('code'=>'metainfo-metaKeywords_'.$lang, 'name'=>'Meta Keywords - '.Lang::getLabel($lang), 'information'=>TITLE.'...');
+                $items[] = array('code'=>'metainfo-titlePage-'.$lang, 'name'=>'Title Page - '.Lang::getLabel($lang), 'information'=>TITLE);
+                $items[] = array('code'=>'metainfo-metaDescription-'.$lang, 'name'=>'Meta Description - '.Lang::getLabel($lang), 'information'=>TITLE.'...');
+                $items[] = array('code'=>'metainfo-metaKeywords-'.$lang, 'name'=>'Meta Keywords - '.Lang::getLabel($lang), 'information'=>TITLE.'...');
             }
             $items[] = array('code'=>'email', 'name'=>'Email', 'information'=>EMAIL);
+            $items[] = array('code'=>'email-contact', 'name'=>'Emails sent in the contact section', 'information'=>EMAIL);
             foreach ($items as $item) {
-                $itemSave = new Params();
-                $itemSave->insert($item);
+                $itemOld = Params::readFirst(array('where'=>'code="'.$item['code'].'"'));
+                if ($itemOld->id()=='') {                    
+                    $itemSave = new Params();
+                    $itemSave->insert($item);
+                }
             }
         }
     }

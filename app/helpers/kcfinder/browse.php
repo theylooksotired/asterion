@@ -1,5 +1,4 @@
 <?php
-
 /** This file is part of KCFinder project
   *
   *      @desc Browser calling script
@@ -15,5 +14,4 @@
 require "core/autoload.php";
 $browser = new browser();
 $browser->action();
-
 ?>

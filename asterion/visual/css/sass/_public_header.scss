@@ -1,0 +1,41 @@
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: $colorMainAlt;
+    @include clearer();
+    .headerIns {
+        width: $sizeDesktop;
+        margin: auto;
+        padding: 3px 0;
+        @include clearer();
+    }
+    .headerLeft {
+        width: 35%;
+        float: left;
+    }
+    .headerRight {
+        width: 65%;
+        float: right;
+        .headerRightTop {
+            @include clearer();
+        }
+        .shareIcons,
+        .langs {
+            float: right;
+        }
+    }
+    .logo {
+        padding: 6px 0;
+        opacity: 0.2;
+        a {
+            width: 133px;
+            height: 20px;
+            background: url(../../img/logoTopSmallAlt.png) no-repeat center center;
+            text-indent: -5000px;
+            overflow: hidden;
+            display: block;
+        }
+    }
+}

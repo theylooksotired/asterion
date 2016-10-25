@@ -294,6 +294,12 @@
 		"translation_es": "Contacto"
 	},
 	{
+		"code": "contacts",
+		"translation_en": "Contacts",
+		"translation_fr": "Contacts",
+		"translation_es": "Contactos"
+	},
+	{
 		"code": "date",
 		"translation_en": "Date",
 		"translation_fr": "Date",
@@ -1144,5 +1150,59 @@
 		"translation_en": "- Select a value -",
 		"translation_fr": "- Sélectionner une valeur -",
 		"translation_es": "- Seleccione un valor -"
+	},
+	{
+		"code": "selectValueLink",
+		"translation_en": "- Select a value if you want a link -",
+		"translation_fr": "- Sélectionner une valeur si vous voulez avoir un lien -",
+		"translation_es": "- Seleccione un valor si desea tener un enlace -"
+	},
+	{
+		"code": "latestPosts",
+		"translation_en": "Latests posts",
+		"translation_fr": "Articles récents",
+		"translation_es": "Articulos recientes"
+	},
+	{
+		"code": "popularPosts",
+		"translation_en": "Popular posts",
+		"translation_fr": "Articles populaires",
+		"translation_es": "Articulos populares"
+	},
+	{
+		"code": "pageUrl",
+		"translation_en": "page",
+		"translation_fr": "page",
+		"translation_es": "pagina"
+	},
+	{
+		"code": "messageThanksContact",
+		"translation_en": "Thanks for your message.",
+		"translation_fr": "Merci pour votre message.",
+		"translation_es": "Gracias por su mensaje."
+	},
+	{
+		"code": "thanks",
+		"translation_en": "Thanks",
+		"translation_fr": "Merci",
+		"translation_es": "Gracias"
+	},
+	{
+		"code": "documentation",
+		"translation_en": "Documentation",
+		"translation_fr": "Documentation",
+		"translation_es": "Documentación"
+	},
+	{
+		"code": "portfolio",
+		"translation_en": "Portfolio",
+		"translation_fr": "Portfolio",
+		"translation_es": "Portafolio"
+	},
+	{
+		"code": "about-us",
+		"translation_en": "About us",
+		"translation_fr": "À propos",
+		"translation_es": "Sobre nosotros"
 	}
 ]

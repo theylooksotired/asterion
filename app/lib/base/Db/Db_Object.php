@@ -190,11 +190,11 @@ class Db_Object extends Db_Sql {
         foreach ($attributes as $attribute) {
             $publicUrl = str_replace($attribute, $this->get(str_replace('#', '', $attribute)), $publicUrl);
         }
-        $translations = Text::arrayWordsStarting('_', $publicUrl);
+        $translations = Text::arrayWordsStarting('@', $publicUrl);
         foreach ($translations as $translation) {
-            $publicUrl = str_replace($translation, Text::simpleUrl(__(str_replace('_', '', $translation))), $publicUrl);
+            $publicUrl = str_replace($translation, Text::simpleUrl(__(str_replace('@', '', $translation))), $publicUrl);
         }
-        return url($publicUrl);
+        return url(str_replace(' ', '', $publicUrl));
     }
 
     /**
@@ -206,11 +206,11 @@ class Db_Object extends Db_Sql {
         foreach ($attributes as $attribute) {
             $publicUrlList = str_replace($attribute, $this->get(str_replace('#', '', $attribute)), $publicUrlList);
         }
-        $translations = Text::arrayWordsStarting('_', $publicUrlList);
+        $translations = Text::arrayWordsStarting('@', $publicUrlList);
         foreach ($translations as $translation) {
-            $publicUrlList = str_replace($translation, Text::simpleUrl(__(str_replace('_', '', $translation))), $publicUrlList);
+            $publicUrlList = str_replace($translation, Text::simpleUrl(__(str_replace('@', '', $translation))), $publicUrlList);
         }
-        return url($publicUrlList);
+        return url(str_replace(' ', '', $publicUrlList));
     }
 
     /**
@@ -218,6 +218,33 @@ class Db_Object extends Db_Sql {
     */
     public function urlAdmin() {
         return url($this->className.'/modifyView/'.$this->id(), true);
+    }
+
+    /**
+    * Gets the url of a select-link attribute.
+    */
+    public function urlLink($attribute) {
+        $info = explode('_', $this->get($attribute));
+        switch ($info[0]) {
+            case 'homePage':
+                return url();
+            break;
+            case 'public':
+                if (isset($info[1])) {
+                    $objectName = $info[1];
+                    $object = new $objectName();
+                    return $object->urlList();
+                }
+            break;
+            case 'item':
+                if (isset($info[2])) {
+                    $objectName = $info[1];
+                    $object = new $objectName();
+                    $object = $object->readObject($info[2]);
+                    return $object->url();
+                }
+            break;
+        }
     }
 
     /**

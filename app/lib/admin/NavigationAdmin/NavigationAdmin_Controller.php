@@ -35,9 +35,10 @@ class NavigationAdmin_Controller extends Controller{
                 $this->mode = 'json';
                 $info = array('base_url'=>LOCAL_URL,
                             'app_url'=>APP_URL,
+                            'app_folder'=>APP_FOLDER,
                             'site_url'=>url(''),
                             'lang'=>Lang::active());
-                return 'info_site = '.json_encode($info).';';
+                return 'var info_site = '.json_encode($info).';';
             break;
             case 'js-translations':
                 $this->mode = 'json';
@@ -50,7 +51,7 @@ class NavigationAdmin_Controller extends Controller{
                     $trasnlationValue = $translationResult['translation'];
                     $translations[$translationResult['code']] = $trasnlationValue;
                 }
-                return 'info_translations = '.json_encode($translations).';';
+                return 'var info_translations = '.json_encode($translations).';';
             break;
         }
     }

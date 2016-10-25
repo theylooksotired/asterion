@@ -15,8 +15,10 @@
 require "core/autoload.php";
 $mtime = @filemtime(__FILE__);
 if ($mtime) httpCache::checkMTime($mtime);
-$browser = new browser();
-$config = $browser->config;
+//$browser = new browser();
+//$config = $browser->config;
+require "config.php";
+
 ob_start();
 
 ?>
@@ -104,7 +106,7 @@ table {
 
 div.file {
     overflow-x: hidden;
-    width: <?php echo $config['thumbWidth'] ?>px;
+    width: <?php echo $_CONFIG['thumbWidth'] ?>px;
     float: left;
     text-align: center;
     cursor: default;
@@ -112,8 +114,8 @@ div.file {
 }
 
 div.file .thumb {
-    width: <?php echo $config['thumbWidth'] ?>px;
-    height: <?php echo $config['thumbHeight'] ?>px;
+    width: <?php echo $_CONFIG['thumbWidth'] ?>px;
+    height: <?php echo $_CONFIG['thumbHeight'] ?>px;
     background: no-repeat center center;
 }
 

@@ -67,17 +67,17 @@ class FormField_Default {
         $value = (isset($options['value'])) ? 'value="'.$options['value'].'" ' : '';
         $disabled = (isset($options['disabled']) && $options['disabled']!=false) ? 'disabled="disabled"' : '';
         $size = (isset($options['size'])) ? 'size="'.$options['size'].'" ' : '';
-        $error = (isset($options['error'])) ? '<div class="error">'.$options['error'].'</div>' : '';
+        $error = (isset($options['error']) && $options['error']!='') ? '<div class="error">'.$options['error'].'</div>' : '';
         $class = (isset($options['class'])) ? $options['class'] : '';
         $class .= (isset($options['name'])) ? ' formField-'.Text::simpleUrl($options['name']) : '';
-        $classError = (isset($options['error']) && $options['error']!='') ? 'errorField' : '';
+        $classError = (isset($options['error']) && $options['error']!='') ? 'error' : '';
         $placeholder = (isset($options['placeholder'])) ? 'placeholder="'.__($options['placeholder']).'"' : '';
         $required = (isset($options['required']) && $options['required']) ? 'required' : '';
         $layout = (isset($options['layout'])) ? $options['layout'] : '';
         $autocomplete = (isset($options['autocomplete'])) ? 'autocomplete="'.$options['autocomplete'].'" ' : '';
         switch ($layout) {
             default:
-                return '<div class="'.$type.' formField '.$class.' '.$classError.'">
+                return '<div class="'.$type.' formField '.$class.' '.$required.' '.$classError.'">
                             <div class="formFieldIns">
                                 '.$label.'
                                 '.$error.'
@@ -86,7 +86,7 @@ class FormField_Default {
                         </div>';
             break;
             case 'color':
-                return '<div class="'.$type.' formField '.$class.' '.$classError.'">
+                return '<div class="'.$type.' formField '.$class.' '.$required.' '.$classError.'">
                             <div class="formFieldIns">
                                 '.$label.'
                                 '.$error.'

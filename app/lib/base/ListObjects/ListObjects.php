@@ -64,7 +64,8 @@ class ListObjects {
     * Populate the list.
     */
     public function populate() {
-        $page = (isset($_GET[PAGER_URL_STRING])) ? intval($_GET[PAGER_URL_STRING])-1 : 0;
+        $pageUrl = (__('pageUrl')!='pageUrl') ? __('pageUrl') : PAGER_URL_STRING;
+        $page = (isset($_GET[$pageUrl])) ? intval($_GET[$pageUrl])-1 : 0;
         if ($this->query!='') {
             if ($this->results!='') {
                 $this->options['query'] .= ' LIMIT '.($page*$this->results).', '.$this->results;
@@ -116,7 +117,8 @@ class ListObjects {
     public function pager($options=array()) {
         if (!isset($this->pagerHtml)) {
             $this->pagerHtml = '';
-            $page = (isset($_GET[PAGER_URL_STRING])) ? intval($_GET[PAGER_URL_STRING]) : 0;
+            $pageUrl = (__('pageUrl')!='pageUrl') ? __('pageUrl') : PAGER_URL_STRING;
+            $page = (isset($_GET[$pageUrl])) ? intval($_GET[$pageUrl]) : 0;
             $delta = (isset($options['delta'])) ? intval($options['delta']) : 5;
             $midDelta = ceil($delta/2);
             if ($this->results > 0 && $this->countTotal() > $this->results) {
@@ -193,9 +195,11 @@ class ListObjects {
             $pagerTop = '<div class="listPagerTop">'.$pager.'</div>';
             $pagerBottom = '<div class="listPagerBottom">'.$pager.'</div>';
         }
+        $showResults = (isset($options['showResults'])) ? $options['showResults'] : true;
+        $listResults = ($showResults) ? '<div class="listResults">'.str_replace('#RESULTS', $this->countTotal(), __('listTotal')).'</div>' : '';
         return '<div class="listWrapper">
                     '.$pagerTop.'
-                    <div class="listResults">'.str_replace('#RESULTS', $this->countTotal(), __('listTotal')).'</div>
+                    '.$listResults.'
                     <div class="listContent">
                         '.$this->showList($options, $params).'
                     </div>

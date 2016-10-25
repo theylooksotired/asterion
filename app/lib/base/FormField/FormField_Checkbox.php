@@ -47,8 +47,8 @@ class FormField_Checkbox {
         $label = (isset($options['label'])) ? '<label>'.__($options['label']).'</label>' : '';
         $value = (isset($options['value']) && $options['value']=="1") ? 'checked="checked" ' : '';
         $disabled = (isset($options['disabled'])) ? 'disabled="disabled"' : '';
-        $error = (isset($options['error'])) ? '<div class="error">'.$options['error'].'</div>' : '';
-        $errorClass = (isset($options['error']) && $options['error']!='') ? 'errorField' : '';
+        $error = (isset($options['error']) && $options['error']!='') ? '<div class="error">'.$options['error'].'</div>' : '';
+        $errorClass = (isset($options['error']) && $options['error']!='') ? 'error' : '';
         $class = (isset($options['class'])) ? $options['class'] : '';
         $class .= (isset($options['name'])) ? ' formField-'.Text::simpleUrl($options['name']) : '';
         $layout = (isset($options['layout'])) ? $options['layout'] : '';

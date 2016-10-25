@@ -1,18 +1,19 @@
 $white: #FFF;
-$black: #FFF;
+$black: #000;
 
 $colorText: #012530;
 $colorTextAlt: #FFD6A0;
 
-$colorMain: #28544B;
+$colorMain: #213042;
 $colorMainAlt: darken($colorMain, 10%);
-$colorAccent: #ACBD86;
-$colorAccentAlt: #FF302C;
+$colorAccent: #435c7a;
+$colorAccentAlt: #4DD95D;
 
 $colorActive: #29C74D;
 $colorNotActive: #818181;
 
 $colorMessage: #38B0A6;
+$colorMessageAlert: #FFB823;
 $colorMessageError: #FF3030;
 
 $colorError: #FD3535;
@@ -44,6 +45,10 @@ $fontSizeTiny: 0.8rem;
 $fontSizeBig: 1.4rem;
 $fontSizeLarge: 1.8rem;
 $fontSizeHuge: 2rem;
+
+$zIndex: 1000;
+$zIndexHigh: 1001;
+$zIndexHighest: 1002;
 
 @font-face {
   font-family: 'icons';

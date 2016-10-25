@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+* @structure Contact
+*
+* @author Leano Martinet <info@asterion-cms.com>
+* @package Asterion
+* @version 3.0.1
+-->
+<object>
+	<name>Contact</name>
+	<info>
+		<sql>
+			<primary>idContact</primary>
+			<created>true</created>
+			<modified>true</modified>
+		</sql>
+		<form>
+			<title>contacts</title>
+            <hiddenAdminMenu>true</hiddenAdminMenu>
+			<pager>20</pager>
+			<orderBy>created DESC</orderBy>
+			<templateItemAdmin>
+                <p class="accent"><strong>#name</strong></p>
+                <p class="tiny">#shortDescription</p>
+            </templateItemAdmin>
+		</form>
+	</info>
+	<attributes>
+		<attribute>
+            <name>idContact</name>
+            <type>id-autoincrement</type>
+        </attribute>
+        <attribute>
+            <name>name</name>
+            <label>namePerson</label>
+            <required>notEmpty</required>
+            <type>text-long</type>
+        </attribute>
+        <attribute>
+            <name>email</name>
+            <label>email</label>
+            <required>email</required>
+            <type>text-long</type>
+        </attribute>
+        <attribute>
+            <name>telephone</name>
+            <label>telephone</label>
+            <type>text-long</type>
+        </attribute>
+        <attribute>
+            <name>message</name>
+            <label>message</label>
+            <required>notEmpty</required>
+            <type>textarea</type>
+        </attribute>
+	</attributes>
+</object>

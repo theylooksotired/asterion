@@ -1,0 +1,26 @@
+.contentTop {
+    .menu {
+        padding: 0;
+        margin: 0;
+        .menuIns {
+            text-align: right;
+            .menuItem {
+                display: inline-block;
+                padding: 0 0 0 10px;
+                a {
+                    display: inline-block;
+                    padding: 8px 10px;
+                    color: $white;
+                    font-weight: normal;
+                    text-transform: uppercase;
+                    font-size: $fontSizeSmall;
+                    @include borderRadius(4px);
+                    &:hover {
+                        background: $colorAccentAlt;
+                        color: $colorAccent;
+                    }
+                }
+            }
+        }
+    }
+}

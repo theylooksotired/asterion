@@ -10,9 +10,42 @@ class Navigation_Ui extends Ui {
         switch ($layoutPage) {
             default:
                 return '<div class="contentWrapper">
-                            '.$this->header().'
-                            '.$this->menu().'
-                            <div class="content">'.$content.'</div>
+                            <div class="contentTop">
+                                '.$this->header().'
+                                '.$this->menu().'
+                            </div>
+                            <div class="content">
+                                '.$message.'
+                                '.$messageError.'
+                                <div class="contentIns">
+                                    '.$this->breadCrumbs().'
+                                    '.$title.'
+                                    '.$content.'
+                                </div>
+                            </div>
+                            '.$this->footer().'
+                        </div>';
+            break;
+            case 'sidebar':
+                return '<div class="contentWrapper">
+                            <div class="contentTop">
+                                '.$this->header().'
+                                '.$this->menu().'
+                            </div>
+                            <div class="content">
+                                '.$message.'
+                                '.$messageError.'
+                                <div class="contentIns">
+                                    <div class="contentInfo">
+                                        '.$this->breadCrumbs().'
+                                        '.$title.'
+                                        '.$content.'
+                                    </div>
+                                    <div class="contentSidebar">
+                                        '.$this->sidebar().'
+                                    </div>
+                                </div>
+                            </div>
                             '.$this->footer().'
                         </div>';
             break;
@@ -24,7 +57,7 @@ class Navigation_Ui extends Ui {
                     <div class="headerIns">
                         <div class="headerLeft">
                             <div class="logo">
-                                <a href="'.url('').'">'.Params::param('titlePage').'</a>
+                                <a href="'.url('').'">'.Params::param('metainfo-titlePage').'</a>
                             </div>
                         </div>
                         <div class="headerRight">
@@ -42,8 +75,24 @@ class Navigation_Ui extends Ui {
 
     public function footer() {
         return '<footer class="footer">
-                    <div class="footerIns">'.HtmlSection::show('footer').'</div>
+                    <div class="footerIns">
+                        '.Menu::show('footer').'
+                        '.HtmlSection::show('footer').'
+                    </div>
                 </footer>';
+    }
+
+    public function menu() {
+        return Menu::show('main');
+    }
+
+    public function sidebar() {
+        return '<aside class="sidebar">
+                    <div class="sidebarIns">
+                        <div class="sidebarBlock">'.Post_Ui::latest().'</div>
+                        <div class="sidebarBlock">'.Post_Ui::popular().'</div>
+                    </div>
+                </aside>';
     }
 
     public function shareIcons() {
@@ -59,37 +108,32 @@ class Navigation_Ui extends Ui {
         return ($html!='') ? '<div class="shareIcons">'.$html.'</div>' : '';
     }
 
-    public function menu() {
-        return Menu::show('main');
-        return '<nav class="menu">
-                    <div class="menuIns">
-                        <div class="menuItem">
-                            <a href="">Menu item 1</a>
-                        </div>
-                        <div class="menuItem">
-                            <a href="">Menu item 2</a>
-                        </div>
-                        <div class="menuItem">
-                            <a href="">Menu item 3</a>
-                        </div>
-                        <div class="menuItem">
-                            <a href="">Menu item 4</a>
-                        </div>
-                        <div class="menuItem">
-                            <a href="">Menu item 5</a>
-                        </div>
-                        <div class="menuItem">
-                            <a href="">Menu item 6</a>
-                        </div>
-                    </div>
-                </nav>';
-    }
-
     public function search() {
         $field = FormField::create('text', array('name'=>'search', 'placeholder'=>__('search')));
         return '<div class="searchTop">
                     '.Form::createForm($field, array('submit'=>'ajax', 'class'=>'formSearch')).'
                 </div>';
+    }
+
+    public function breadCrumbs() {
+        $html = '';
+        if (isset($this->object->breadCrumbs) && is_array($this->object->breadCrumbs)) {
+            $html .= '<span itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+                        <a href="'.url('').'" itemprop="item">
+                            <span itemprop="name">'.__('homePage').'</span>
+                        </a>
+                    </span>';
+            foreach ($this->object->breadCrumbs as $url=>$title) {
+                $html .= '<span class="breadCrumbSeparator">&raquo;</span>
+                            <span itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+                                <a href="'.$url.'" itemprop="item">
+                                    <span itemprop="name">'.$title.'</span>
+                                </a>
+                            </span>';
+            }
+            $html = '<div class="breadcrumbs" itemscope itemtype="http://schema.org/BreadcrumbList">'.$html.'</div>';
+        }
+        return $html;
     }
 
 }

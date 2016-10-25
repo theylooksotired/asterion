@@ -34,9 +34,9 @@ class Init {
         $object = new $className;
         $object->createTable();
         $numberItems = $object->countResults();
-        $dataUrl = DATA_FILE.$className.'.json';
+        $dataUrl = DATA_LOCAL_FILE.$className.'.json';
         if (!file_exists($dataUrl)) {
-            $dataUrl = DATA_LOCAL_FILE.$className.'.json';
+            $dataUrl = DATA_FILE.$className.'.json';
         }
         if (file_exists($dataUrl) && $numberItems==0) {
             $items = json_decode(file_get_contents($dataUrl), true);

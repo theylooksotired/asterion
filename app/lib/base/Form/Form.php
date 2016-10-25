@@ -147,6 +147,9 @@ class Form {
                     case 'select-link':
                         return FormField::show('selectLink', $options);
                     break;
+                    case 'select-link-simple':
+                        return FormField::show('selectLinkSimple', $options);
+                    break;
                 }
             break;
             case 'id':

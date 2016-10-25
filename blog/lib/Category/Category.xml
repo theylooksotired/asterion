@@ -19,8 +19,8 @@
             <orderBy>ord</orderBy>
             <label>#name</label>
             <viewPublic>true</viewPublic>
-            <publicUrl>_categories/#nameUrl</publicUrl>
-            <publicUrlList>_categories</publicUrlList>
+            <publicUrl>@categories / #idCategory _ #nameUrl</publicUrl>
+            <publicUrlList>@categories</publicUrlList>
             <templateItemAdmin>
                 <p class="accent"><strong>#name</strong></p>
                 <p class="tiny">#shortDescription</p>

@@ -330,7 +330,7 @@ browser.humanSize = function(size) {
 };
 
 browser.baseGetData = function(act) {
-    var data = 'browse.php?type=' + encodeURIComponent(this.type) + '&lng=' + this.lang;
+    var data = 'browse.php?type=' + encodeURIComponent(this.type) + '&site=' + getUrlVars()["site"] + '&lng=' + this.lang;
     if (act)
         data += "&act=" + act;
     if (this.cms)
@@ -381,3 +381,12 @@ browser.fadeFiles = function() {
         filter: 'alpha(opacity:40)'
     });
 };
+
+
+function getUrlVars() {
+    var vars = {};
+    var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+        vars[key] = value;
+    });
+    return vars;
+}
