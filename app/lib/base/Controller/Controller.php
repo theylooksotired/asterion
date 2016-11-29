@@ -328,6 +328,18 @@ abstract class Controller{
                     }    
                 }
             break;
+            case 'export-json':
+                /**
+                * This is the action that exports the complete list of objects in JSON format.
+                */
+                $this->mode = 'ajax';
+                $query = 'SELECT * FROM '.Db::prefixTable($this->type);
+                $items = Db::returnAll($query);
+                $file = $this->type.'.json';
+                $options = array('content'=>json_encode($items), 'contentType'=>'application/json');
+                File::download($file, $options);
+                return '';
+            break;
         }
     }
 
@@ -578,6 +590,16 @@ abstract class Controller{
                     $items = '<div class="menuSimpleItem menuSimpleItemInsert">
                                 <a href="'.url($this->type.'/insertView', true).'">'.__('insertNew').'</a>
                             </div>';
+                }
+                if ((string)$this->object->info->info->form->exportJson == 'true') {
+                    $items .= '<div class="menuSimpleItem menuSimpleItemExportJson">
+                                    <a href="'.url($this->type.'/export-json', true).'" target="_blank">'.__('exportJson').'</a>
+                                </div>';
+                }
+                if ((string)$this->object->info->info->form->exportCsv == 'true') {
+                    $items .= '<div class="menuSimpleItem menuSimpleItemExportCsv">
+                                    <a href="'.url($this->type.'/export-csv', true).'" target="_blank">'.__('exportCsv').'</a>
+                                </div>';
                 }
             break;
             case 'insertView':

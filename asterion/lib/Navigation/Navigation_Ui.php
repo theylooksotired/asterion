@@ -25,6 +25,23 @@ class Navigation_Ui extends Ui {
                             '.$this->footer().'
                         </div>';
             break;
+            case 'documentation':
+                return '<div class="contentWrapper contentWrapperDocumentation">
+                            <div class="contentTop">
+                                '.$this->header().'
+                            </div>
+                            <div class="content">
+                                '.$message.'
+                                '.$messageError.'
+                                <div class="contentIns">
+                                    '.$this->breadCrumbs().'
+                                    '.$title.'
+                                    '.$content.'
+                                </div>
+                            </div>
+                            '.$this->footer().'
+                        </div>';
+            break;
         }
     }
 

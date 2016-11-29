@@ -1204,5 +1204,17 @@
 		"translation_en": "About us",
 		"translation_fr": "À propos",
 		"translation_es": "Sobre nosotros"
+	},
+	{
+		"code": "export",
+		"translation_en": "Export",
+		"translation_fr": "Exporter",
+		"translation_es": "Exportar"
+	},
+	{
+		"code": "exportJson",
+		"translation_en": "Export JSON",
+		"translation_fr": "Exporter JSON",
+		"translation_es": "Exportar JSON"
 	}
 ]

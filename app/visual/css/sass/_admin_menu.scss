@@ -135,6 +135,11 @@
                 content: $icon-plus;
             }
         }
+        &.menuSimpleItemExportJson a {
+            &:before {
+                content: $icon-download;
+            }
+        }
         &.menuSimpleItemCancel a {
             &:before {
                 content: $icon-cancel;

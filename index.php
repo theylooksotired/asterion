@@ -88,5 +88,9 @@ switch ($mode) {
         header('Content-Type: application/js');
         echo $content;
     break;
+    case 'zip':
+        header('Content-Type: application/zip');
+        echo $content;
+    break;
 }
 ?>

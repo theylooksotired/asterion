@@ -16,6 +16,7 @@
             <title>htmlSectionsAdmin</title>
             <orderBy>code</orderBy>
             <label>#title</label>
+            <hiddenAdminMenu>true</hiddenAdminMenu>
             <templateItemAdmin>
                 <p class="accent"><strong>#title</strong></p>
                 <p class="tiny"><em>_code</em> : <span class="mainAlt">#code</span></p>

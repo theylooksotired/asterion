@@ -16,6 +16,7 @@
             <title>mailTemplates</title>
             <orderBy>code</orderBy>
             <label>#title</label>
+            <exportJson>true</exportJson>
         </form>
     </info>
     <attributes>

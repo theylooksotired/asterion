@@ -29,16 +29,47 @@ class Navigation_Controller extends Controller{
                                         <div class="pageBlockIns">
                                             <h1>'.Params::param('metainfo-metaDescription-'.Lang::active()).'</h1>
                                             <div class="introButtons">
-                                                <a href="" class="introButton introButtonDownload">'.__('download').'</a>
+                                                <a href="" class="introButton introButtonDownload">'.__('download').' <span>v.4.0.1</span></a>
                                                 <a href="" class="introButton">'.__('tryDemo').'</a>
                                                 <a href="" class="introButton">'.__('viewGitHub').'</a>
                                             </div>
                                         </div>
                                     </section>
                                     <section class="pageBlock pageBlockMain">
-                                        '.HtmlSection::show('intro').'
+                                        <div class="pageBlockContent">
+                                            '.HtmlSection::show('intro').'
+                                        </div>
+                                    </section>
+                                    <section class="pageBlock pageBlockWhen">
+                                        <div class="pageBlockContent">
+                                            '.HtmlSection::show('when-to-use').'
+                                        </div>
+                                    </section>
+                                    <section class="pageBlock pageBlockExamples">
+                                        <div class="pageBlockContent">
+                                            '.HtmlSection::show('examples').'
+                                        </div>
+                                    </section>
+                                    <section class="pageBlock pageBlockDocumentation">
+                                        <div class="pageBlockContent">
+                                            '.HtmlSection::show('documentation').'
+                                        </div>
                                     </section>';
-                return $this->ui->render();
+            break;
+            case 'documentation':
+                $info = explode('_', $this->id);
+                $item = Documentation::read($info[0]);
+                $this->layoutPage = 'documentation';
+                if ($item->id()!='') {
+                    $this->titlePage = $item->getBasicInfo();
+                    $this->metaDescription = $item->get('shortDescription');
+                    $this->metaUrl = $item->url();
+                    $this->content = $item->showUi('Complete');
+                } else {
+                    $this->titlePage = __('documentation');
+                    $items = new ListObjects('DocumentationCategory', array('order'=>'ord'));
+                    $this->content = $items->showList();
+                }
             break;
             case 'error':
                 header("HTTP/1.0 404 Not Found");
@@ -46,6 +77,7 @@ class Navigation_Controller extends Controller{
                 $this->content = 'Error 404';
             break;
         }
+        return $this->ui->render();
     }
 
 }

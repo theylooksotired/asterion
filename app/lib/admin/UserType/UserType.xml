@@ -16,6 +16,7 @@
         <form>
             <title>userTypes</title>
             <label>#name</label>
+            <exportJson>true</exportJson>
             <templateItemAdmin>
                 <p class="accent"><strong>#name</strong></p>
                 <p class="tiny"><em>_code</em> : <span class="mainAlt">#code</span> | <em>_managesPermissions</em> : <span class="mainAlt">#managesPermissions</span></p>

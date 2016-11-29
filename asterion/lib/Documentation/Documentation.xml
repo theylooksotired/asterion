@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+* @structure Documentation
+*
+* @author Leano Martinet <info@asterion-cms.com>
+* @package Asterion
+* @version 3.0.1
+-->
+<object>
+    <name>Documentation</name>
+    <info>
+        <sql>
+            <primary>idDocumentation</primary>
+            <order>true</order>
+        </sql>
+        <form>
+            <title>docs</title>
+            <orderBy>ord</orderBy>
+            <group>idDocumentationCategory</group>
+            <label>#title</label>
+            <viewPublic>true</viewPublic>
+            <exportJson>true</exportJson>
+            <publicUrl>@documentation / #idDocumentation _ #titleUrl</publicUrl>
+            <templateItemAdmin>
+                <p class="accent"><strong>#title</strong></p>
+                <p class="tiny">#shortDescription</p>
+            </templateItemAdmin>
+        </form>
+    </info>
+    <attributes>
+        <attribute>
+            <name>idDocumentation</name>
+            <type>id-autoincrement</type>
+        </attribute>
+        <attribute>
+            <name>title</name>
+            <label>title</label>
+            <required>notEmpty</required>
+            <type>text-long</type>
+        </attribute>
+        <attribute>
+            <name>titleUrl</name>
+            <type>hidden-url</type>
+            <refAttribute>title</refAttribute>
+        </attribute>
+        <attribute>
+            <name>idDocumentationCategory</name>
+            <label>category</label>
+            <type>select</type>
+            <refObject>DocumentationCategory</refObject>
+        </attribute>
+        <attribute>
+            <name>shortDescription</name>
+            <label>shortDescription</label>
+            <required>notEmpty</required>
+            <type>textarea</type>
+        </attribute>
+        <attribute>
+            <name>description</name>
+            <label>description</label>
+            <required>notEmpty</required>
+            <type>textarea-ck</type>
+        </attribute>
+    </attributes>
+    <indexes>
+        <index>
+            <name>titleUrl</name>
+            <fields>titleUrl</fields>
+        </index>
+    </indexes>
+</object>

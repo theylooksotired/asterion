@@ -1,6 +1,6 @@
 /**
- * @license Copyright (c) 2003-2013, CKSource - Frederico Knabben. All rights reserved.
- * For licensing, see LICENSE.html or http://ckeditor.com/license
+ * @license Copyright (c) 2003-2016, CKSource - Frederico Knabben. All rights reserved.
+ * For licensing, see LICENSE.md or http://ckeditor.com/license
  */
 
 CKEDITOR.editorConfig = function( config ) {
@@ -14,4 +14,12 @@ CKEDITOR.editorConfig = function( config ) {
 	config.filebrowserFlashUploadUrl = appUrl + 'app/helpers/kcfinder/upload.php?type=flash&site='+siteUrl;
 	config.height = 450;
 	config.allowedContent = true;
+	config.resize_enabled = false;
+	/*
+	config.entities_latin = false;
+	config.entities_greek = false;
+	config.entities = false;
+	config.basicEntities = false;
+	*/
+	config.extraPlugins = 'widget,lineutils,codesnippet';
 };

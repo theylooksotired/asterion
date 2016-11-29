@@ -16,6 +16,7 @@
             <title>htmlSections</title>
             <orderBy>title, code</orderBy>
             <label>#title</label>
+            <exportJson>true</exportJson>
             <templateItemAdmin>
                 <p class="accent"><strong>#title</strong></p>
                 <p class="tiny"><em>_code</em> : <span class="mainAlt">#code</span></p>

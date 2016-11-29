@@ -15,6 +15,7 @@
         <form>
             <title>permissions</title>
             <hiddenAdminMenu>true</hiddenAdminMenu>
+            <exportJson>true</exportJson>
         </form>        
     </info>
     <attributes>

@@ -81,6 +81,12 @@ textarea {
     ul {
         list-style: disc outside
     }
+    li {
+        padding-bottom: 1em;
+        &:last-child {
+            padding-bottom: 0;
+        }
+    }
     dd {
         margin-left: 1rem
     }

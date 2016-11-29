@@ -1222,5 +1222,41 @@
 		"translation_en": "View on GitHub",
 		"translation_fr": "Voie le GitHub",
 		"translation_es": "Ver el GitHub"
+	},
+	{
+		"code": "documentation",
+		"translation_en": "Documentation",
+		"translation_fr": "Documentation",
+		"translation_es": "Documentación"
+	},
+	{
+		"code": "documentationCategories",
+		"translation_en": "Documentation - Categories",
+		"translation_fr": "Documentation - Categories",
+		"translation_es": "Documentación - Categorias"
+	},
+	{
+		"code": "docs",
+		"translation_en": "Docs",
+		"translation_fr": "Docs",
+		"translation_es": "Docs"
+	},
+	{
+		"code": "docsCategories",
+		"translation_en": "Docs - Categories",
+		"translation_fr": "Docs - Catégories",
+		"translation_es": "Docs - Categorias"
+	},
+	{
+		"code": "export",
+		"translation_en": "Export",
+		"translation_fr": "Exporter",
+		"translation_es": "Exportar"
+	},
+	{
+		"code": "exportJson",
+		"translation_en": "Export JSON",
+		"translation_fr": "Exporter JSON",
+		"translation_es": "Exportar JSON"
 	}
 ]

@@ -16,6 +16,7 @@
             <title>translations</title>
             <orderBy>code</orderBy>
             <label>#translation</label>
+            <exportJson>true</exportJson>
             <templateItemAdmin>
                 <div class="labelTable">
                     <div class="labelCell labelCell20 accent"><strong>#code</strong></div>

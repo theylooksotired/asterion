@@ -16,6 +16,7 @@
             <title>params</title>
             <orderBy>code</orderBy>
             <label>#information</label>
+            <exportJson>true</exportJson>
             <templateItemAdmin>
                 <p class="accent"><strong>#name</strong></p>
                 <p class="tiny"><em>_code</em> : <span class="mainAlt">#code</span></p>

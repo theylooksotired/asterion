@@ -107,11 +107,15 @@ class NavigationAdmin_Ui extends Ui{
             $objectNames = File::scanDirectoryObjectsApp();
             $menuItems .= $this->renderMenuObjects($objectNames, 'menuSideItemApp');
             if ($this->userType->get('managesPermissions')=='1') {
-                $menuItems .= '<div class="menuSideItem menuSideItem-langs">
+                $menuItems .= '
+                                <div class="menuSideItem menuSideItem-langs">
                                     <a href="'.url('Lang', true).'">'.__('langs').'</a>
                                 </div>
                                 <div class="menuSideItem menuSideItem-permissions">
                                     <a href="'.url('Permission', true).'">'.__('permissions').'</a>
+                                </div>
+                                <div class="menuSideItem menuSideItem-permissions">
+                                    <a href="'.url('NavigationAdmin/cache-backup', true).'">'.__('cacheBackup').'</a>
                                 </div>';
             }
             $menuList = new ListObjects('UserTypeMenu', array('where'=>'idUserType="'.$this->userType->id().'"', 'order'=>'ord'));

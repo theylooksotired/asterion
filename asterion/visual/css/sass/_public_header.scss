@@ -4,6 +4,7 @@
     left: 0;
     right: 0;
     background: $colorMainAlt;
+    z-index: $zIndexHighest;
     @include clearer();
     .headerIns {
         width: $sizeDesktop;

@@ -237,9 +237,7 @@ function activateCK() {
                     '/',
                     { name: 'styles', items: [ 'Styles', 'Format', 'Font', 'FontSize' ] },
                     { name: 'colors', items: [ 'TextColor', 'BGColor' ] },
-                    { name: 'tools', items: [ 'Maximize', 'ShowBlocks' ] },
-                    { name: 'others', items: [ '-' ] },
-                    { name: 'about', items: [ 'About' ] }
+                    { name: 'tools', items: [ 'Maximize', 'ShowBlocks', 'CodeSnippet' ] },
                 ]
             });
         }

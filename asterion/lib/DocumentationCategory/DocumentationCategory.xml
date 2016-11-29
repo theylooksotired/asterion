@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+* @structure DocumentationCategory
+*
+* @author Leano Martinet <info@asterion-cms.com>
+* @package Asterion
+* @version 3.0.1
+-->
+<object>
+    <name>DocumentationCategory</name>
+    <info>
+        <sql>
+            <primary>idDocumentationCategory</primary>
+            <order>true</order>
+            <onDelete>Post</onDelete>
+        </sql>
+        <form>
+            <title>docsCategories</title>
+            <orderBy>ord</orderBy>
+            <label>#name</label>
+            <viewPublic>true</viewPublic>
+            <publicUrlList>@documentation</publicUrlList>
+            <exportJson>true</exportJson>
+            <templateItemAdmin>
+                <p class="accent"><strong>#name</strong></p>
+                <p class="tiny">#shortDescription</p>
+            </templateItemAdmin>
+        </form>
+    </info>
+    <attributes>
+        <attribute>
+            <name>idDocumentationCategory</name>
+            <type>id-autoincrement</type>
+        </attribute>
+        <attribute>
+            <name>name</name>
+            <lang>true</lang>
+            <label>name</label>
+            <required>notEmpty</required>
+            <type>text-long</type>
+        </attribute>
+        <attribute>
+            <name>nameUrl</name>
+            <lang>true</lang>
+            <type>hidden-url</type>
+            <refAttribute>name</refAttribute>
+        </attribute>
+        <attribute>
+            <name>shortDescription</name>
+            <label>shortDescription</label>
+            <lang>true</lang>
+            <required>notEmpty</required>
+            <type>textarea</type>
+        </attribute>
+    </attributes>
+    <indexes>
+        <index>
+            <name>nameUrl</name>
+            <fields>nameUrl</fields>
+            <lang>true</lang>
+        </index>
+    </indexes>
+</object>

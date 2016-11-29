@@ -18,6 +18,7 @@
             <label>#title</label>
             <viewPublic>true</viewPublic>
             <publicUrl>#linkCode</publicUrl>
+            <exportJson>true</exportJson>
             <templateItemAdmin>
                 <p class="accent"><strong>#title</strong></p>
                 <p class="tiny"><em>_code</em> : <span class="mainAlt">#code</span></p>

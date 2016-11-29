@@ -19,6 +19,7 @@
     <title><?php echo $title;?></title>
 
     <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" />
+    <link href="<?php echo BASE_URL; ?>libjs/prism/prism.css" rel="stylesheet" type="text/css" />
     <link href="<?php echo BASE_URL;?>visual/css/stylesheets/public.css" rel="stylesheet" type="text/css" />
 
     <script type="text/javascript" src="<?php echo APP_URL; ?>libjs/jquery/jquery-1.10.2.min.js"></script>
@@ -35,5 +36,6 @@
     <div id="bodyFrame">
         <?php echo $content;?>
     </div>
+    <script type="text/javascript" src="<?php echo BASE_URL; ?>libjs/prism/prism.js" data-default-language="markup"></script>
 </body>
 </html>

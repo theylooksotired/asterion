@@ -18,6 +18,7 @@
             <title>users</title>
             <label>#name</label>
             <orderBy>name</orderBy>
+            <exportJson>true</exportJson>
             <templateItemAdmin>
                 <div class="active active-##active">
                     <p class="image">#image</p>
